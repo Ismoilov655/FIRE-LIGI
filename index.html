@@ -403,7 +403,7 @@ transition:transform .12s,border-color .2s,box-shadow .2s,background .2s;}
 .navrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}.navrow .btn{padding:15px 12px;font-size:16px;font-weight:700;border-radius:16px;}
 
 /* ---- ranks, profile kanji, leaderboard ---- */
-.rk-ronin{--rk:#D98F5C;}.rk-samurai{--rk:#C9D1E3;}.rk-shogun{--rk:#FFC857;}
+.rk-ronin{--rk:#D98F5C;}.rk-samurai{--rk:#C9D1E3;}.rk-shogun{--rk:#FFC857;}.rk-sensei{--rk:#FF6FA5;}
 .seal-btn .seal .ring{stroke:var(--rk,var(--accent));}
 .modal.wide{max-width:520px;}
 .pf-head{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
@@ -612,7 +612,7 @@ const I18N = {
     title: "Kanji Flashcards — Yapon tili platformasi", brandSub: "Yapon tilini o'yin kabi o'rgan", pages: "Sahifalar",
     pgKana: "Kana", pgKotoba: "Kotoba", pgKanji: "Kanji",
     profile: "Profil", theme: "Mavzuni almashtirish", speak: "Tinglash", noSpeech: "Brauzeringiz ovozli o'qishni qo'llamaydi", noVoice: "Qurilmada yapon ovozi topilmadi. Ovoz sifati qurilmangizdagi yapon tili ovoziga bog'liq.",
-    rank_ronin: "Ronin", rank_samurai: "Samuray", rank_shogun: "Shogun", rankUp: "Yangi unvon!", rankUpText: s => `Siz ${s} ball to'plab yangi unvonga erishdingiz.`,
+    rank_ronin: "Ronin", rank_samurai: "Samuray", rank_shogun: "Shogun", rank_sensei: "Sensei", rankUp: "Yangi unvon!", rankUpText: s => `Siz ${s} ball to'plab yangi unvonga erishdingiz.`,
     toNext: (n, r) => `Keyingi unvon (${r}) uchun yana ${n} ball`, topRank: "Eng yuqori unvon!", points: "Ball", streak: "Kunlik seriya", streakTip: n => n ? `🔥 ${n} kun ketma-ket kirdingiz` : "Bugun kirib seriyani boshlang!",
     storage: "Saqlash", cloudOn: "Bulut (hamma qurilmada)", cloudOff: "Faqat shu qurilmada", rename: "Ismni o'zgartirish",
     welcome: "Xush kelibsiz!", nameIntro: "Reytingda ko'rinadigan noyob ismingizni tanlang. Katta-kichik harf farqlanmaydi: «Samurai» band bo'lsa, «samurai» ham band.",
@@ -654,7 +654,7 @@ const I18N = {
     title: "Kanji Flashcards — платформа японского", brandSub: "Учи японский как игру", pages: "Страницы",
     pgKana: "Кана", pgKotoba: "Слова", pgKanji: "Кандзи",
     profile: "Профиль", theme: "Сменить тему", speak: "Прослушать", noSpeech: "Браузер не поддерживает озвучку", noVoice: "На устройстве нет японского голоса. Качество звука зависит от японского голоса вашего устройства.",
-    rank_ronin: "Ронин", rank_samurai: "Самурай", rank_shogun: "Сёгун", rankUp: "Новое звание!", rankUpText: s => `Вы набрали ${s} очков и получили новое звание.`,
+    rank_ronin: "Ронин", rank_samurai: "Самурай", rank_shogun: "Сёгун", rank_sensei: "Сэнсэй", rankUp: "Новое звание!", rankUpText: s => `Вы набрали ${s} очков и получили новое звание.`,
     toNext: (n, r) => `До звания «${r}» осталось ${n} очков`, topRank: "Высшее звание!", points: "Очки", streak: "Серия дней", streakTip: n => n ? `🔥 ${n} дн. подряд` : "Зайдите сегодня, чтобы начать серию!",
     storage: "Хранение", cloudOn: "Облако (на всех устройствах)", cloudOff: "Только на этом устройстве", rename: "Сменить имя",
     welcome: "Добро пожаловать!", nameIntro: "Выберите уникальное имя для рейтинга. Регистр не важен: если занято «Samurai», то «samurai» тоже занято.",
@@ -707,7 +707,8 @@ const OLD_KEY = "kanji_flashcards_state_v4";
 const RANKS = [
   { id: "ronin",   min: 0,    jp: "浪人", lv: "N5" },
   { id: "samurai", min: 500,  jp: "侍",   lv: "N4" },
-  { id: "shogun",  min: 1500, jp: "将軍", lv: "N3" }
+  { id: "shogun",  min: 1500, jp: "将軍", lv: "N3" },
+  { id: "sensei",  min: Infinity, jp: "先生", lv: "∞", sp: true }   // given by hand only (profiles.title = 'sensei')
 ];
 
 /* =====================================================================
@@ -737,7 +738,7 @@ function hl(text, q) {
    STATE
    ===================================================================== */
 const DEF = () => ({
-  v: 5, profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
+  v: 5, sen: false, profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
   srs: {}, mist: [], goal: 20, act: {}, actIds: {}, stat: {}, bn: 0, bnv: 2, bseen: {}, tour: 0,
   kana: { script: "hira", groups: ["basic"], chart: "hira", sys: "lat", dir: "mix", count: 20, shuffle: false },
   read: { level: 1, mode: "cards", dir: "mix", count: 10, stats: {}, shuffle: false },
@@ -912,10 +913,25 @@ const Cloud = {
     if (!Cloud.on || !S.profile) return;
     try {
       const s = await Cloud.session();
-      await Cloud.raw("/rest/v1/profiles?id=eq." + encodeURIComponent(s.uid), { method: "PATCH", token: s.access_token, headers: { Prefer: "return=minimal" }, body: { score: S.score, streak: S.streak, avatar: S.avatar || null, last_day: S.lastDay || null } });
+      await Cloud.raw("/rest/v1/profiles?id=eq." + encodeURIComponent(s.uid), { method: "PATCH", token: s.access_token, headers: { Prefer: "return=minimal" }, body: Object.assign(S.sen ? {} : { score: S.score }, { streak: S.streak, avatar: S.avatar || null, last_day: S.lastDay || null }) });
     } catch (e) {}
   },
   push: debounce(function () { Cloud.pushNow(); }, 4000),
+  async sync() {                    // after boot: pick up a hand-given title, and re-create a profile row that was wiped from the database
+    if (!this.on || !S.profile) return;
+    try {
+      const s = await this.session();
+      const r = await this.raw("/rest/v1/profiles?id=eq." + encodeURIComponent(s.uid) + "&select=username,title", { token: s.access_token });
+      if (!r.ok || !Array.isArray(r.data)) return;
+      if (r.data.length) {
+        const sen = r.data[0].title === "sensei";
+        if (sen !== !!S.sen) { S.sen = sen; save(); renderProfile(); Act.bar && Act.bar(); }
+        return;
+      }
+      const c = await this.claim(S.profile.name);   // no row for this device any more
+      if (c.taken) askName(true);                    // the name was taken meanwhile: choose a new one
+    } catch (e) {}
+  },
   async leaderboard() {
     await this.pushNow();
     const s = await this.session();
@@ -932,15 +948,17 @@ const Cloud = {
    PROFILE / SCORE / RANK / STREAK
    ===================================================================== */
 const NAME_RE = /^[A-Za-z0-9_.\-]{3,16}$/;
-function rankIdx(score) { let i = 0; RANKS.forEach((r, k) => { if (score >= r.min) i = k; }); return i; }
+const nextRank = i => (RANKS[i + 1] && !RANKS[i + 1].sp) ? RANKS[i + 1] : null;
+const scTxt = (score, sen) => sen ? "∞" : score;
+function rankIdx(score, sen) { if (sen) return RANKS.length - 1; let i = 0; RANKS.forEach((r, k) => { if (score >= r.min) i = k; }); return i; }
 function rankName(i) { return t("rank_" + RANKS[i].id); }
 function renderProfile() {
-  const p = S.profile, i = rankIdx(S.score), r = RANKS[i], nx = RANKS[i + 1];
+  const p = S.profile, i = rankIdx(S.score, S.sen), r = RANKS[i], nx = nextRank(i);
   const pct = nx ? clamp((S.score - r.min) / (nx.min - r.min), 0, 1) : 1;
   const C = 113.1, ch = S.avatar || r.jp;
   const sb = $("#sealBtn");
   sb.className = "seal-btn rk-" + r.id;
-  sb.innerHTML = `<span class="seal"><svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle class="ring-bg" cx="20" cy="20" r="18" fill="none" stroke-width="3"/><circle class="ring" cx="20" cy="20" r="18" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${(C * (1 - pct)).toFixed(1)}"/></svg><span class="stamp ${ch.length > 1 ? "long" : ""}${S.avatar && avColor(S.avatar) ? " has" : ""}"${S.avatar ? avStyle(S.avatar) : ""}>${esc(ch)}</span></span><span class="seal-meta"><b>${esc(p ? p.name : "…")}</b><span>${esc(rankName(i))} · ${S.score}</span></span>`;
+  sb.innerHTML = `<span class="seal"><svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle class="ring-bg" cx="20" cy="20" r="18" fill="none" stroke-width="3"/><circle class="ring" cx="20" cy="20" r="18" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${(C * (1 - pct)).toFixed(1)}"/></svg><span class="stamp ${ch.length > 1 ? "long" : ""}${S.avatar && avColor(S.avatar) ? " has" : ""}"${S.avatar ? avStyle(S.avatar) : ""}>${esc(ch)}</span></span><span class="seal-meta"><b>${esc(p ? p.name : "…")}</b><span>${esc(rankName(i))} · ${scTxt(S.score, S.sen)}</span></span>`;
   sb.setAttribute("aria-label", t("profile"));
   const sn = liveStreak();
   $("#streakBtn").innerHTML = `🔥 <b>${sn}</b>`;
@@ -961,9 +979,9 @@ function dailyVisit() {                       // login streak: one step per day 
   S.lastDay = today; save(); Cloud.push();
 }
 function addPoints(p) {                       // returns the change that was really applied
-  const before = S.score, bi = rankIdx(before);
+  const before = S.score, bi = rankIdx(before, S.sen);
   S.score = Math.max(0, S.score + p);
-  const applied = S.score - before, ai = rankIdx(S.score);
+  const applied = S.score - before, ai = rankIdx(S.score, S.sen);
   renderProfile();
   const f = document.createElement("span");
   f.className = "fpts " + (p > 0 ? "up" : "down"); f.textContent = p > 0 ? "+" + applied : (applied < 0 ? String(applied) : "0");
@@ -1885,7 +1903,7 @@ const AVATARS = [{"k": "桜", "uz": "Sakura (gilos guli)", "ru": "сакура",
 const AVMAP = new Map(AVATARS.map(a => [a.k, a]));
 const avColor = k => { const a = AVMAP.get(k); return a ? a.c : null; };
 const avStyle = k => avColor(k) ? ` style="--rk:${avColor(k)}"` : "";
-const avChar = (av, score) => (av && av.length <= 2 ? av : RANKS[rankIdx(score)].jp[0]);
+const avChar = (av, score, sen) => (av && av.length <= 2 ? av : RANKS[rankIdx(score, sen)].jp[0]);
 
 
 /* sakura-in-a-ring close button + gold/silver/bronze laurel medals (inline SVG, no images) */
@@ -1910,14 +1928,14 @@ function medal(pos) {
 }
 
 function profileModal() {
-  const i = rankIdx(S.score), nx = RANKS[i + 1], r = RANKS[i];
+  const i = rankIdx(S.score, S.sen), nx = nextRank(i), r = RANKS[i];
   const pct = nx ? clamp((S.score - r.min) / (nx.min - r.min), 0, 1) * 100 : 100;
   const dark = document.documentElement.getAttribute("data-theme") === "dark";
   const m = openModal(`${SAKURA_BTN}
-    <div class="pf-head"><div class="pf-av rk-${r.id}" id="pfAv"${avStyle(S.avatar)}>${esc(avChar(S.avatar, S.score))}</div><div><h2>${esc(S.profile ? S.profile.name : "")}</h2><p>${r.jp} ${esc(rankName(i))} (${r.lv})</p></div></div>
+    <div class="pf-head"><div class="pf-av rk-${r.id}" id="pfAv"${avStyle(S.avatar)}>${esc(avChar(S.avatar, S.score, S.sen))}</div><div><h2>${esc(S.profile ? S.profile.name : "")}</h2><p>${r.jp} ${esc(rankName(i))} (${r.lv})</p></div></div>
     <div class="rbar"><i style="width:${pct.toFixed(0)}%"></i></div>
     <div class="note" style="margin-bottom:12px">${nx ? esc(t("toNext", nx.min - S.score, rankName(i + 1))) : esc(t("topRank"))}</div>
-    <div class="pf-row"><span>${esc(t("points"))}</span><b>${S.score}</b></div>
+    <div class="pf-row"><span>${esc(t("points"))}</span><b>${scTxt(S.score, S.sen)}</b></div>
     <div class="pf-row"><span>${esc(t("streak"))}</span><b>🔥 ${liveStreak()}</b></div>
     ${Cloud.on ? "" : `<div class="warn">${esc(t("cloudOffWarn"))}</div>`}
     <div class="lbl" style="margin-top:14px">${esc(t("avatarTitle"))}</div>
@@ -1991,19 +2009,19 @@ const Board = {
     }
   },
   row(u, pos, me) {
-    const ri = rankIdx(u.score), r = RANKS[ri];
-    return `<div class="lb-row ${pos <= 3 ? "p" + pos : ""} ${me ? "me" : ""}"><span class="lb-pos">${pos >= 1 && pos <= 3 ? medal(pos) : (pos || "–")}</span><span class="lb-av rk-${r.id}${AVMAP.has(u.avatar) ? " has" : ""}"${avStyle(u.avatar)}>${esc(avChar(u.avatar, u.score))}</span>
+    const sen = u.title === "sensei" || u.sen, ri = rankIdx(u.score, sen), r = RANKS[ri];
+    return `<div class="lb-row ${pos <= 3 ? "p" + pos : ""} ${me ? "me" : ""}"><span class="lb-pos">${pos >= 1 && pos <= 3 ? medal(pos) : (pos || "–")}</span><span class="lb-av rk-${r.id}${AVMAP.has(u.avatar) ? " has" : ""}"${avStyle(u.avatar)}>${esc(avChar(u.avatar, u.score, sen))}</span>
       <span class="lb-nm"><b>${esc(u.username)}</b>${me ? `<em class="lb-you">${esc(t("youTag"))}</em>` : ""}<span class="lb-rk rk-${r.id}"><i>${r.jp[0]}</i>${esc(rankName(ri))}</span></span>
-      <span class="lb-sc"><b>${u.score}</b> ${esc(t("ptsU"))}<span>🔥 ${u.streak} ${esc(t("daysU"))}</span></span></div>`;
+      <span class="lb-sc"><b>${scTxt(u.score, sen)}</b> ${esc(t("ptsU"))}<span>🔥 ${u.streak} ${esc(t("daysU"))}</span></span></div>`;
   },
   draw(d) {
     const body = $("#lbBody"), mine = S.profile ? S.profile.name.toLowerCase() : "";
-    const me = { username: S.profile ? S.profile.name : "", score: S.score, streak: liveStreak(), avatar: S.avatar };
+    const me = { username: S.profile ? S.profile.name : "", score: S.score, streak: liveStreak(), avatar: S.avatar, sen: S.sen };
     const idx = d.rows.findIndex(u => u.username.toLowerCase() === mine);
-    const ri = rankIdx(S.score);
-    let h = this.head() + `<div class="lb-me glass"><span><i>🎯</i>${esc(t("yourPlace"))} <b>${d.rank ? "#" + d.rank : "–"}</b></span><span><i>⭐</i><b>${S.score}</b> ${esc(t("ptsU"))}</span><span><i class="jp">${RANKS[ri].jp[0]}</i>${esc(rankName(ri))}</span></div>`;
+    const ri = rankIdx(S.score, S.sen);
+    let h = this.head() + `<div class="lb-me glass"><span><i>🎯</i>${esc(t("yourPlace"))} <b>${d.rank ? "#" + d.rank : "–"}</b></span><span><i>⭐</i><b>${scTxt(S.score, S.sen)}</b> ${esc(t("ptsU"))}</span><span><i class="jp">${RANKS[ri].jp[0]}</i>${esc(rankName(ri))}</span></div>`;
     if (!d.rows.length) h += `<div class="empty-msg">${esc(t("lbEmpty"))}</div>`;
-    else h += `<div class="lb-list">` + d.rows.map((u, k) => this.row(k === idx ? Object.assign({}, u, { score: me.score, streak: me.streak, avatar: me.avatar }) : u, k + 1, k === idx)).join("") +
+    else h += `<div class="lb-list">` + d.rows.map((u, k) => this.row(k === idx ? Object.assign({}, u, { score: me.score, streak: me.streak, avatar: me.avatar, sen: me.sen }) : u, k + 1, k === idx)).join("") +
       (idx < 0 && me.username ? `<div class="lb-gap">⋯</div>` + this.row(me, d.rank || 0, true) : "") + `</div>`;
     body.innerHTML = h;
   }
@@ -2137,9 +2155,9 @@ const Act = {
     const days = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push({ n: (S.act && S.act[dayStr(d)]) || 0, w: wk[d.getDay()], now: i === 0 }); }
     const mx = Math.max(g, 1, ...days.map(d => d.n));
     const chart = days.map(d => `<div class="wk${d.now ? " now" : ""}"><span class="wn">${d.n || ""}</span><div class="wb"><i style="height:${Math.round(d.n / mx * 100)}%"></i></div><span class="wd">${d.w}</span></div>`).join("");
-    const r = RANKS[rankIdx(S.score)];
+    const r = RANKS[rankIdx(S.score, S.sen)];
     const m = openModal(`${SAKURA_BTN}<div class="lb-head"><h2>📊 ${esc(t("statTitle"))}</h2><p>${esc(t("statSub"))}</p></div>
-      <div class="lb-me glass"><span><i>⭐</i><b>${S.score}</b> ${esc(t("ptsU"))}</span><span><i>🔥</i><b>${liveStreak()}</b> ${esc(t("daysU"))}</span><span><i class="jp">${r.jp[0]}</i>${esc(rankName(rankIdx(S.score)))}</span></div>
+      <div class="lb-me glass"><span><i>⭐</i><b>${scTxt(S.score, S.sen)}</b> ${esc(t("ptsU"))}</span><span><i>🔥</i><b>${liveStreak()}</b> ${esc(t("daysU"))}</span><span><i class="jp">${r.jp[0]}</i>${esc(rankName(rankIdx(S.score, S.sen)))}</span></div>
       <div class="lbl">${esc(t("statWeek"))}${g > 0 ? ` · ${esc(t("goalToday", today, g))}` : ""}</div><div class="wkchart">${chart}</div>
       <div class="lbl" style="margin-top:14px">${esc(t("statProg"))}</div>${rows}`);
     m.classList.add("wide");
@@ -2230,7 +2248,7 @@ const GM = {
   know: () => `<div class="gm gm-know"><span class="no">✗ Bilmadim</span><span class="yes">✓ Bildim</span></div>`,
   auto: () => `<div class="gm gm-auto"><span>10</span><span class="on">20</span><span>30</span><span>Off</span></div>`,
   streak: () => `<div class="gm gm-streak"><span>🔥 <b>5</b></span></div>`,
-  rank: () => `<div class="gm gm-rank">${RANKS.map(r => `<span class="rk-${r.id}"><i class="jp">${r.jp[0]}</i>${esc(rankName(RANKS.indexOf(r)))}<small>${r.min}</small></span>`).join("")}</div>`,
+  rank: () => `<div class="gm gm-rank">${RANKS.filter(r => !r.sp).map(r => `<span class="rk-${r.id}"><i class="jp">${r.jp[0]}</i>${esc(rankName(RANKS.indexOf(r)))}<small>${r.min}</small></span>`).join("")}</div>`,
   lb: () => `<div class="gm gm-lb"><div class="lb-row p1"><span class="lb-pos">${medal(1)}</span><span class="lb-av has" style="--rk:#FF4FA3">桜</span><span class="lb-nm"><b>Sakura</b></span><span class="lb-sc"><b>312</b></span></div></div>`,
   prof: () => `<div class="gm gm-prof"><span class="av jp">桜</span><span class="th">☀️ / 🌙</span><span class="th">UZ / RU</span></div>`,
   search: () => `<div class="gm gm-search">🔎 <span>sakura · さくら · gilos</span></div>`
@@ -2347,7 +2365,7 @@ function boot() {
   $("#streakBtn").onclick = () => toast(t("streakTip", liveStreak()));
   $$("#pages .pg-btn").forEach(b => b.onclick = () => showPage(b.dataset.pg));
   showPage("kana");                                  // the app always opens on Kana -> chart
-  if (!S.profile) askName(true);
+  if (!S.profile) askName(true); else Cloud.sync();
 }
 boot();
 
