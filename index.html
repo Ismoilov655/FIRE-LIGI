@@ -581,6 +581,14 @@ body.inquiz .guide-fab{display:none;}
 .navrow .btn.no{color:#ff6b86;}
 .navrow.know{grid-template-columns:1fr 1fr;}.navrow .btn:disabled{opacity:.45;cursor:not-allowed;filter:saturate(.6);}
 
+/* account / password */
+.pw-wrap{position:relative;margin-top:10px;}
+.pw-wrap .field{padding-right:48px;}
+.pw-eye{position:absolute;right:4px;top:2px;width:40px;height:40px;border:0;background:none;color:var(--ink-2);font-size:18px;cursor:pointer;border-radius:10px;}
+.pw-note{margin:8px 0 14px;font-size:12.5px;line-height:1.45;}
+.help-link{display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--accent);text-decoration:underline;}
+a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;}
+
 </style>
 </head>
 <body>
@@ -633,7 +641,11 @@ const I18N = {
     welcome: "Xush kelibsiz!", nameIntro: "Reytingda ko'rinadigan noyob ismingizni tanlang. Katta-kichik harf farqlanmaydi: «Samurai» band bo'lsa, «samurai» ham band.",
     namePh: "Masalan: Sakura_77", nameRule: "3–16 belgi: lotin harflari, raqam, _ - .", nameBad: "Faqat lotin harflari, raqam va _ - . ishlatiladi (3–16 belgi).",
     nameChecking: "Tekshirilmoqda…", nameOk: "Ism bo'sh ✓", nameTaken: n => `«${n}» band. Boshqasini tanlang.`, nameNet: "Aloqa xatosi. Internetni tekshirib, qayta urinib ko'ring.",
-    start: "Boshlash", hello: n => `Salom, ${n}!`, localOnly: "Bulut ulanmagan: ism va ball faqat shu qurilmada saqlanadi (SETUP-SUPABASE.md ga qarang).",
+    start: "Boshlash", loginTitle: "Kirish", loginIntro: "Ro'yxatdan o'tgan ismingiz va parolingizni kiriting.", loginRule: "Ismingizni yozing", pwPh: "Parol (kamida 6 belgi)", pwShow: "Ko'rsatish", pwHide: "Yashirish",
+    pwWhy: "Parol bilan boshqa telefon yoki kompyuterdan ham kirasiz va ball, reytingingizni yo'qotmaysiz. Parolsiz brauzer tozalansa, akkaunt qaytmaydi. Parolni eslab qoling: u profilingizda ham ko'rinadi.", pwLoginHint: "Ro'yxatdan o'tganda yozgan parolingiz.",
+    loginBtn: "Kirish", haveAcc: "Akkauntim bor, kirish", newAcc: "Yangi akkaunt yaratish", helpLink: "Kira olmayapsizmi yoki parolni unutdingizmi? Telegramga yozing", helpBtn: "Yordam: Telegram", helpMsg: n => `Salom! Men ${n || "..."}. Akkauntga kira olmayapman yoki parolni unutdim.`,
+    pwWeak: "Parol kamida 6 belgi bo'lsin.", pwFail: "Parolni saqlab bo'lmadi. Internetni tekshirib, qayta urinib ko'ring.", pwExists: "Bu ism bilan akkaunt yaratib bo'lmadi. Boshqa ism tanlang yoki Telegramga yozing.", loginBad: "Ism yoki parol noto'g'ri.",
+    acctLbl: "Akkaunt", pwLbl: "Parol", pwChange: "Parolni o'zgartirish", pwSet: "Parol qo'yish", pwSetWarn: "Akkauntingiz himoyalanmagan: brauzer tozalansa yoki boshqa qurilmaga o'tsangiz, ism va ballingiz yo'qoladi. Parol qo'ying.", pwChangeIntro: "Yangi parolni kiriting.", pwWhy2: "Kamida 6 belgi. Parolni eslab qoling.", pwSaveBtn: "Saqlash", pwSaved: "Parol saqlandi ✓", pwNoLocal: "Parol bu qurilmada saqlanmagan.", hello: n => `Salom, ${n}!`, localOnly: "Bulut ulanmagan: ism va ball faqat shu qurilmada saqlanadi (SETUP-SUPABASE.md ga qarang).",
     dayU: "kun", weekU: "hafta", monthU: "oy",
     queue: "Navbatda", undo: "Ortga", shuffle: "Aralash", reviewAll: "Hammasini takrorlash", reset: "Boshidan",
     noCards: "Bu tanlovda kartalar yo'q.", doneTitle: "Hammasi tayyor!", doneText: n => `${n} ta kartaning hammasi bugunga bajarildi.`, nextDue: s => `Keyingi takror: ${s} dan keyin.`,
@@ -675,7 +687,11 @@ const I18N = {
     welcome: "Добро пожаловать!", nameIntro: "Выберите уникальное имя для рейтинга. Регистр не важен: если занято «Samurai», то «samurai» тоже занято.",
     namePh: "Например: Sakura_77", nameRule: "3–16 символов: латиница, цифры, _ - .", nameBad: "Только латиница, цифры и _ - . (3–16 символов).",
     nameChecking: "Проверяем…", nameOk: "Имя свободно ✓", nameTaken: n => `«${n}» занято. Выберите другое.`, nameNet: "Ошибка связи. Проверьте интернет и попробуйте снова.",
-    start: "Начать", hello: n => `Привет, ${n}!`, localOnly: "Облако не подключено: имя и очки хранятся только на этом устройстве (см. SETUP-SUPABASE.md).",
+    start: "Начать", loginTitle: "Вход", loginIntro: "Введите имя и пароль, с которыми вы регистрировались.", loginRule: "Введите своё имя", pwPh: "Пароль (минимум 6 символов)", pwShow: "Показать", pwHide: "Скрыть",
+    pwWhy: "С паролем вы войдёте с другого телефона или компьютера и не потеряете очки и рейтинг. Без пароля после очистки браузера аккаунт не вернуть. Запомните пароль: он виден и в вашем профиле.", pwLoginHint: "Пароль, который вы указали при регистрации.",
+    loginBtn: "Войти", haveAcc: "У меня есть аккаунт, войти", newAcc: "Создать новый аккаунт", helpLink: "Не можете войти или забыли пароль? Напишите в Telegram", helpBtn: "Помощь: Telegram", helpMsg: n => `Здравствуйте! Я ${n || "..."}. Не могу войти в аккаунт или забыл пароль.`,
+    pwWeak: "Пароль: минимум 6 символов.", pwFail: "Не удалось сохранить пароль. Проверьте интернет и попробуйте ещё раз.", pwExists: "Не удалось создать аккаунт с этим именем. Выберите другое имя или напишите в Telegram.", loginBad: "Неверное имя или пароль.",
+    acctLbl: "Аккаунт", pwLbl: "Пароль", pwChange: "Сменить пароль", pwSet: "Задать пароль", pwSetWarn: "Ваш аккаунт не защищён: при очистке браузера или смене устройства имя и очки пропадут. Задайте пароль.", pwChangeIntro: "Введите новый пароль.", pwWhy2: "Минимум 6 символов. Запомните пароль.", pwSaveBtn: "Сохранить", pwSaved: "Пароль сохранён ✓", pwNoLocal: "Пароль не сохранён на этом устройстве.", hello: n => `Привет, ${n}!`, localOnly: "Облако не подключено: имя и очки хранятся только на этом устройстве (см. SETUP-SUPABASE.md).",
     dayU: "дн.", weekU: "нед.", monthU: "мес.",
     queue: "В очереди", learned: "Выучено", undo: "Назад", shuffle: "Вперемешку", reviewAll: "Повторить всё", reset: "Сначала",
     noCards: "В этом выборе нет карточек.", doneTitle: "Всё готово!", doneText: n => `Все ${n} карточек на сегодня пройдены.`, nextDue: s => `Следующее повторение через ${s}.`,
@@ -753,7 +769,7 @@ function hl(text, q) {
    STATE
    ===================================================================== */
 const DEF = () => ({
-  v: 5, sen: false, profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
+  v: 5, sen: false, acct: false, pw: "", profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
   srs: {}, mist: [], goal: 20, act: {}, actIds: {}, stat: {}, bn: 0, bnv: 2, bseen: {}, tour: 0,
   kana: { script: "hira", groups: ["basic"], chart: "hira", sys: "lat", dir: "mix", count: 20, shuffle: false },
   read: { level: 1, mode: "cards", dir: "mix", count: 10, stats: {}, shuffle: false },
@@ -1011,6 +1027,7 @@ function rankUp(i) {
   $("[data-close]", modalOpen.v).onclick = () => closeModal();
 }
 function askName(first) {
+  if (first) return welcome("reg");
   let timer = null, valid = false;
   const m = openModal(`${first ? "" : `<button class="x" type="button" data-close aria-label="close">✕</button>`}
     <h2>${esc(t(first ? "welcome" : "rename"))}</h2>
@@ -1966,9 +1983,11 @@ function profileModal() {
     <button class="btn ghost block" type="button" id="pfStat" style="margin-top:10px">📊 ${esc(t("statBtn"))}</button>
     <div class="lbl" style="margin-top:12px">${esc(t("themeLbl"))}</div>
     ${chipsHtml("theme", [["light", "☀️ " + t("themeLight")], ["dark", "🌙 " + t("themeDark")]], dark ? "dark" : "light")}
+    ${acctBlock()}
     <div class="col"><button class="btn ghost" type="button" data-rename>${esc(t("rename"))}</button></div>`);
   $("[data-close]", m).onclick = () => closeModal();
   $("[data-rename]", m).onclick = () => askName(false);
+  bindAcct(m);
   let cur = Math.max(0, AVATARS.findIndex(x => x.k === S.avatar));
   const big = $("#avBig", m), stage = $("#avStage", m), pick = $("#avPick", m);
   const show = dir => {
@@ -2287,7 +2306,7 @@ const GUIDE = [
 const gtx = (g, i) => g[lang === "ru" ? "ru" : "uz"][i];
 const Guide = {
   open() {
-    const m = openModal(`${SAKURA_BTN}<div class="lb-head"><h2>❓ ${esc(t("guideTitle"))}</h2><p>${esc(t("guideSub"))}</p></div><div class="guide-list">${GUIDE.map(g => `<div class="gd glass"><div class="gd-pic">${GM[g.m]()}</div><div class="gd-tx"><b>${esc(gtx(g, 0))}</b><p>${esc(gtx(g, 1))}</p></div></div>`).join("")}</div>`);
+    const m = openModal(`${SAKURA_BTN}<div class="lb-head"><h2>❓ ${esc(t("guideTitle"))}</h2><p>${esc(t("guideSub"))}</p></div><div class="guide-list">${GUIDE.map(g => `<div class="gd glass"><div class="gd-pic">${GM[g.m]()}</div><div class="gd-tx"><b>${esc(gtx(g, 0))}</b><p>${esc(gtx(g, 1))}</p></div></div>`).join("")}</div>${Cloud.on ? `<a class="btn ghost block" style="margin-top:12px" href="${esc(helpUrl())}" target="_blank" rel="noopener">✉️ ${esc(t("helpBtn"))}</a>` : ""}`);
     m.classList.add("wide"); $("[data-close]", m).onclick = () => closeModal();
   }
 };
@@ -2310,6 +2329,154 @@ const Tour = {
     draw();
   }
 };
+
+/* =====================================================================
+   ACCOUNT: name + password (Supabase email auth with a hidden address built from the name)
+   ===================================================================== */
+const CONTACT = "ismoilov_mzohid";
+const helpUrl = () => "https://t.me/" + CONTACT + "?text=" + encodeURIComponent(t("helpMsg", S.profile ? S.profile.name : ""));
+const PW_MIN = 6;
+
+Object.assign(Cloud, {
+  emailOf(name) { return "n" + Array.from(name.toLowerCase()).map(c => c.charCodeAt(0).toString(16).padStart(2, "0")).join("") + "@fireligi.app"; },
+  async setPw(name, pw, firstTime) {          // anonymous device account -> name+password account (or just a new password)
+    try {
+      const s = await this.session();
+      const body = firstTime ? { email: this.emailOf(name), password: pw } : { password: pw };
+      const r = await this.raw("/auth/v1/user", { method: "PUT", token: s.access_token, body });
+      if (r.ok) return { ok: true };
+      const msg = JSON.stringify(r.data || {});
+      if (/weak|short|at least|characters/i.test(msg)) return { weak: true };
+      if (/already|exists|registered/i.test(msg)) return { exists: true };
+      return { error: true };
+    } catch (e) { return { error: true }; }
+  },
+  async login(name, pw) {
+    try {
+      const a = await this.raw("/rest/v1/rpc/login_email", { method: "POST", body: { n: name } });
+      if (!a.ok) return { error: true };
+      if (!a.data) return { bad: true };
+      const r = await this.raw("/auth/v1/token?grant_type=password", { method: "POST", body: { email: a.data, password: pw } });
+      if (!r.ok || !r.data || !r.data.access_token) return r.status === 400 ? { bad: true } : { error: true };
+      this.setSess(r.data);
+      const p = await this.raw("/rest/v1/profiles?id=eq." + encodeURIComponent(this.sess.uid) + "&select=username,score,streak,avatar,last_day,title", { token: r.data.access_token });
+      if (!p.ok || !Array.isArray(p.data) || !p.data.length) return { error: true };
+      return { ok: true, row: p.data[0] };
+    } catch (e) { return { error: true }; }
+  }
+});
+
+function pwField(id, ph, auto) {
+  return `<div class="pw-wrap"><input class="field" id="${id}" type="password" maxlength="40" autocomplete="${auto}" autocapitalize="off" spellcheck="false" placeholder="${esc(ph)}"><button class="pw-eye" type="button" data-eye="${id}" aria-label="${esc(t("pwShow"))}">👁</button></div>`;
+}
+function bindEyes(m) {
+  $$("[data-eye]", m).forEach(b => b.onclick = () => { const i = $("#" + b.dataset.eye, m); i.type = i.type === "password" ? "text" : "password"; });
+}
+
+function welcome(mode) {
+  const reg = mode !== "login", needPw = Cloud.on;
+  let timer = null, nameOk = false;
+  const m = openModal(`<h2>${esc(t(reg ? "welcome" : "loginTitle"))}</h2>
+    <p>${esc(t(reg ? "nameIntro" : "loginIntro"))}</p>
+    <input class="field" id="nameIn" maxlength="16" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="${esc(t("namePh"))}">
+    <div class="msg wait" id="nameMsg">${esc(t(reg ? "nameRule" : "loginRule"))}</div>
+    ${needPw ? pwField("pwIn", t("pwPh"), reg ? "new-password" : "current-password") + `<div class="note pw-note">${esc(t(reg ? "pwWhy" : "pwLoginHint"))}</div>` : ""}
+    <button class="btn block" id="nameGo" type="button" disabled>${esc(t(reg ? "start" : "loginBtn"))}</button>
+    ${needPw ? `<button class="btn ghost block" id="swMode" type="button" style="margin-top:8px">${esc(t(reg ? "haveAcc" : "newAcc"))}</button>
+    <a class="help-link" id="helpLnk" href="${esc(helpUrl())}" target="_blank" rel="noopener">${esc(t("helpLink"))}</a>` : `<div class="note" style="margin-top:12px">${esc(t("localOnly"))}</div>`}`, { lock: true });
+  const inp = $("#nameIn", m), msg = $("#nameMsg", m), go = $("#nameGo", m), pwIn = $("#pwIn", m);
+  bindEyes(m);
+  const setMsg = (c, s) => { msg.className = "msg " + c; msg.textContent = s; };
+  const pwOk = () => !needPw || (reg ? pwIn.value.length >= PW_MIN : pwIn.value.length > 0);
+  const refresh = () => { go.disabled = !(nameOk && pwOk()); };
+  const check = async () => {
+    const v = inp.value.trim(); nameOk = false; refresh();
+    if (!v) { setMsg("wait", t(reg ? "nameRule" : "loginRule")); return; }
+    if (!NAME_RE.test(v)) { setMsg("no", t("nameBad")); return; }
+    if (!reg || !Cloud.on) { nameOk = true; setMsg("ok", reg ? t("nameOk") : ""); refresh(); return; }
+    setMsg("wait", t("nameChecking"));
+    try {
+      const free = await Cloud.available(v);
+      if (inp.value.trim() !== v) return;
+      if (free) { nameOk = true; setMsg("ok", t("nameOk")); refresh(); } else setMsg("no", t("nameTaken", v));
+    } catch (e) { if (inp.value.trim() === v) setMsg("no", t("nameNet")); }
+  };
+  inp.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(check, 350); });
+  if (pwIn) pwIn.addEventListener("input", () => {
+    refresh();
+    if (reg && pwIn.value && pwIn.value.length < PW_MIN) setMsg("no", t("pwWeak")); else if (reg && nameOk) setMsg("ok", t("nameOk"));
+  });
+  const submit = () => { if (!go.disabled) go.click(); };
+  inp.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
+  if (pwIn) pwIn.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
+  const sw = $("#swMode", m); if (sw) sw.onclick = () => welcome(reg ? "login" : "reg");
+  go.onclick = async () => {
+    const v = inp.value.trim(), pw = pwIn ? pwIn.value : ""; go.disabled = true; setMsg("wait", t("nameChecking"));
+    if (reg) {
+      const res = await Cloud.claim(v);
+      if (res.taken) { setMsg("no", t("nameTaken", v)); return; }
+      if (!res.ok) { setMsg("no", t("nameNet")); go.disabled = false; return; }
+      if (needPw) {
+        const p = await Cloud.setPw(v, pw, true);
+        if (!p.ok) { setMsg("no", t(p.weak ? "pwWeak" : p.exists ? "pwExists" : "pwFail")); go.disabled = false; return; }
+      }
+      S.profile = { name: v, since: dayStr() }; S.acct = needPw; S.pw = needPw ? pw : ""; save();
+      closeModal(true); renderProfile(); toast(t("hello", v)); Tour.maybe();
+    } else {
+      const res = await Cloud.login(v, pw);
+      if (res.bad) { setMsg("no", t("loginBad")); go.disabled = false; return; }
+      if (!res.ok) { setMsg("no", t("nameNet")); go.disabled = false; return; }
+      const r = res.row, same = S.profile && S.profile.name.toLowerCase() === String(r.username).toLowerCase();
+      S.profile = { name: r.username, since: S.profile && same ? S.profile.since : dayStr() };
+      S.score = same ? Math.max(S.score, r.score || 0) : (r.score || 0);
+      S.streak = same ? Math.max(S.streak, r.streak || 0) : (r.streak || 0);
+      S.lastDay = r.last_day && (!same || !S.lastDay || r.last_day > S.lastDay) ? r.last_day : (same ? S.lastDay : "");
+      if (r.avatar) S.avatar = r.avatar;
+      S.sen = r.title === "sensei"; S.acct = true; S.pw = pw; S.tour = 1; save();
+      closeModal(true); renderProfile(); Act.bar(); Cloud.push(); toast(t("hello", r.username));
+    }
+  };
+  setTimeout(() => inp.focus(), 40);
+}
+
+function pwModal() {                          // set a password (old account) or change it
+  const first = !S.acct;
+  const m = openModal(`${SAKURA_BTN}<h2>${esc(t(first ? "pwSet" : "pwChange"))}</h2>
+    <p>${esc(t(first ? "pwSetWarn" : "pwChangeIntro"))}</p>
+    ${pwField("pwNew", t("pwPh"), "new-password")}
+    <div class="msg wait" id="pwMsg">${esc(t("pwWhy2"))}</div>
+    <button class="btn block" id="pwSave" type="button" disabled>${esc(t("pwSaveBtn"))}</button>`);
+  const inp = $("#pwNew", m), go = $("#pwSave", m), msg = $("#pwMsg", m);
+  const setMsg = (c, s) => { msg.className = "msg " + c; msg.textContent = s; };
+  bindEyes(m);
+  $("[data-close]", m).onclick = () => { closeModal(); profileModal(); };
+  inp.addEventListener("input", () => { go.disabled = inp.value.length < PW_MIN; if (inp.value && inp.value.length < PW_MIN) setMsg("no", t("pwWeak")); else setMsg("wait", t("pwWhy2")); });
+  inp.addEventListener("keydown", e => { if (e.key === "Enter" && !go.disabled) go.click(); });
+  go.onclick = async () => {
+    go.disabled = true; setMsg("wait", t("nameChecking"));
+    const p = await Cloud.setPw(S.profile.name, inp.value, first);
+    if (!p.ok) { setMsg("no", t(p.weak ? "pwWeak" : p.exists ? "pwExists" : "pwFail")); go.disabled = false; return; }
+    S.acct = true; S.pw = inp.value; save(); toast(t("pwSaved")); closeModal(); profileModal();
+  };
+}
+
+function acctBlock() {
+  if (!Cloud.on || !S.profile) return "";
+  const help = `<a class="btn ghost" href="${esc(helpUrl())}" target="_blank" rel="noopener">✉️ ${esc(t("helpBtn"))}</a>`;
+  if (!S.acct) return `<div class="lbl" style="margin-top:14px">${esc(t("acctLbl"))}</div>
+    <div class="warn">${esc(t("pwSetWarn"))}</div>
+    <div class="col" style="margin-top:10px"><button class="btn" type="button" data-pwset>🔒 ${esc(t("pwSet"))}</button>${help}</div>`;
+  return `<div class="lbl" style="margin-top:14px">${esc(t("acctLbl"))}</div>
+    <div class="pf-row"><span>${esc(t("pwLbl"))}</span><b id="pwShown" data-on="0">${S.pw ? "••••••" : "–"}</b></div>
+    ${S.pw ? "" : `<div class="note">${esc(t("pwNoLocal"))}</div>`}
+    <div class="col" style="margin-top:8px">${S.pw ? `<button class="btn ghost" type="button" data-pwshow>👁 ${esc(t("pwShow"))}</button>` : ""}<button class="btn ghost" type="button" data-pwchg>🔑 ${esc(t("pwChange"))}</button>${help}</div>`;
+}
+function bindAcct(m) {
+  const a = $("[data-pwset]", m), c = $("[data-pwchg]", m), s = $("[data-pwshow]", m);
+  if (a) a.onclick = () => pwModal();
+  if (c) c.onclick = () => pwModal();
+  if (s) s.onclick = () => { const b = $("#pwShown", m), on = b.dataset.on === "1"; b.dataset.on = on ? "0" : "1"; b.textContent = on ? "••••••" : S.pw; s.lastChild.textContent = " " + t(on ? "pwShow" : "pwHide"); };
+}
 
 /* =====================================================================
    APP SHELL
