@@ -588,6 +588,8 @@ body.inquiz .guide-fab{display:none;}
 .pw-note{margin:8px 0 14px;font-size:12.5px;line-height:1.45;}
 .help-link{display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--accent);text-decoration:underline;}
 a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.btn.danger{background:#E5484D;color:#fff;box-shadow:0 8px 20px rgba(229,72,77,.35);}
+.btn.danger-t{color:#E5484D;border-color:rgba(229,72,77,.45);}
 
 </style>
 </head>
@@ -641,7 +643,8 @@ const I18N = {
     welcome: "Xush kelibsiz!", nameIntro: "Reytingda ko'rinadigan noyob ismingizni tanlang. Katta-kichik harf farqlanmaydi: «Samurai» band bo'lsa, «samurai» ham band.",
     namePh: "Masalan: Sakura_77", nameRule: "3–16 belgi: lotin harflari, raqam, _ - .", nameBad: "Faqat lotin harflari, raqam va _ - . ishlatiladi (3–16 belgi).",
     nameChecking: "Tekshirilmoqda…", nameOk: "Ism bo'sh ✓", nameTaken: n => `«${n}» band. Boshqasini tanlang.`, nameNet: "Aloqa xatosi. Internetni tekshirib, qayta urinib ko'ring.",
-    start: "Boshlash", loginTitle: "Kirish", loginIntro: "Ro'yxatdan o'tgan ismingiz va parolingizni kiriting.", loginRule: "Ismingizni yozing", pwPh: "Parol (kamida 6 belgi)", pwShow: "Ko'rsatish", pwHide: "Yashirish",
+    start: "Boshlash", outTitle: "Akkauntdan chiqish", outText: "Bu qurilmadan chiqasiz va kirish oynasi ochiladi. Ball va reytingingiz saqlanib qoladi: keyin ism va parol bilan qayta kirasiz.", outNoPw: "Diqqat: bu akkauntga parol qo'yilmagan. Chiqsangiz, unga qayta kira olmaysiz. Avval «Parol qo'yish» ni bosing.", outGo: "Chiqish",
+    delTitle: "Akkauntni o'chirish", delText: "Akkaunt, ism, ball va reytingdagi o'rningiz butunlay o'chadi. Buni qaytarib bo'lmaydi. Ism bo'shaydi va boshqa odam olishi mumkin.", delGo: "Akkauntni o'chirish", cancel: "Bekor qilish", loginTitle: "Kirish", loginIntro: "Ro'yxatdan o'tgan ismingiz va parolingizni kiriting.", loginRule: "Ismingizni yozing", pwPh: "Parol (kamida 6 belgi)", pwShow: "Ko'rsatish", pwHide: "Yashirish",
     pwWhy: "Parol bilan boshqa telefon yoki kompyuterdan ham kirasiz va ball, reytingingizni yo'qotmaysiz. Parolsiz brauzer tozalansa, akkaunt qaytmaydi. Parolni eslab qoling: u profilingizda ham ko'rinadi.", pwLoginHint: "Ro'yxatdan o'tganda yozgan parolingiz.",
     loginBtn: "Kirish", haveAcc: "Akkauntim bor, kirish", newAcc: "Yangi akkaunt yaratish", helpLink: "Kira olmayapsizmi yoki parolni unutdingizmi? Telegramga yozing", helpBtn: "Yordam: Telegram", helpMsg: n => `Salom! Men ${n || "..."}. Akkauntga kira olmayapman yoki parolni unutdim.`,
     pwWeak: "Parol kamida 6 belgi bo'lsin.", pwFail: "Parolni saqlab bo'lmadi. Internetni tekshirib, qayta urinib ko'ring.", pwExists: "Bu ism bilan akkaunt yaratib bo'lmadi. Boshqa ism tanlang yoki Telegramga yozing.", loginBad: "Ism yoki parol noto'g'ri.",
@@ -687,7 +690,8 @@ const I18N = {
     welcome: "Добро пожаловать!", nameIntro: "Выберите уникальное имя для рейтинга. Регистр не важен: если занято «Samurai», то «samurai» тоже занято.",
     namePh: "Например: Sakura_77", nameRule: "3–16 символов: латиница, цифры, _ - .", nameBad: "Только латиница, цифры и _ - . (3–16 символов).",
     nameChecking: "Проверяем…", nameOk: "Имя свободно ✓", nameTaken: n => `«${n}» занято. Выберите другое.`, nameNet: "Ошибка связи. Проверьте интернет и попробуйте снова.",
-    start: "Начать", loginTitle: "Вход", loginIntro: "Введите имя и пароль, с которыми вы регистрировались.", loginRule: "Введите своё имя", pwPh: "Пароль (минимум 6 символов)", pwShow: "Показать", pwHide: "Скрыть",
+    start: "Начать", outTitle: "Выход из аккаунта", outText: "Вы выйдете на этом устройстве и откроется окно входа. Очки и рейтинг сохранятся: потом войдёте по имени и паролю.", outNoPw: "Внимание: у этого аккаунта нет пароля. Если выйдете, вернуться в него не получится. Сначала задайте пароль.", outGo: "Выйти",
+    delTitle: "Удаление аккаунта", delText: "Аккаунт, имя, очки и место в рейтинге будут удалены навсегда. Отменить нельзя. Имя освободится, и его сможет занять другой человек.", delGo: "Удалить аккаунт", cancel: "Отмена", loginTitle: "Вход", loginIntro: "Введите имя и пароль, с которыми вы регистрировались.", loginRule: "Введите своё имя", pwPh: "Пароль (минимум 6 символов)", pwShow: "Показать", pwHide: "Скрыть",
     pwWhy: "С паролем вы войдёте с другого телефона или компьютера и не потеряете очки и рейтинг. Без пароля после очистки браузера аккаунт не вернуть. Запомните пароль: он виден и в вашем профиле.", pwLoginHint: "Пароль, который вы указали при регистрации.",
     loginBtn: "Войти", haveAcc: "У меня есть аккаунт, войти", newAcc: "Создать новый аккаунт", helpLink: "Не можете войти или забыли пароль? Напишите в Telegram", helpBtn: "Помощь: Telegram", helpMsg: n => `Здравствуйте! Я ${n || "..."}. Не могу войти в аккаунт или забыл пароль.`,
     pwWeak: "Пароль: минимум 6 символов.", pwFail: "Не удалось сохранить пароль. Проверьте интернет и попробуйте ещё раз.", pwExists: "Не удалось создать аккаунт с этим именем. Выберите другое имя или напишите в Telegram.", loginBad: "Неверное имя или пароль.",
@@ -799,7 +803,8 @@ function loadState() {
   }
   S = d;
 }
-const flushSave = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} };
+let wiping = false;
+const flushSave = () => { if (wiping) return; try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} };
 const save = debounce(flushSave, 250);
 window.addEventListener("pagehide", flushSave);
 document.addEventListener("visibilitychange", () => { if (document.hidden) flushSave(); });
@@ -2463,19 +2468,50 @@ function pwModal() {                          // set a password (old account) or
 function acctBlock() {
   if (!Cloud.on || !S.profile) return "";
   const help = `<a class="btn ghost" href="${esc(helpUrl())}" target="_blank" rel="noopener">✉️ ${esc(t("helpBtn"))}</a>`;
+  const leave = `<button class="btn ghost" type="button" data-leave="out">↩ ${esc(t("outGo"))}</button><button class="btn ghost danger-t" type="button" data-leave="del">🗑 ${esc(t("delGo"))}</button>`;
   if (!S.acct) return `<div class="lbl" style="margin-top:14px">${esc(t("acctLbl"))}</div>
     <div class="warn">${esc(t("pwSetWarn"))}</div>
-    <div class="col" style="margin-top:10px"><button class="btn" type="button" data-pwset>🔒 ${esc(t("pwSet"))}</button>${help}</div>`;
+    <div class="col" style="margin-top:10px"><button class="btn" type="button" data-pwset>🔒 ${esc(t("pwSet"))}</button>${help}${leave}</div>`;
   return `<div class="lbl" style="margin-top:14px">${esc(t("acctLbl"))}</div>
     <div class="pf-row"><span>${esc(t("pwLbl"))}</span><b id="pwShown" data-on="0">${S.pw ? "••••••" : "–"}</b></div>
     ${S.pw ? "" : `<div class="note">${esc(t("pwNoLocal"))}</div>`}
-    <div class="col" style="margin-top:8px">${S.pw ? `<button class="btn ghost" type="button" data-pwshow>👁 ${esc(t("pwShow"))}</button>` : ""}<button class="btn ghost" type="button" data-pwchg>🔑 ${esc(t("pwChange"))}</button>${help}</div>`;
+    <div class="col" style="margin-top:8px">${S.pw ? `<button class="btn ghost" type="button" data-pwshow>👁 ${esc(t("pwShow"))}</button>` : ""}<button class="btn ghost" type="button" data-pwchg>🔑 ${esc(t("pwChange"))}</button>${help}${leave}</div>`;
 }
 function bindAcct(m) {
   const a = $("[data-pwset]", m), c = $("[data-pwchg]", m), s = $("[data-pwshow]", m);
+  $$("[data-leave]", m).forEach(b => b.onclick = () => leaveModal(b.dataset.leave));
   if (a) a.onclick = () => pwModal();
   if (c) c.onclick = () => pwModal();
   if (s) s.onclick = () => { const b = $("#pwShown", m), on = b.dataset.on === "1"; b.dataset.on = on ? "0" : "1"; b.textContent = on ? "••••••" : S.pw; s.lastChild.textContent = " " + t(on ? "pwShow" : "pwHide"); };
+}
+
+/* sign out / delete account */
+function wipeDevice() {                       // forget everything on this device and start from the welcome screen
+  wiping = true;
+  try { localStorage.removeItem(STORE_KEY); localStorage.removeItem(OLD_KEY); localStorage.removeItem("kf_sb_sess"); } catch (e) {}
+  location.reload();
+}
+function leaveModal(kind) {                   // kind: "out" | "del"
+  const del = kind === "del";
+  const warnOut = !S.acct && Cloud.on;
+  const m = openModal(`${SAKURA_BTN}<h2>${esc(t(del ? "delTitle" : "outTitle"))}</h2>
+    <p>${esc(t(del ? "delText" : "outText"))}</p>
+    ${warnOut ? `<div class="warn">${esc(t("outNoPw"))}</div>` : ""}
+    <div class="msg wait" id="lvMsg" style="min-height:0"></div>
+    <div class="col"><button class="btn${del ? " danger" : ""}" id="lvGo" type="button">${esc(t(del ? "delGo" : "outGo"))}</button>
+    <button class="btn ghost" type="button" data-close>${esc(t("cancel"))}</button></div>`);
+  $$("[data-close]", m).forEach(b => b.onclick = () => { closeModal(); profileModal(); });
+  $("#lvGo", m).onclick = async () => {
+    const go = $("#lvGo", m); go.disabled = true;
+    if (del && Cloud.on) {
+      try {
+        const s = await Cloud.session();
+        const r = await Cloud.raw("/rest/v1/rpc/delete_my_account", { method: "POST", token: s.access_token, body: {} });
+        if (!r.ok) { const mm = $("#lvMsg", m); mm.className = "msg no"; mm.textContent = t("nameNet"); go.disabled = false; return; }
+      } catch (e) { const mm = $("#lvMsg", m); mm.className = "msg no"; mm.textContent = t("nameNet"); go.disabled = false; return; }
+    }
+    wipeDevice();
+  };
 }
 
 /* =====================================================================
