@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fire-ligi.vercel.app/sitemap.xml

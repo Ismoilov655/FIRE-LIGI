@@ -4,7 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B0818" id="metaTheme">
-<title>Kanji Flashcards</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kanji">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Kanji Flashcards — Yapon tili platformasi</title>
+<link rel="canonical" href="https://fire-ligi.vercel.app/">
+<link rel="alternate" hreflang="uz" href="https://fire-ligi.vercel.app/yapon-tili/">
+<link rel="alternate" hreflang="ru" href="https://fire-ligi.vercel.app/ru/">
+<link rel="alternate" hreflang="x-default" href="https://fire-ligi.vercel.app/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kanji Flashcards","url":"https://fire-ligi.vercel.app/","applicationCategory":"EducationalApplication","operatingSystem":"Any","inLanguage":["uz","ru"],"description":"Yapon tili: kana, so'zlar va N5–N2 kanji. Kartalar, testlar, reyting va kunlik maqsad. Bepul, internetsiz ham ishlaydi.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <meta name="description" content="Yapon tilini o'rganing: N5–N2 gacha 980 kanji, kana, so'zlar va testlar. Bepul, reyting va kunlik maqsad bilan.">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
@@ -591,6 +601,7 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
 .btn.danger{background:#E5484D;color:#fff;box-shadow:0 8px 20px rgba(229,72,77,.35);}
 .btn.danger-t{color:#E5484D;border-color:rgba(229,72,77,.45);}
 .gm-acct{gap:8px;}.gm-acct .pw{white-space:nowrap;padding:6px 10px;font-size:12px !important;border-radius:10px;border:1px solid var(--line);background:var(--glass-2);font-size:13px;letter-spacing:.06em;}.gm-acct .eye{font-size:18px;}
+.seo-foot{margin:26px 0 70px;padding:0 4px;text-align:center;font-size:12.5px;line-height:2;}.seo-foot a{color:var(--ink-2);text-decoration:none;margin:0 7px;white-space:nowrap;}.seo-foot a:hover{text-decoration:underline;}
 
 </style>
 </head>
@@ -625,6 +636,9 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
     <section id="pg-kotoba" hidden></section>
     <section id="pg-kanji" hidden></section>
   </main>
+  <footer class="seo-foot"><nav aria-label="Yapon tili sahifalari">
+    <a href="/kanji/n5/">N5 kanji</a><a href="/kanji/n4/">N4 kanji</a><a href="/kanji/n3/">N3 kanji</a><a href="/kanji/n2/">N2 kanji</a><a href="/kana/hiragana/">Hiragana</a><a href="/kana/katakana/">Katakana</a><a href="/soz/1/">So'zlar</a><a href="/yapon-tili/">Yapon tili</a><a href="/ru/" hreflang="ru">Русский</a>
+  </nav></footer>
 </div>
 <button class="guide-fab" id="guideBtn" type="button">?</button>
 <div id="layer"></div>
@@ -644,7 +658,8 @@ const I18N = {
     welcome: "Xush kelibsiz!", nameIntro: "Reytingda ko'rinadigan noyob ismingizni tanlang. Katta-kichik harf farqlanmaydi: «Samurai» band bo'lsa, «samurai» ham band.",
     namePh: "Masalan: Sakura_77", nameRule: "3–16 belgi: lotin harflari, raqam, _ - .", nameBad: "Faqat lotin harflari, raqam va _ - . ishlatiladi (3–16 belgi).",
     nameChecking: "Tekshirilmoqda…", nameOk: "Ism bo'sh ✓", nameTaken: n => `«${n}» band. Boshqasini tanlang.`, nameNet: "Aloqa xatosi. Internetni tekshirib, qayta urinib ko'ring.",
-    start: "Boshlash", outTitle: "Akkauntdan chiqish", outText: "Bu qurilmadan chiqasiz va kirish oynasi ochiladi. Ball va reytingingiz saqlanib qoladi: keyin ism va parol bilan qayta kirasiz.", outNoPw: "Diqqat: bu akkauntga parol qo'yilmagan. Chiqsangiz, unga qayta kira olmaysiz. Avval «Parol qo'yish» ni bosing.", outGo: "Chiqish",
+    start: "Boshlash", onlineMsg: "Internet qaytdi: ballingiz reytingga yuborildi ✓", offlineMsg: "Internet yo'q. Ball telefoningizda saqlanadi, internet qaytganda reytingga yuboriladi.",
+    installLbl: "Ilova sifatida o'rnatish", installBtn: "Ilovani o'rnatish", installHint: "Bosh ekranda ikonka bo'ladi, to'liq ekranda ochiladi va internetsiz ham ishlaydi.", installIos: "iPhone'da: Safari'da pastdagi «Ulashish» tugmasini bosing, so'ng «Bosh ekranga qo'shish» ni tanlang. Ikonka paydo bo'ladi, sayt ilovadek ochiladi va internetsiz ham ishlaydi.", outTitle: "Akkauntdan chiqish", outText: "Bu qurilmadan chiqasiz va kirish oynasi ochiladi. Ball va reytingingiz saqlanib qoladi: keyin ism va parol bilan qayta kirasiz.", outNoPw: "Diqqat: bu akkauntga parol qo'yilmagan. Chiqsangiz, unga qayta kira olmaysiz. Avval «Parol qo'yish» ni bosing.", outGo: "Chiqish",
     delTitle: "Akkauntni o'chirish", delText: "Akkaunt, ism, ball va reytingdagi o'rningiz butunlay o'chadi. Buni qaytarib bo'lmaydi. Ism bo'shaydi va boshqa odam olishi mumkin.", delGo: "Akkauntni o'chirish", cancel: "Bekor qilish", loginTitle: "Kirish", loginIntro: "Ro'yxatdan o'tgan ismingiz va parolingizni kiriting.", loginRule: "Ismingizni yozing", pwPh: "Parol (kamida 6 belgi)", pwShow: "Ko'rsatish", pwHide: "Yashirish",
     pwWhy: "Parol bilan boshqa telefon yoki kompyuterdan ham kirasiz va ball, reytingingizni yo'qotmaysiz. Parolsiz brauzer tozalansa, akkaunt qaytmaydi. Parolni eslab qoling: u profilingizda ham ko'rinadi.", pwLoginHint: "Ro'yxatdan o'tganda yozgan parolingiz.",
     loginBtn: "Kirish", haveAcc: "Akkauntim bor, kirish", newAcc: "Yangi akkaunt yaratish", helpLink: "Kira olmayapsizmi yoki parolni unutdingizmi? Telegramga yozing", helpBtn: "Yordam: Telegram", helpMsg: n => `Salom! Men ${n || "..."}. Akkauntga kira olmayapman yoki parolni unutdim.`,
@@ -691,7 +706,8 @@ const I18N = {
     welcome: "Добро пожаловать!", nameIntro: "Выберите уникальное имя для рейтинга. Регистр не важен: если занято «Samurai», то «samurai» тоже занято.",
     namePh: "Например: Sakura_77", nameRule: "3–16 символов: латиница, цифры, _ - .", nameBad: "Только латиница, цифры и _ - . (3–16 символов).",
     nameChecking: "Проверяем…", nameOk: "Имя свободно ✓", nameTaken: n => `«${n}» занято. Выберите другое.`, nameNet: "Ошибка связи. Проверьте интернет и попробуйте снова.",
-    start: "Начать", outTitle: "Выход из аккаунта", outText: "Вы выйдете на этом устройстве и откроется окно входа. Очки и рейтинг сохранятся: потом войдёте по имени и паролю.", outNoPw: "Внимание: у этого аккаунта нет пароля. Если выйдете, вернуться в него не получится. Сначала задайте пароль.", outGo: "Выйти",
+    start: "Начать", onlineMsg: "Интернет вернулся: очки отправлены в рейтинг ✓", offlineMsg: "Нет интернета. Очки сохраняются на телефоне и отправятся в рейтинг, когда сеть вернётся.",
+    installLbl: "Установить как приложение", installBtn: "Установить приложение", installHint: "Значок появится на главном экране, откроется на весь экран и будет работать без интернета.", installIos: "На iPhone: в Safari нажмите «Поделиться» внизу, затем «На экран Домой». Появится значок, сайт откроется как приложение и будет работать без интернета.", outTitle: "Выход из аккаунта", outText: "Вы выйдете на этом устройстве и откроется окно входа. Очки и рейтинг сохранятся: потом войдёте по имени и паролю.", outNoPw: "Внимание: у этого аккаунта нет пароля. Если выйдете, вернуться в него не получится. Сначала задайте пароль.", outGo: "Выйти",
     delTitle: "Удаление аккаунта", delText: "Аккаунт, имя, очки и место в рейтинге будут удалены навсегда. Отменить нельзя. Имя освободится, и его сможет занять другой человек.", delGo: "Удалить аккаунт", cancel: "Отмена", loginTitle: "Вход", loginIntro: "Введите имя и пароль, с которыми вы регистрировались.", loginRule: "Введите своё имя", pwPh: "Пароль (минимум 6 символов)", pwShow: "Показать", pwHide: "Скрыть",
     pwWhy: "С паролем вы войдёте с другого телефона или компьютера и не потеряете очки и рейтинг. Без пароля после очистки браузера аккаунт не вернуть. Запомните пароль: он виден и в вашем профиле.", pwLoginHint: "Пароль, который вы указали при регистрации.",
     loginBtn: "Войти", haveAcc: "У меня есть аккаунт, войти", newAcc: "Создать новый аккаунт", helpLink: "Не можете войти или забыли пароль? Напишите в Telegram", helpBtn: "Помощь: Telegram", helpMsg: n => `Здравствуйте! Я ${n || "..."}. Не могу войти в аккаунт или забыл пароль.`,
@@ -1989,11 +2005,12 @@ function profileModal() {
     <button class="btn ghost block" type="button" id="pfStat" style="margin-top:10px">📊 ${esc(t("statBtn"))}</button>
     <div class="lbl" style="margin-top:12px">${esc(t("themeLbl"))}</div>
     ${chipsHtml("theme", [["light", "☀️ " + t("themeLight")], ["dark", "🌙 " + t("themeDark")]], dark ? "dark" : "light")}
+    ${installBlock()}
     ${acctBlock()}
     <div class="col"><button class="btn ghost" type="button" data-rename>${esc(t("rename"))}</button></div>`);
   $("[data-close]", m).onclick = () => closeModal();
   $("[data-rename]", m).onclick = () => askName(false);
-  bindAcct(m);
+  bindAcct(m); bindInstall(m);
   let cur = Math.max(0, AVATARS.findIndex(x => x.k === S.avatar));
   const big = $("#avBig", m), stage = $("#avStage", m), pick = $("#avPick", m);
   const show = dir => {
@@ -2292,6 +2309,7 @@ const GM = {
   lb: () => `<div class="gm gm-lb"><div class="lb-row p1"><span class="lb-pos">${medal(1)}</span><span class="lb-av has" style="--rk:#FF4FA3">桜</span><span class="lb-nm"><b>Sakura</b></span><span class="lb-sc"><b>312</b></span></div></div>`,
   prof: () => `<div class="gm gm-prof"><span class="av jp">桜</span><span class="th">☀️ / 🌙</span><span class="th">UZ / RU</span></div>`,
   acct: () => `<div class="gm gm-acct"><span class="pw">🔑 ••••••••</span><span class="eye">👁</span></div>`,
+  app: () => `<div class="gm gm-acct"><span class="pw">📲 Kanji</span><span class="eye">✓</span></div>`,
   search: () => `<div class="gm gm-search">🔎 <span>sakura · さくら · gilos</span></div>`
 };
 const GUIDE = [
@@ -2309,6 +2327,7 @@ const GUIDE = [
   { m: "rank", uz: ["Unvonlar", "Ball ko'paygan sari unvon o'sadi: Ronin (0), Samuray (500), Shogun (1500)."], ru: ["Звания", "С ростом очков растёт звание: Ронин (0), Самурай (500), Сёгун (1500)."] },
   { m: "prof", uz: ["Profil", "Profil tugmasini bosing: o'z kanjingizni karuseldan tanlang, yorug' yoki qorong'i mavzuni belgilang, ismni o'zgartiring."], ru: ["Профиль", "Нажмите на профиль: выберите свой кандзи в карусели, светлую или тёмную тему, смените имя."] },
   { m: "acct", uz: ["Akkaunt, parol va chiqish", "Parol bilan boshqa telefon yoki kompyuterdan ham kirasiz va ball, reytingingizni yo'qotmaysiz. Profilda parolni ko'rish va o'zgartirish mumkin. «Chiqish» shu qurilmadan chiqaradi, «Akkauntni o'chirish» hamma narsani butunlay o'chiradi. Parol esdan chiqsa, «Yordam: Telegram» tugmasi orqali yozing."], ru: ["Аккаунт, пароль и выход", "С паролем вы войдёте и с другого телефона или компьютера и не потеряете очки и рейтинг. В профиле пароль можно посмотреть и сменить. «Выйти» выводит из аккаунта на этом устройстве, «Удалить аккаунт» стирает всё навсегда. Если забыли пароль, напишите через кнопку «Помощь: Telegram»."] },
+  { m: "app", uz: ["Ilova sifatida o'rnatish va internetsiz ishlash", "Android'da: profilda «Ilovani o'rnatish» tugmasi chiqadi. iPhone'da: Safari'da «Ulashish» → «Bosh ekranga qo'shish». Shunda ikonka bosh ekranda turadi va sayt ilovadek ochiladi. Bir marta ochilgandan keyin internetsiz ham ishlaydi: ball telefonda saqlanadi va internet qaytganda reytingga o'zi yuboriladi."], ru: ["Установка как приложение и работа без интернета", "На Android: в профиле появится кнопка «Установить приложение». На iPhone: в Safari «Поделиться» → «На экран Домой». Значок появится на главном экране, и сайт откроется как приложение. После первого открытия работает и без интернета: очки хранятся на телефоне и сами отправятся в рейтинг, когда сеть вернётся."] },
   { m: "search", uz: ["Qidiruv", "Kotoba va Kanji sahifalarida tepada qidiruv bor: yaponcha, lotincha, o'zbekcha yoki ruscha yozing."], ru: ["Поиск", "На страницах Котоба и Кандзи сверху есть поиск: пишите по-японски, латиницей, по-узбекски или по-русски."] }
 ];
 const gtx = (g, i) => g[lang === "ru" ? "ru" : "uz"][i];
@@ -2517,6 +2536,19 @@ function leaveModal(kind) {                   // kind: "out" | "del"
   };
 }
 
+/* install as an app */
+function installBlock() {
+  const standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+  if (standalone) return "";
+  if (window.__ip) return `<div class="lbl" style="margin-top:14px">${esc(t("installLbl"))}</div><button class="btn" type="button" data-install>📲 ${esc(t("installBtn"))}</button><div class="note" style="margin-top:6px">${esc(t("installHint"))}</div>`;
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent)) return `<div class="lbl" style="margin-top:14px">📲 ${esc(t("installLbl"))}</div><div class="note">${esc(t("installIos"))}</div>`;
+  return "";
+}
+function bindInstall(m) {
+  const b = $("[data-install]", m);
+  if (b) b.onclick = async () => { const e = window.__ip; if (!e) return; e.prompt(); try { await e.userChoice; } catch (x) {} window.__ip = null; b.remove(); };
+}
+
 /* =====================================================================
    APP SHELL
    ===================================================================== */
@@ -2570,6 +2602,7 @@ document.addEventListener("keydown", e => {
 function boot() {
   loadState();
   if (S.bnv !== 2) { S.bn = 0; S.bnv = 2; save(); }              // auto-test is OFF by default; players turn it on themselves
+  try { const q = new URLSearchParams(location.search).get("lang"); if (q === "ru" || q === "uz") { S.lang = q; save(); } } catch (e) {}   // links from the Russian pages open the app in Russian
   lang = S.lang === "ru" ? "ru" : "uz";
   Cloud.loadSess();
   const th = S.theme === "dark" || S.theme === "light" ? S.theme : (document.documentElement.getAttribute("data-theme") || "light");
@@ -2587,7 +2620,12 @@ function boot() {
   $$("#pages .pg-btn").forEach(b => b.onclick = () => showPage(b.dataset.pg));
   showPage("kana");                                  // the app always opens on Kana -> chart
   if (!S.profile) askName(true); else Cloud.sync();
+  window.addEventListener("online", () => { toast(t("onlineMsg")); Cloud.pushNow(); Cloud.sync(); });
+  window.addEventListener("offline", () => toast(t("offlineMsg")));
+  window.addEventListener("appinstalled", () => { window.__ip = null; });
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
 }
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); window.__ip = e; });
 boot();
 
 
