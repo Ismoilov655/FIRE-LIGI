@@ -590,6 +590,7 @@ body.inquiz .guide-fab{display:none;}
 a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;}
 .btn.danger{background:#E5484D;color:#fff;box-shadow:0 8px 20px rgba(229,72,77,.35);}
 .btn.danger-t{color:#E5484D;border-color:rgba(229,72,77,.45);}
+.gm-acct{gap:8px;}.gm-acct .pw{white-space:nowrap;padding:6px 10px;font-size:12px !important;border-radius:10px;border:1px solid var(--line);background:var(--glass-2);font-size:13px;letter-spacing:.06em;}.gm-acct .eye{font-size:18px;}
 
 </style>
 </head>
@@ -2290,6 +2291,7 @@ const GM = {
   rank: () => `<div class="gm gm-rank">${RANKS.filter(r => !r.sp).map(r => `<span class="rk-${r.id}"><i class="jp">${r.jp[0]}</i>${esc(rankName(RANKS.indexOf(r)))}<small>${r.min}</small></span>`).join("")}</div>`,
   lb: () => `<div class="gm gm-lb"><div class="lb-row p1"><span class="lb-pos">${medal(1)}</span><span class="lb-av has" style="--rk:#FF4FA3">桜</span><span class="lb-nm"><b>Sakura</b></span><span class="lb-sc"><b>312</b></span></div></div>`,
   prof: () => `<div class="gm gm-prof"><span class="av jp">桜</span><span class="th">☀️ / 🌙</span><span class="th">UZ / RU</span></div>`,
+  acct: () => `<div class="gm gm-acct"><span class="pw">🔑 ••••••••</span><span class="eye">👁</span></div>`,
   search: () => `<div class="gm gm-search">🔎 <span>sakura · さくら · gilos</span></div>`
 };
 const GUIDE = [
@@ -2306,6 +2308,7 @@ const GUIDE = [
   { m: "lb", tour: 1, uz: ["Reyting 🏆", "Ball yig'ib reytingda ko'tariling. Birinchi uch o'rin medal oladi."], ru: ["Рейтинг 🏆", "Набирайте очки и поднимайтесь в рейтинге. Первые три места получают медали."] },
   { m: "rank", uz: ["Unvonlar", "Ball ko'paygan sari unvon o'sadi: Ronin (0), Samuray (500), Shogun (1500)."], ru: ["Звания", "С ростом очков растёт звание: Ронин (0), Самурай (500), Сёгун (1500)."] },
   { m: "prof", uz: ["Profil", "Profil tugmasini bosing: o'z kanjingizni karuseldan tanlang, yorug' yoki qorong'i mavzuni belgilang, ismni o'zgartiring."], ru: ["Профиль", "Нажмите на профиль: выберите свой кандзи в карусели, светлую или тёмную тему, смените имя."] },
+  { m: "acct", uz: ["Akkaunt, parol va chiqish", "Parol bilan boshqa telefon yoki kompyuterdan ham kirasiz va ball, reytingingizni yo'qotmaysiz. Profilda parolni ko'rish va o'zgartirish mumkin. «Chiqish» shu qurilmadan chiqaradi, «Akkauntni o'chirish» hamma narsani butunlay o'chiradi. Parol esdan chiqsa, «Yordam: Telegram» tugmasi orqali yozing."], ru: ["Аккаунт, пароль и выход", "С паролем вы войдёте и с другого телефона или компьютера и не потеряете очки и рейтинг. В профиле пароль можно посмотреть и сменить. «Выйти» выводит из аккаунта на этом устройстве, «Удалить аккаунт» стирает всё навсегда. Если забыли пароль, напишите через кнопку «Помощь: Telegram»."] },
   { m: "search", uz: ["Qidiruv", "Kotoba va Kanji sahifalarida tepada qidiruv bor: yaponcha, lotincha, o'zbekcha yoki ruscha yozing."], ru: ["Поиск", "На страницах Котоба и Кандзи сверху есть поиск: пишите по-японски, латиницей, по-узбекски или по-русски."] }
 ];
 const gtx = (g, i) => g[lang === "ru" ? "ru" : "uz"][i];
