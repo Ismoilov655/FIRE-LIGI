@@ -770,6 +770,13 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+// Wrong answers that "look like" the right one (same ending, similar length), so the shape of the options gives nothing away
+const tailKana = w => (String(w || "").match(/[ぁ-ゟ]+$/) || [""])[0];
+const likeSort = (arr, w, r, get = x => x) => {
+  const tw = tailKana(w), tl = tw.slice(-1), L = String(r || "").length;
+  const sc = x => { const o = get(x), t2 = tailKana(o.w); return (t2 === tw ? 0 : t2.slice(-1) === tl && tl ? 1 : 2) * 10 + Math.min(9, Math.abs(String(o.r || "").length - L)); };
+  return arr.map(x => [sc(x), x]).sort((a, b) => a[0] - b[0]).map(a => a[1]);
+};
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 const uniqBy = (arr, f) => { const s = new Set(); return arr.filter(x => { const k = f(x); if (s.has(k)) return false; s.add(k); return true; }); };
 const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
@@ -1729,7 +1736,7 @@ const Kotoba = {
     let pool = vWords().filter(y => !bad(y));
     if (pool.length < 12) pool = pool.concat(VW.filter(y => !bad(y) && !pool.includes(y)));
     const seen = new Set(), d = [];
-    shuffle(pool).forEach(y => { const key = dir === "fwd" ? y.uz + "|" + y.ru : y.r + "|" + y.w; if (d.length < 3 && !seen.has(key)) { seen.add(key); d.push(y); } });
+    likeSort(shuffle(pool), x.w, x.r).forEach(y => { const key = dir === "fwd" ? y.uz + "|" + y.ru : y.r + "|" + y.w; if (d.length < 3 && !seen.has(key)) { seen.add(key); d.push(y); } });
     const all = [x, ...d], m = vMain(x), s = vSub(x);
     const exp = () => `<div class="fb-main jp">${esc(m)}${s ? ` <span style="font-size:.7em;opacity:.75">${esc(s)}</span>` : ""}</div><div class="fb-sub">${esc(x.rom)} · ${esc(tr(x))}</div>`;
     if (dir === "fwd") {
@@ -1922,7 +1929,8 @@ const Kanji = {
           explain: () => `<div class="fb-main"><span class="jp">${esc(k.k)}</span> — ${esc(tr(k))}</div><div class="fb-sub">${esc(readTxt(k))}</div>`
         };
       }
-      const mine = new Set(readToks(k)), seen = new Set([readTxt(k)]), d = [];
+      const mine = new Set(readToks(k)), seen = new Set([readTxt(k)]), d = [], hk = !!kunOf(k), L0 = readTxt(k).length;
+      pool.sort((a, b) => ((!!kunOf(a) !== hk) * 20 + Math.min(19, Math.abs(readTxt(a).length - L0))) - ((!!kunOf(b) !== hk) * 20 + Math.min(19, Math.abs(readTxt(b).length - L0))));
       pool.forEach(x => { const r = readTxt(x); if (d.length < 3 && !seen.has(r) && !readToks(x).some(z => mine.has(z))) { seen.add(r); d.push(x); } });
       return {
         pts: 2, prompt: `<div class="qrd" style="font-size:78px;line-height:1.1">${esc(k.k)}</div><div class="qprompt">${esc(t("qReading"))}</div>`, correct: k.idx, optCls: "jp",
@@ -1931,7 +1939,7 @@ const Kanji = {
       };
     }
     const w = c.c, all = shuffle(KANJI.reduce((a, k) => a.concat(k.comp.map((x, i) => ({ x, id: k.idx + "_" + i }))), []).filter(o => o.x.w !== w.w && o.x.r !== w.r && o.x.uz !== w.uz && o.x.ru !== w.ru));
-    const near = all.filter(o => pk.some(k => o.id.startsWith(k.idx + "_"))), pool = near.length >= 20 ? near : all;
+    const near = all.filter(o => pk.some(k => o.id.startsWith(k.idx + "_"))), pool = likeSort(near.length >= 20 ? near : all, w.w, w.r, o => o.x);
     const ex = () => `<div class="fb-main jp">${esc(w.w)}</div><div class="fb-sub">${esc(w.r)} — ${esc(tr(w))}</div>${spk(sayOf(w.r), true)}`;
     if (dir === "mean") {
       const seen = new Set([tr(w)]), d = [];
