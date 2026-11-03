@@ -2613,6 +2613,10 @@ function boot() {
   $("#mistBtn").onclick = () => Mist.open(); Mist.badge();
   $("#goalBar").onclick = () => Act.stats(); Act.bar();
   $("#guideBtn").onclick = () => Guide.open();
+  // the "?" button hides only while a quiz is actually on screen (it used to stay hidden after leaving a quiz)
+  const syncFab = () => document.body.classList.toggle("inquiz", !!document.querySelector("main > section:not([hidden]) .qtop"));
+  new MutationObserver(syncFab).observe($("main"), { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
+  syncFab();
   if (S.profile && !S.tour) { S.tour = 1; save(); }
   $("#langSel").onchange = e => setLang(e.target.value);
   $("#sealBtn").onclick = () => { if (S.profile) profileModal(); else askName(true); };
