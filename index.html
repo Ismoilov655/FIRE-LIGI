@@ -603,6 +603,47 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
 .gm-acct{gap:8px;}.gm-acct .pw{white-space:nowrap;padding:6px 10px;font-size:12px !important;border-radius:10px;border:1px solid var(--line);background:var(--glass-2);font-size:13px;letter-spacing:.06em;}.gm-acct .eye{font-size:18px;}
 .seo-foot{margin:34px 0 80px;padding:0 4px;font-size:11px;line-height:1.8;opacity:.4;}.seo-foot:hover,.seo-foot:focus-within{opacity:.8;}.seo-foot nav{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 14px;}.seo-foot a{color:var(--ink-2);text-decoration:none;white-space:nowrap;}.seo-foot a:hover{text-decoration:underline;}
 
+/* ===== pet: Kuro robot ===== */
+.pet{position:fixed;right:max(8px,env(safe-area-inset-right));bottom:max(58px,calc(env(safe-area-inset-bottom) + 52px));z-index:39;width:112px;height:123px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation;outline:none;}
+.pet[hidden]{display:none;}
+.pet svg{width:100%;height:100%;overflow:visible;pointer-events:none;}
+.pet:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:16px;}
+body.inquiz .pet{bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));width:92px;height:101px;pointer-events:none;}
+body.inquiz .pet-bub{font-size:12.5px;padding:6px 10px;}
+body.inquiz main{padding-bottom:104px;}
+.pet-bub{position:absolute;right:2px;bottom:100%;margin-bottom:8px;width:max-content;max-width:min(210px,68vw);padding:8px 11px;border-radius:14px;background:var(--glass-2);border:1px solid var(--stroke);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:13px;line-height:1.35;color:var(--ink);box-shadow:0 6px 22px rgba(0,0,0,.18);pointer-events:none;}
+.pet-bub[hidden]{display:none;}
+.pt-float{animation:pt-fl 3.4s ease-in-out infinite;}@keyframes pt-fl{50%{transform:translateY(-6px);}}
+.pt-body{transform-origin:100px 205px;transition:transform .5s;}
+.pt-head{transform-origin:100px 140px;transition:transform .35s;}
+.pt-arm{transition:transform .45s cubic-bezier(.3,1.4,.5,1);}
+.pt-arm.l{transform-origin:60px 142px;transform:rotate(14deg);}.pt-arm.r{transform-origin:140px 142px;transform:rotate(-14deg);}
+.pt-eyes{transition:transform .5s cubic-bezier(.3,1.3,.5,1);}
+.pt-blink{animation:pt-bl 4.2s infinite;transform-origin:100px 96px;}@keyframes pt-bl{0%,94%,100%{transform:scaleY(1);}97%{transform:scaleY(.08);}}
+.pt-glow{animation:pt-gw 2.4s ease-in-out infinite;}@keyframes pt-gw{50%{opacity:.55;}}
+.pt-jet{opacity:0;transform-origin:100px 205px;}
+.pt-body.jump{animation:pt-jp .9s cubic-bezier(.3,.1,.4,1) 1;}@keyframes pt-jp{45%{transform:translateY(-34px);}}
+.pt-body.jump .pt-jet{animation:pt-jt .9s ease 1;}@keyframes pt-jt{0%,100%{opacity:0;transform:scaleY(.2);}30%,70%{opacity:1;transform:scaleY(1);}}
+.pt-body.m-happy .pt-arm.l,.pt-body.m-cheer .pt-arm.l{transform:rotate(150deg);}.pt-body.m-happy .pt-arm.r,.pt-body.m-cheer .pt-arm.r{transform:rotate(-150deg);}
+.pt-body.m-cheer .pt-arm{animation:pt-fp .35s ease-in-out infinite alternate;}@keyframes pt-fp{to{translate:0 -5px;}}
+.pt-body.m-sad .pt-arm.l{transform:rotate(4deg);}.pt-body.m-sad .pt-arm.r{transform:rotate(-4deg);}
+.pt-body.m-sad{transform:translateY(5px);}
+.pt-body.m-sleepy{animation:pt-br 3.6s ease-in-out infinite;}@keyframes pt-br{50%{transform:scale(1.02,1.03);}}
+.pt-body.wave .pt-arm.r{animation:pt-wv .45s ease-in-out 5 alternate;transform:rotate(-135deg);}@keyframes pt-wv{from{transform:rotate(-120deg);}to{transform:rotate(-165deg);}}
+.pt-body.shake .pt-head{animation:pt-sk .5s ease-in-out 3;}@keyframes pt-sk{25%{transform:rotate(-9deg);}75%{transform:rotate(9deg);}}
+.pt-body.tremble{animation:pt-tr .08s linear 11;}@keyframes pt-tr{0%,100%{translate:-1.6px 0;}50%{translate:1.6px 0;}}
+.pt-body.cross .pt-arm.l{transform:rotate(-54deg);}.pt-body.cross .pt-arm.r{transform:rotate(54deg);}
+.pt-body.clap .pt-arm.l{animation:pt-cl .28s ease-in-out infinite alternate;}.pt-body.clap .pt-arm.r{animation:pt-cr .28s ease-in-out infinite alternate;}
+@keyframes pt-cl{from{transform:rotate(-22deg);}to{transform:rotate(-52deg);}}@keyframes pt-cr{from{transform:rotate(22deg);}to{transform:rotate(52deg);}}
+.pt-body.think .pt-head{transform:rotate(-7deg);}.pt-body.think .pt-arm.r{transform:translate(-18px,-2px) rotate(-152deg);}
+.pt-body.yawn .pt-head{animation:pt-yw 2.2s ease-in-out 1;}@keyframes pt-yw{25%,65%{transform:translateY(-5px) scale(1.04);}}
+.pt-zz{font:700 14px system-ui;fill:#7FC4FF;animation:pt-zz 2.6s ease-in-out infinite;}@keyframes pt-zz{0%{opacity:0;transform:translateY(8px);}50%{opacity:1;}100%{opacity:0;transform:translateY(-10px);}}
+.pt-spark{transform-box:fill-box;transform-origin:center;animation:pt-sp 1.2s ease-out infinite;}@keyframes pt-sp{0%{opacity:0;transform:scale(.2);}50%{opacity:1;}100%{opacity:0;transform:scale(1.3);}}
+.pt-ant{transform-origin:100px 52px;animation:pt-sw 3.6s ease-in-out infinite;}@keyframes pt-sw{0%,100%{transform:rotate(-6deg);}50%{transform:rotate(6deg);}}
+.pt-aura{animation:pt-au 3s ease-in-out infinite;transform-origin:100px 130px;}@keyframes pt-au{50%{transform:scale(1.06);opacity:.8;}}
+.pt-fl{animation:pt-fy 3.2s ease-in-out infinite;}@keyframes pt-fy{0%{opacity:0;transform:translateY(6px);}50%{opacity:1;}100%{opacity:0;transform:translateY(-16px);}}
+@media (prefers-reduced-motion:reduce){.pet *{animation:none!important;transition:none!important;}}
+
 </style>
 </head>
 <body>
@@ -797,7 +838,7 @@ function hl(text, q) {
    STATE
    ===================================================================== */
 const DEF = () => ({
-  v: 5, sen: false, acct: false, pw: "", profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
+  v: 5, sen: false, acct: false, pw: "", petOff: false, petSeen: 0, profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
   srs: {}, mist: [], goal: 20, act: {}, actIds: {}, stat: {}, bn: 0, bnv: 2, bseen: {}, tour: 0,
   kana: { script: "hira", groups: ["basic"], chart: "hira", sys: "lat", dir: "mix", count: 20, shuffle: false },
   read: { level: 1, mode: "cards", dir: "mix", count: 10, stats: {}, shuffle: false },
@@ -1034,6 +1075,7 @@ function liveStreak() {
 function dailyVisit() {                       // login streak: one step per day the site is opened
   const today = dayStr();
   if (S.lastDay === today) return;
+  window.__petGap = S.lastDay ? Math.round((dayNum() - dayNum(new Date(S.lastDay + "T12:00:00"))) ) : 0;   // days away (the robot misses you)
   const y = new Date(); y.setDate(y.getDate() - 1);
   S.streak = (S.lastDay === dayStr(y)) ? S.streak + 1 : 1;
   S.lastDay = today; save(); Cloud.push();
@@ -1051,7 +1093,7 @@ function addPoints(p) {                       // returns the change that was rea
   return applied;
 }
 function rankUp(i) {
-  confetti();
+  confetti(); Pet.react("rank");
   openModal(`<div class="rank-up"><div class="lbl">${esc(t("rankUp"))}</div><div class="big">${RANKS[i].jp}</div><h2>${esc(rankName(i))}</h2><p>${esc(t("rankUpText", S.score))}</p><button class="btn block" type="button" data-close>OK</button></div>`);
   $("[data-close]", modalOpen.v).onclick = () => closeModal();
 }
@@ -1235,12 +1277,13 @@ class Quiz {
     if (ok && !this.o.noPts) { const it = this.items[this.i]; Act.card(it.s || this.o.src || "q", it.id); }
     if (this.o.src) { Mist.rec(this.o.src, this.items[this.i], ok); Act.ans(this.o.src, ok); }
     if (this.o.onAnswer) this.o.onAnswer(this.items[this.i], ok);
+    Pet.react(ok ? "ok" : "bad");
     this.render();
   }
   next() {
     if (!this.answered) return;
     this.i++;
-    if (this.i >= this.items.length) { this.phase = "result"; if (this.o.onFinish) { this.o.onFinish(this); return; } if (this.ok / this.items.length >= .8) confetti(); }
+    if (this.i >= this.items.length) { this.phase = "result"; Pet.react("end", Math.round(this.ok / this.items.length * 100)); if (this.o.onFinish) { this.o.onFinish(this); return; } if (this.ok / this.items.length >= .8) confetti(); }
     else this.prep();
     this.render();
     this.host.scrollIntoView && this.host.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -2013,12 +2056,13 @@ function profileModal() {
     <button class="btn ghost block" type="button" id="pfStat" style="margin-top:10px">📊 ${esc(t("statBtn"))}</button>
     <div class="lbl" style="margin-top:12px">${esc(t("themeLbl"))}</div>
     ${chipsHtml("theme", [["light", "☀️ " + t("themeLight")], ["dark", "🌙 " + t("themeDark")]], dark ? "dark" : "light")}
+    ${petBlock()}
     ${installBlock()}
     ${acctBlock()}
     <div class="col"><button class="btn ghost" type="button" data-rename>${esc(t("rename"))}</button></div>`);
   $("[data-close]", m).onclick = () => closeModal();
   $("[data-rename]", m).onclick = () => askName(false);
-  bindAcct(m); bindInstall(m);
+  bindAcct(m); bindInstall(m); bindPet(m);
   let cur = Math.max(0, AVATARS.findIndex(x => x.k === S.avatar));
   const big = $("#avBig", m), stage = $("#avStage", m), pick = $("#avPick", m);
   const show = dir => {
@@ -2176,7 +2220,7 @@ const Act = {
     S.act[d] = before + (n || 1);
     const keys = Object.keys(S.act).sort(); while (keys.length > 60) delete S.act[keys.shift()];
     save();
-    if (S.goal > 0 && before < S.goal && S.act[d] >= S.goal) setTimeout(() => { confetti(); toast(t("goalDone", S.goal)); }, 350);
+    if (S.goal > 0 && before < S.goal && S.act[d] >= S.goal) setTimeout(() => { confetti(); toast(t("goalDone", S.goal)); Pet.react("goal"); }, 350);
     this.bar();
   },
   card(deck, id) {                              // each card counts once per day
@@ -2558,6 +2602,193 @@ function bindInstall(m) {
 }
 
 /* =====================================================================
+   PET — "Kuro", a small robot in the bottom-right corner.
+   Reacts to answers, daily goal, rank-ups, streaks and the time of day. All local, no server.
+   S.petOff = true hides it (switch in the profile window).
+   ===================================================================== */
+const PET_LINES = {
+  uz: {
+    ok: ["To'g'ri!", "Zo'r!", "Barakalla!", "Ajoyib!", "Ustasiz!", "Ha, aynan shu!"], bad: ["Hechqisi yo'q!", "Yana urinamiz!", "Xato ham o'rganish!", "Keyingisi sizniki!", "Esda qoladi!"],
+    first: "Salom! Men Kuro. Birga o'qiymizmi?", hello: "Salom!", back: "Sizni sog'indim! Qaytganingiz yaxshi.", streak: n => `${n} kun ketma-ket! Davom eting!`,
+    goal: "Barakalla! Bugungi maqsad bajarildi!", rank: "Yangi unvon! Tabriklayman!", wake: "Voy, uyg'onib ketdim!", night: "Zzz… kech bo'ldi.",
+    combo: n => `${n} ta ketma-ket to'g'ri!`, endGood: "Ajoyib natija!", endBad: "Hechqisi yo'q, yana urinamiz.",
+    jump: "Hop! Zo'r kun bo'ldi!", look1: "Nima bor u yerda?", look2: "Mana bu yoqda ham bor!", wow: "Voy! Bu yangi kanji-ku!",
+    cross: "Tayyorman! Boshlaymizmi?", think: "Hmm… bu kanji qanday o'qilardi?", clap: "Barakalla! Qarsak sizga!", yawn: "Aaah… sal charchadim.",
+    shake: "Yo'q, yo'q, bu emas!", tremble: "Brr… sovuq-ku!", wink: "Sirimni aytmayman.",
+    petLbl: "Robot Kuro", petOn: "Ko'rsatilmoqda", petOffTxt: "Yashirilgan", petTgl: "Robotni yashirish / ko'rsatish"
+  },
+  ru: {
+    ok: ["Верно!", "Отлично!", "Молодец!", "Супер!", "Мастер!", "Да, именно!"], bad: ["Ничего страшного!", "Попробуем ещё!", "Ошибки учат!", "Следующий твой!", "Запомнится!"],
+    first: "Привет! Я Куро. Будем учиться вместе?", hello: "Привет!", back: "Я скучал! Хорошо, что ты вернулся.", streak: n => `${n} дн. подряд! Так держать!`,
+    goal: "Молодец! Цель на сегодня выполнена!", rank: "Новое звание! Поздравляю!", wake: "Ой, я проснулся!", night: "Zzz… уже поздно.",
+    combo: n => `${n} верных подряд!`, endGood: "Отличный результат!", endBad: "Ничего, попробуем ещё раз.",
+    jump: "Оп! Отличный день!", look1: "Что там такое?", look2: "И здесь тоже есть!", wow: "Ого! Это новый кандзи!",
+    cross: "Я готов! Начнём?", think: "Хм… как же читался этот кандзи?", clap: "Молодец! Аплодисменты тебе!", yawn: "Аааа… немного устал.",
+    shake: "Нет-нет, это не то!", tremble: "Бр-р… холодно!", wink: "Я никому не скажу.",
+    petLbl: "Робот Куро", petOn: "Показан", petOffTxt: "Скрыт", petTgl: "Скрыть / показать робота"
+  }
+};
+const ptPick = a => a[Math.floor(Math.random() * a.length)];
+const pl = (k, ...a) => { const v = (PET_LINES[lang] || PET_LINES.uz)[k]; return typeof v === "function" ? v(...a) : v; };
+
+const PET_SVG = `<svg viewBox="0 0 200 220" aria-hidden="true" focusable="false">
+<defs>
+ <radialGradient id="ptW" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#E6EAF7"/><stop offset="1" stop-color="#AEB7D6"/></radialGradient>
+ <radialGradient id="ptB" cx="35%" cy="25%" r="85%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#E1E6F5"/><stop offset="1" stop-color="#9AA5CB"/></radialGradient>
+ <linearGradient id="ptV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A1E40"/><stop offset="1" stop-color="#05060F"/></linearGradient>
+ <radialGradient id="ptE"><stop offset="0" stop-color="#C9EAFF"/><stop offset=".5" stop-color="#3FA9FF"/><stop offset="1" stop-color="#1B6FFF"/></radialGradient>
+ <radialGradient id="ptAura"><stop offset="0" stop-color="#3FA9FF" stop-opacity=".55"/><stop offset=".6" stop-color="#3FA9FF" stop-opacity=".15"/><stop offset="1" stop-color="#3FA9FF" stop-opacity="0"/></radialGradient>
+ <linearGradient id="ptFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8F6FF"/><stop offset=".4" stop-color="#4DB4FF"/><stop offset="1" stop-color="#4DB4FF" stop-opacity="0"/></linearGradient>
+ <filter id="ptBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+ <filter id="ptSoft"><feGaussianBlur stdDeviation="1.4"/></filter>
+</defs>
+<g class="pt-auraG" opacity="0"><circle class="pt-aura" cx="100" cy="130" r="100" fill="url(#ptAura)"/></g>
+<ellipse cx="100" cy="208" rx="40" ry="6" fill="#000" opacity=".4"/>
+<g class="pt-float"><g class="pt-body m-normal">
+  <g class="pt-jet"><path d="M88 196 Q100 246 112 196Z" fill="url(#ptFlame)"/><path d="M93 196 Q100 228 107 196Z" fill="#fff" opacity=".8"/></g>
+  <g class="pt-antG" opacity="0"><g class="pt-ant"><line x1="100" y1="52" x2="100" y2="30" stroke="#C8D0EA" stroke-width="3" stroke-linecap="round"/><circle class="pt-glow" cx="100" cy="26" r="8" fill="#3FA9FF" opacity=".5" filter="url(#ptBlur)"/><circle cx="100" cy="26" r="4.5" fill="#BFE5FF"/></g></g>
+  <path d="M60 140 Q58 204 100 204 Q142 204 140 140 Q100 128 60 140Z" fill="url(#ptB)"/>
+  <ellipse cx="100" cy="146" rx="30" ry="6" fill="#8E99C2" opacity=".35"/>
+  <circle class="pt-glow" cx="100" cy="164" r="9" fill="#3FA9FF" opacity=".5" filter="url(#ptBlur)"/>
+  <circle cx="100" cy="164" r="4.2" fill="#D5EEFF" stroke="#3FA9FF" stroke-width="1.6"/>
+  <g class="pt-head">
+   <rect x="42" y="46" width="116" height="98" rx="48" fill="url(#ptW)"/>
+   <ellipse cx="72" cy="62" rx="18" ry="8" fill="#fff" opacity=".7" transform="rotate(-24 72 62)"/>
+   <rect x="55" y="62" width="90" height="62" rx="30" fill="url(#ptV)"/>
+   <path d="M66 70 Q100 60 134 70" stroke="#fff" stroke-opacity=".14" stroke-width="3" fill="none" stroke-linecap="round"/>
+   <g class="pt-eyes"></g><g class="pt-fx"></g>
+  </g>
+  <g class="pt-arm l"><rect x="48" y="138" width="20" height="44" rx="10" fill="url(#ptW)"/></g>
+  <g class="pt-arm r"><rect x="132" y="138" width="20" height="44" rx="10" fill="url(#ptW)"/></g>
+</g></g>
+<g class="pt-parts"></g></svg>`;
+
+const ptEye = (x, y, rx, ry) => `<ellipse cx="${x}" cy="${y}" rx="${rx + 4}" ry="${ry + 4}" fill="#3FA9FF" opacity=".45" filter="url(#ptBlur)"/><ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="url(#ptE)"/><ellipse cx="${x - 2}" cy="${y - ry * .4}" rx="${rx * .38}" ry="${ry * .3}" fill="#fff" opacity=".85"/>`;
+const ptArc = (cx, cy, w, up) => { const d = `M${cx - w} ${cy + (up ? 5 : -5)} Q${cx} ${cy + (up ? -9 : 9)} ${cx + w} ${cy + (up ? 5 : -5)}`; return `<path d="${d}" stroke="#7FC4FF" stroke-width="5.5" fill="none" stroke-linecap="round" filter="url(#ptSoft)"/><path d="${d}" stroke="#D8F0FF" stroke-width="2.4" fill="none" stroke-linecap="round"/>`; };
+const PT_EYES = {
+  normal: `<g class="pt-blink">${ptEye(82, 94, 8, 11.5)}${ptEye(118, 94, 8, 11.5)}</g>`,
+  happy: ptArc(82, 96, 9, true) + ptArc(118, 96, 9, true),
+  cheer: ptArc(82, 96, 10, true) + ptArc(118, 96, 10, true),
+  sad: `${ptEye(82, 98, 8, 11)}${ptEye(118, 98, 8, 11)}<path d="M70 84 L96 80 L96 72 L66 72Z" fill="#0A0C1E"/><path d="M130 84 L104 80 L104 72 L134 72Z" fill="#0A0C1E"/>`,
+  sleepy: ptArc(82, 96, 9, false) + ptArc(118, 96, 9, false),
+  wow: `${ptEye(82, 94, 10, 14)}${ptEye(118, 94, 10, 14)}`,
+  wink: ptEye(82, 94, 8, 11.5) + ptArc(118, 96, 9, true)
+};
+const PT_FX = {
+  sleepy: '<text class="pt-zz" x="150" y="52">z</text><text class="pt-zz" x="162" y="38" style="animation-delay:.9s">Z</text>',
+  cheer: '<path class="pt-spark" d="M34 60 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z" fill="#9FD6FF"/><path class="pt-spark" style="animation-delay:.4s" d="M168 54 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z" fill="#FFB3DA"/>',
+  happy: '<path class="pt-spark" d="M38 66 l2.5 7 7 2.5 -7 2.5 -2.5 7 -2.5 -7 -7 -2.5 7 -2.5z" fill="#9FD6FF"/>',
+  wow: '<path d="M150 40 l0 -14 M158 46 l10 -9 M142 44 l-6 -11" stroke="#9FD6FF" stroke-width="3.5" stroke-linecap="round"/>'
+};
+// action table: mood / css class / eye shift / bubble line key / duration
+const PT_ACT = {
+  hello: { cls: "wave", ms: 2400 }, jump: { mood: "happy", cls: "jump", ms: 1000 }, left: { eyes: "translate(-8px,0)", ms: 1600, say: "look1" },
+  right: { eyes: "translate(8px,0)", ms: 1600, say: "look2" }, wow: { mood: "wow", ms: 1800 }, cross: { mood: "happy", cls: "cross", ms: 2200 },
+  think: { cls: "think", eyes: "translate(7px,-5px)", ms: 2600 }, clap: { mood: "happy", cls: "clap", ms: 2000 }, yawn: { mood: "sleepy", cls: "yawn", ms: 2300 },
+  shake: { cls: "shake", ms: 1600 }, tremble: { cls: "tremble", ms: 1000 }, wink: { mood: "wink", ms: 1500 }
+};
+
+const Pet = {
+  el: null, mood: "normal", busy: false, sleeping: false, combo: 0, lastAct: "", bt: null, greeted: false,
+  q(s) { return this.el.querySelector(s); },
+  init() {
+    if (this.el) return;
+    const d = document.createElement("div");
+    d.className = "pet"; d.setAttribute("role", "button"); d.tabIndex = 0; d.setAttribute("aria-label", "Kuro");
+    d.innerHTML = `<div class="pet-bub" hidden></div>${PET_SVG}`;
+    document.body.appendChild(d); this.el = d;
+    d.onclick = () => this.tap();
+    d.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.tap(); } };
+    this.setMood("normal"); this.level();
+    setInterval(() => this.idle(), 9000);
+    this.refresh();
+    const h = new Date().getHours();
+    if (h >= 23 || h < 5) { this.sleeping = true; this.setMood("sleepy"); }
+    else setTimeout(() => this.greet(), 1200);
+  },
+  refresh() { if (this.el) this.el.hidden = !!S.petOff; },
+  inQuiz() { return document.body.classList.contains("inquiz"); },
+  setMood(m) {
+    this.mood = m;
+    this.q(".pt-body").setAttribute("class", "pt-body m-" + m);
+    const e = this.q(".pt-eyes"); e.style.transform = ""; e.innerHTML = PT_EYES[m] || PT_EYES.normal;
+    this.q(".pt-fx").innerHTML = PT_FX[m] || "";
+  },
+  level() {                                     // looks grow with the login streak
+    const s = liveStreak();
+    this.q(".pt-antG").setAttribute("opacity", s >= 7 ? 1 : 0);
+    this.q(".pt-auraG").setAttribute("opacity", s >= 30 ? 1 : 0);
+    let p = "";
+    if (s >= 7) p += '<path class="pt-spark" d="M36 100 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" fill="#9FD6FF"/><path class="pt-spark" style="animation-delay:.6s" d="M164 112 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" fill="#9FD6FF"/>';
+    if (s >= 30) p += '<circle class="pt-fl" cx="40" cy="170" r="2.2" fill="#9FD6FF"/><circle class="pt-fl" style="animation-delay:1s" cx="164" cy="160" r="2.6" fill="#9FD6FF"/><circle class="pt-fl" style="animation-delay:2s" cx="52" cy="120" r="1.8" fill="#fff"/>';
+    this.q(".pt-parts").innerHTML = p;
+  },
+  say(txt, force, ms) {
+    if (!txt || S.petOff || (this.inQuiz() && !force)) return;
+    const b = this.q(".pet-bub"); b.textContent = txt; b.hidden = false;
+    clearTimeout(this.bt); this.bt = setTimeout(() => { b.hidden = true; }, ms || (this.inQuiz() ? 1900 : 3400));
+  },
+  act(name, say) {                              // one named animation; ignored while another one runs
+    if (this.busy || S.petOff) return;
+    const sp = PT_ACT[name]; if (!sp) return;
+    this.busy = true; this.lastAct = name;
+    const b = this.q(".pt-body");
+    this.setMood(sp.mood || "normal");
+    if (sp.cls) b.classList.add(sp.cls);
+    if (sp.eyes) this.q(".pt-eyes").style.transform = sp.eyes;
+    const line = say === undefined ? pl(sp.say || name) : say;
+    if (line) this.say(line, say !== undefined);
+    setTimeout(() => { if (sp.cls) b.classList.remove(sp.cls); this.busy = false; this.setMood("normal"); }, sp.ms);
+  },
+  flash(mood, ms, line) {                       // quick mood change (answer reactions)
+    if (this.busy || S.petOff) return;
+    this.busy = true; this.setMood(mood); if (line) this.say(line, true);
+    setTimeout(() => { this.busy = false; this.setMood("normal"); }, ms);
+  },
+  tap() {
+    if (this.sleeping) { this.sleeping = false; this.busy = false; this.setMood("normal"); this.act("wow", pl("wake")); return; }
+    if (this.busy) return;
+    const ks = Object.keys(PT_ACT).filter(k => k !== this.lastAct);
+    this.act(ks[Math.floor(Math.random() * ks.length)]);
+  },
+  idle() {
+    if (S.petOff || this.busy || this.sleeping || this.mood !== "normal" || this.inQuiz() || document.hidden) return;
+    if (Math.random() < .7) { const a = ["shake", "tremble", "wink", "left", "right"]; this.act(a[Math.floor(Math.random() * a.length)]); }
+  },
+  greet() {
+    if (this.greeted || S.petOff) return; this.greeted = true;
+    const gap = window.__petGap || 0, s = liveStreak();
+    if (!S.petSeen) { S.petSeen = 1; save(); this.act("hello", pl("first")); }
+    else if (gap >= 3) this.act("jump", pl("back"));
+    else if (s >= 2) this.act("hello", pl("streak", s));
+    else this.act("hello", pl("hello"));
+  },
+  react(kind, d) {
+    if (!this.el || S.petOff) return;
+    this.sleeping = false;
+    if (kind === "ok") {
+      this.combo++;
+      if ([3, 5, 8, 12, 20].includes(this.combo)) this.act("clap", pl("combo", this.combo));
+      else this.flash("cheer", 1100, ptPick(pl("ok")));
+    } else if (kind === "bad") { this.combo = 0; this.flash("sad", 1500, ptPick(pl("bad"))); }
+    else if (kind === "goal") { this.busy = false; this.act("clap", pl("goal")); }
+    else if (kind === "rank") { this.busy = false; this.act("jump", pl("rank")); }
+    else if (kind === "end") {
+      if (d >= 80) { this.busy = false; this.act("jump", pl("endGood")); }
+      else if (d < 40) { this.busy = false; this.flash("sad", 1800); this.say(pl("endBad"), true); }
+    }
+  }
+};
+
+function petBlock() {
+  return `<div class="lbl" style="margin-top:14px">🤖 ${esc(pl("petLbl"))}</div><button class="btn ghost block" type="button" data-pet>${esc(S.petOff ? pl("petOffTxt") : pl("petOn"))}</button>`;
+}
+function bindPet(m) {
+  const b = $("[data-pet]", m); if (!b) return;
+  b.onclick = () => { S.petOff = !S.petOff; save(); Pet.refresh(); b.textContent = S.petOff ? pl("petOffTxt") : pl("petOn"); if (!S.petOff) { Pet.greeted = false; Pet.greet(); } };
+}
+
+/* =====================================================================
    APP SHELL
    ===================================================================== */
 const PAGES = { kana: Kana, kotoba: Kotoba, kanji: Kanji };
@@ -2621,6 +2852,7 @@ function boot() {
   $("#mistBtn").onclick = () => Mist.open(); Mist.badge();
   $("#goalBar").onclick = () => Act.stats(); Act.bar();
   $("#guideBtn").onclick = () => Guide.open();
+  Pet.init();
   // the "?" button hides only while a quiz is actually on screen (it used to stay hidden after leaving a quiz)
   const syncFab = () => document.body.classList.toggle("inquiz", !!document.querySelector("main > section:not([hidden]) .qtop"));
   new MutationObserver(syncFab).observe($("main"), { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
