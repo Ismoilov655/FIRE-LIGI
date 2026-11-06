@@ -644,6 +644,23 @@ body.inquiz main{padding-bottom:104px;}
 .pt-fl{animation:pt-fy 3.2s ease-in-out infinite;}@keyframes pt-fy{0%{opacity:0;transform:translateY(6px);}50%{opacity:1;}100%{opacity:0;transform:translateY(-16px);}}
 @media (prefers-reduced-motion:reduce){.pet *{animation:none!important;transition:none!important;}}
 
+/* ===== write practice ===== */
+.wr-meta{font-size:13px;color:var(--ink-2);margin-bottom:10px;}
+.wr-box{position:relative;width:100%;max-width:340px;margin:0 auto;aspect-ratio:1;background:var(--glass-2);border:1px solid var(--stroke);border-radius:18px;touch-action:none;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.wr-box svg{position:absolute;inset:0;width:100%;height:100%;}
+.wr-grid{stroke:var(--ink);stroke-opacity:.16;stroke-width:.6;stroke-dasharray:3 3;}
+.wr-ghost,.wr-done,.wr-hint,.wr-mine{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;}
+.wr-ghost{stroke:var(--ink);stroke-opacity:.1;}.wr-done{stroke:var(--ink);}
+.wr-hint{stroke:var(--accent);stroke-dasharray:var(--l);stroke-dashoffset:var(--l);animation:wr-dr 1s ease forwards;}@keyframes wr-dr{to{stroke-dashoffset:0;}}
+.wr-mine{stroke:#3552E6;}.wr-mine.bad{stroke:#E2452B;}
+.wr-num{font:700 7px system-ui;fill:var(--accent);stroke:#fff;stroke-width:1.6px;paint-order:stroke;pointer-events:none;user-select:none;-webkit-user-select:none;}.wr-num.d{fill:#1E9E5A;}
+.wr-info{display:flex;justify-content:space-between;gap:10px;margin:10px 2px;font-size:13.5px;min-height:22px;}
+#wrMsg.ok{color:#1E9E5A;font-weight:700;}#wrMsg.bad{color:#E2452B;font-weight:600;}
+.wr-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;justify-content:center;}
+.wr-ph{display:flex;justify-content:center;margin-top:10px;}
+@media (prefers-reduced-motion:reduce){.wr-hint{animation:none;stroke-dashoffset:0;}}
+.seo-cc{font-size:10.5px;opacity:.4;text-align:center;margin-top:6px;}.seo-cc a{color:inherit;}
+
 </style>
 </head>
 <body>
@@ -679,7 +696,7 @@ body.inquiz main{padding-bottom:104px;}
   </main>
   <footer class="seo-foot"><nav aria-label="Yapon tili sahifalari">
     <a href="/kanji/n5/">N5 kanji</a><a href="/kanji/n4/">N4 kanji</a><a href="/kanji/n3/">N3 kanji</a><a href="/kanji/n2/">N2 kanji</a><a href="/kana/hiragana/">Hiragana</a><a href="/kana/katakana/">Katakana</a><a href="/soz/1/">So'zlar</a><a href="/yapon-tili/">Yapon tili</a><a href="/ru/" hreflang="ru">Русский</a>
-  </nav></footer>
+  </nav><div class="seo-cc">Kanji strokes: <a href="https://kanjivg.tagaini.net/" rel="noopener">KanjiVG</a> (CC BY-SA 3.0)</div></footer>
 </div>
 <button class="guide-fab" id="guideBtn" type="button">?</button>
 <div id="layer"></div>
@@ -1851,9 +1868,9 @@ function kanjiDetail(k) {
     <div class="tags"><span class="tag lv">N${k.lv}</span><span class="tag">${esc(catLabel(k.cat))}</span></div>
     <div class="det-k">${esc(k.k)}</div>
     <div class="readings"><span class="on-r">On: ${esc(k.on)}</span>${kunOf(k) ? `<span class="kun-r">Kun: ${esc(kunOf(k))}</span>` : ""}</div>
-    <div class="det-tr">${esc(tr(k))}</div>${k.st ? `<div class="strokes" style="text-align:center">✎ ${esc(t("strokes", k.st))}</div>` : ""}
+    <div class="det-tr">${esc(tr(k))}</div>${k.st ? `<div class="strokes" style="text-align:center">✎ ${esc(t("strokes", k.st))}</div>` : ""}<div class="wr-ph">${Write.btn(k)}</div>
     <div class="kc-wt">${esc(t("kcWords"))}</div>${words}`);
-  $("[data-close]", m).onclick = () => closeModal();
+  $("[data-close]", m).onclick = () => closeModal(); Write.bind(m);
 }
 
 const Kanji = {
@@ -1936,7 +1953,8 @@ const Kanji = {
         <div class="kc-head"><div class="kc-kanji">${esc(k.k)}</div><div class="kc-info"><div class="readings" style="justify-content:flex-start"><span class="on-r">On: ${esc(k.on)}</span>${kunOf(k) ? `<span class="kun-r">Kun: ${esc(kunOf(k))}</span>` : ""}</div><div class="kc-mean">${esc(tr(k))}</div>${k.st ? `<div class="strokes">✎ ${esc(t("strokes", k.st))}</div>` : ""}</div></div>
         <div class="kc-wt">${esc(t("kcWords"))}</div>${words}
         <div class="tap" style="text-align:center">${esc(this.open ? t("tapHide") : t("tapShow"))}</div></div>
-      <div class="row"><button class="btn ghost sm ${S.kanji.shuffle ? "on" : ""}" id="kShuf" type="button">🔀 ${esc(t("shuffle"))}</button></div>`;
+      <div class="row"><button class="btn ghost sm ${S.kanji.shuffle ? "on" : ""}" id="kShuf" type="button">🔀 ${esc(t("shuffle"))}</button>${Write.btn(k)}</div>`;
+    Write.bind(b);
     const go = d => { this.pos = (this.pos + d + L.length) % L.length; this.open = false; this.browse(); };
     $("#kPrev", b).onclick = () => go(-1); $("#kNext", b).onclick = () => go(1);
     const tg = () => { this.open = !this.open; this.browse(); };
@@ -2787,6 +2805,99 @@ function bindPet(m) {
   const b = $("[data-pet]", m); if (!b) return;
   b.onclick = () => { S.petOff = !S.petOff; save(); Pet.refresh(); b.textContent = S.petOff ? pl("petOffTxt") : pl("petOn"); if (!S.petOff) { Pet.greeted = false; Pet.greet(); } };
 }
+
+/* =====================================================================
+   WRITE — practise writing a kanji stroke by stroke. Stroke data: KanjiVG (CC BY-SA 3.0), loaded only when needed
+   (strokes.json, cached by the service worker so it also works offline afterwards).
+   Free mode: any stroke can be drawn first, the order is only judged at the end. Strict mode: the order is enforced.
+   ===================================================================== */
+const WL = {
+  uz: { btn: "Yozish", ttl: "Yozib ko'rish", free: "Tartib: erkin", strict: "Tartib: majburiy", nums: "Raqamlar", hint: "Ko'rsatma", show: "Tartibni ko'rish", again: "Qaytadan",
+    intro: "Kanjini chiziqma-chiziq yozing. To'g'ri chizsangiz qoraga aylanadi.", wrong: "Bunday chiziq yo'q, qayta urinib ko'ring", wrongS: "Bu chiziq emas, qayta urinib ko'ring",
+    perfect: "Ajoyib! Xatosiz", done: n => `Tayyor! Xatolar: ${n}`, orderOk: " · Tartib ham to'g'ri", orderBad: o => ` · Tartib boshqacha: ${o} (to'g'risi 1-2-3…)`, tryNow: "Endi o'zingiz yozing",
+    err: "Yozuv ma'lumoti yuklanmadi. Internetni tekshiring.", cc: "Chiziqlar: KanjiVG (CC BY-SA 3.0)" },
+  ru: { btn: "Писать", ttl: "Пробное письмо", free: "Порядок: свободный", strict: "Порядок: строгий", nums: "Номера", hint: "Подсказка", show: "Показать порядок", again: "Заново",
+    intro: "Пишите кандзи черта за чертой. Верная черта станет чёрной.", wrong: "Такой черты нет, попробуйте ещё", wrongS: "Это не та черта, попробуйте ещё",
+    perfect: "Отлично! Без ошибок", done: n => `Готово! Ошибок: ${n}`, orderOk: " · Порядок тоже верный", orderBad: o => ` · Порядок другой: ${o} (верный 1-2-3…)`, tryNow: "Теперь напишите сами",
+    err: "Не удалось загрузить данные. Проверьте интернет.", cc: "Черты: KanjiVG (CC BY-SA 3.0)" }
+};
+const wl = (k, ...a) => { const v = (WL[lang] || WL.uz)[k]; return typeof v === "function" ? v(...a) : v; };
+const WNS = "http://www.w3.org/2000/svg";
+
+const Write = {
+  data: null,
+  async load() {
+    if (this.data) return this.data;
+    const r = await fetch("strokes.json"); if (!r.ok) throw new Error("x");
+    return (this.data = await r.json());
+  },
+  btn(k) { return `<button class="btn ghost sm" type="button" data-write="${esc(k.k)}">✍️ ${esc(wl("btn"))}</button>`; },
+  bind(root) { $$("[data-write]", root).forEach(b => b.onclick = () => this.open(b.dataset.write)); },
+  async open(ch) {
+    let D; try { D = await this.load(); } catch (e) { toast(wl("err")); return; }
+    const S2 = D[ch]; if (!S2 || !S2.length) { toast(wl("err")); return; }
+    const k = (typeof KANJI !== "undefined" ? KANJI : []).find(x => x.k === ch);
+    let free = true, nums = false, idx = 0, used = [], order = [], mistakes = 0, pts = [], drawing = false, busy = false, mine = null;
+    const m = openModal(`<button class="x" type="button" data-close aria-label="close">✕</button>
+      <h2 style="margin:0 0 2px">${esc(wl("ttl"))}</h2>
+      <div class="wr-meta">${k ? `<b>${esc(tr(k))}</b> · ${esc(k.on)}${kunOf(k) ? " / " + esc(kunOf(k)) : ""}` : ""}</div>
+      <div class="wr-box" id="wrBox"><svg viewBox="0 0 109 109" aria-label="${esc(ch)}"><line class="wr-grid" x1="54.5" y1="0" x2="54.5" y2="109"/><line class="wr-grid" x1="0" y1="54.5" x2="109" y2="54.5"/><g id="wrGh"></g><g id="wrDn"></g><g id="wrHn"></g><g id="wrMn"></g><g id="wrNm"></g></svg></div>
+      <div class="wr-info"><span id="wrMsg">${esc(wl("intro"))}</span><span id="wrCnt"></span></div>
+      <div class="wr-row"><button class="btn ghost sm" id="wrMode" type="button"></button><button class="btn ghost sm" id="wrNum" type="button"></button></div>
+      <div class="wr-row"><button class="btn ghost sm" id="wrHint" type="button">${esc(wl("hint"))}</button><button class="btn ghost sm" id="wrShow" type="button">${esc(wl("show"))}</button><button class="btn sm" id="wrClr" type="button">${esc(wl("again"))}</button></div>
+      <div class="note" style="text-align:center;margin-top:8px">${esc(wl("cc"))}</div>`);
+    $("[data-close]", m).onclick = () => closeModal();
+    const $m = s => $(s, m), el = (t2, a, p) => { const e = document.createElementNS(WNS, t2); for (const q in a) e.setAttribute(q, a[q]); p && p.appendChild(e); return e; };
+    const sample = d => { const p = el("path", { d }); const L = p.getTotalLength(), r = []; for (let i = 0; i <= 24; i++) { const q = p.getPointAtLength(L * i / 24); r.push([q.x, q.y]); } return r; };
+    const resample = a => { let L = 0; const c = [0]; for (let i = 1; i < a.length; i++) { L += Math.hypot(a[i][0] - a[i - 1][0], a[i][1] - a[i - 1][1]); c.push(L); }
+      if (L < 1) return Array(25).fill(a[0]); const r = []; let j = 1; for (let i = 0; i <= 24; i++) { const tt = L * i / 24; while (j < c.length - 1 && c[j] < tt) j++; const u = (tt - c[j - 1]) / ((c[j] - c[j - 1]) || 1); r.push([a[j - 1][0] + (a[j][0] - a[j - 1][0]) * u, a[j - 1][1] + (a[j][1] - a[j - 1][1]) * u]); } return r; };
+    const dist = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += Math.hypot(a[i][0] - b[i][0], a[i][1] - b[i][1]); return s / a.length; };
+    const labels = () => { $m("#wrMode").textContent = wl(free ? "free" : "strict"); $m("#wrNum").textContent = wl("nums") + ": " + (nums ? "✓" : "–"); };
+    const upd = () => { $m("#wrCnt").textContent = Math.min(idx, S2.length) + " / " + S2.length; };
+    const placeNums = () => {                       // labels sit just behind each stroke's start and are pushed apart when they collide
+      const L = S2.map(d => { const p = el("path", { d }), n = p.getTotalLength(), a = p.getPointAtLength(0), c = p.getPointAtLength(Math.min(n, 9)); let dx = c.x - a.x, dy = c.y - a.y; const mm = Math.hypot(dx, dy) || 1; dx /= mm; dy /= mm; return { x: a.x - dx * 5 - dy * 2, y: a.y - dy * 5 + dx * 2, dx, dy }; });
+      for (let it = 0; it < 60; it++) { let mv = false;
+        for (let i = 0; i < L.length; i++) for (let j = i + 1; j < L.length; j++) { const a = L[i], b = L[j]; let vx = a.x - b.x, vy = a.y - b.y, d = Math.hypot(vx, vy);
+          if (d < 8.5) { if (d < .01) { vx = a.dx - b.dx; vy = a.dy - b.dy; d = Math.hypot(vx, vy) || 1; } const f = (8.5 - d) / 2 / d; a.x += vx * f; a.y += vy * f; b.x -= vx * f; b.y -= vy * f; mv = true; } }
+        L.forEach(q => { q.x = Math.max(4, Math.min(105, q.x)); q.y = Math.max(6, Math.min(105, q.y)); }); if (!mv) break; }
+      L.forEach((q, j) => { const tx = el("text", { x: q.x, y: q.y + 2.5, class: "wr-num", "text-anchor": "middle", id: "wrN" + j }, $m("#wrNm")); tx.textContent = j + 1; });
+    };
+    const reset = () => {
+      idx = 0; used = []; order = []; mistakes = 0; busy = false;
+      ["#wrGh", "#wrDn", "#wrHn", "#wrMn", "#wrNm"].forEach(s => $m(s).innerHTML = "");
+      S2.forEach(d => el("path", { d, class: "wr-ghost" }, $m("#wrGh")));
+      if (nums) placeNums();
+      $m("#wrMsg").textContent = wl("intro"); $m("#wrMsg").className = ""; upd(); labels();
+    };
+    const hint = () => { if (idx >= S2.length) return; $m("#wrHn").innerHTML = ""; const nx = free ? S2.findIndex((_, j) => !used.includes(j)) : idx;
+      const p = el("path", { d: S2[nx], class: "wr-hint" }, $m("#wrHn")); p.style.setProperty("--l", p.getTotalLength()); };
+    const box = $m("#wrBox");
+    const pos = e => { const r = box.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * 109, (e.clientY - r.top) / r.height * 109]; };
+    box.addEventListener("pointerdown", e => { if (busy || idx >= S2.length) return; box.setPointerCapture(e.pointerId); drawing = true; pts = [pos(e)]; $m("#wrHn").innerHTML = ""; mine = el("path", { class: "wr-mine" }, $m("#wrMn")); mine.setAttribute("d", "M" + pts[0].join(" ")); });
+    box.addEventListener("pointermove", e => { if (!drawing) return; pts.push(pos(e)); mine.setAttribute("d", "M" + pts.map(p => p.join(" ")).join("L")); });
+    const end = () => {
+      if (!drawing) return; drawing = false;
+      if (pts.length < 3) { mine.remove(); return; }
+      const u = resample(pts); let best = -1, bd = 1e9;
+      (free ? S2.map((_, j) => j).filter(j => !used.includes(j)) : [idx]).forEach(j => { const e = sample(S2[j]), dd = dist(e, u);
+        if (dd < 18 && Math.hypot(e[0][0] - u[0][0], e[0][1] - u[0][1]) < 22 && Math.hypot(e[24][0] - u[24][0], e[24][1] - u[24][1]) < 22 && dd < bd) { bd = dd; best = j; } });
+      const msg = $m("#wrMsg");
+      if (best >= 0) {
+        mine.remove(); used.push(best); order.push(best); el("path", { d: S2[best], class: "wr-done" }, $m("#wrDn")); const n = $m("#wrN" + best); if (n) n.classList.add("d"); idx++; upd(); msg.className = ""; msg.textContent = "";
+        if (idx >= S2.length) { const ok = order.every((v, i) => v === i); msg.className = "ok";
+          msg.textContent = (mistakes ? wl("done", mistakes) : wl("perfect")) + (free ? (ok ? wl("orderOk") : wl("orderBad", order.map(v => v + 1).join("-"))) : "");
+          if (typeof Pet !== "undefined") Pet.react("end", mistakes ? 60 : 100); }
+      } else { mistakes++; mine.classList.add("bad"); msg.className = "bad"; msg.textContent = wl(free ? "wrong" : "wrongS"); setTimeout(() => mine.remove(), 450); if (mistakes % 2 === 0) hint(); }
+    };
+    box.addEventListener("pointerup", end); box.addEventListener("pointercancel", end);
+    $m("#wrHint").onclick = hint; $m("#wrClr").onclick = reset;
+    $m("#wrMode").onclick = () => { free = !free; reset(); }; $m("#wrNum").onclick = () => { nums = !nums; reset(); };
+    $m("#wrShow").onclick = async () => { reset(); busy = true;
+      for (let i = 0; i < S2.length; i++) { const p = el("path", { d: S2[i], class: "wr-hint" }, $m("#wrDn")); p.style.setProperty("--l", p.getTotalLength()); p.style.animationDuration = ".7s"; await new Promise(r => setTimeout(r, 800)); if (!m.isConnected) return; p.setAttribute("class", "wr-done"); }
+      busy = false; reset(); $m("#wrMsg").textContent = wl("tryNow"); };
+    reset();
+  }
+};
 
 /* =====================================================================
    APP SHELL
