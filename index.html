@@ -428,7 +428,7 @@ transition:transform .12s,border-color .2s,box-shadow .2s,background .2s;}
 .navrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}.navrow .btn{padding:15px 12px;font-size:16px;font-weight:700;border-radius:16px;}
 
 /* ---- ranks, profile kanji, leaderboard ---- */
-.rk-ronin{--rk:#D98F5C;}.rk-samurai{--rk:#C9D1E3;}.rk-shogun{--rk:#FFC857;}.rk-sensei{--rk:#FF6FA5;}
+.rk-ronin{--rk:#D98F5C;}.rk-samurai{--rk:#C9D1E3;}.rk-shogun{--rk:#FFC857;}.rk-daimyo{--rk:#9B8CFF;}.rk-sensei{--rk:#FF6FA5;}
 .seal-btn .seal .ring{stroke:var(--rk,var(--accent));}
 .modal.wide{max-width:520px;}
 .pf-head{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
@@ -579,7 +579,7 @@ body.inquiz .guide-fab{display:none;}
 .gm-search{padding:7px 10px;border-radius:99px;background:var(--glass-2);border:1px solid var(--stroke);font-size:11px;width:112px;}
 .gm-batch{white-space:nowrap;font-size:11px;padding:6px 8px;}
 
-.guide-fab{left:auto;right:max(12px,env(safe-area-inset-right));}
+.guide-fab{left:auto;right:max(12px,env(safe-area-inset-right),calc((100vw - 780px) / 2 - 88px));}
 .gm-stat{align-items:flex-end;gap:4px;height:44px;}.gm-stat i{display:block;width:10px;border-radius:4px;background:var(--line);}.gm-stat i.now{background:linear-gradient(180deg,var(--accent-2),var(--accent));}
 .gm-auto span{padding:3px 9px;border-radius:99px;border:1px solid var(--line);font-size:11px;}.gm-auto span.on{background:var(--accent);border-color:var(--accent);color:#fff;}
 .gm-auto{gap:3px;flex-wrap:wrap;width:104px;}.gm-auto span{padding:2px 7px;font-size:10.5px;}
@@ -604,7 +604,7 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
 .seo-foot{margin:34px 0 80px;padding:0 4px;font-size:11px;line-height:1.8;opacity:.4;}.seo-foot:hover,.seo-foot:focus-within{opacity:.8;}.seo-foot nav{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 14px;}.seo-foot a{color:var(--ink-2);text-decoration:none;white-space:nowrap;}.seo-foot a:hover{text-decoration:underline;}
 
 /* ===== pet: Kuro robot ===== */
-.pet{position:fixed;right:max(8px,env(safe-area-inset-right));bottom:max(58px,calc(env(safe-area-inset-bottom) + 52px));z-index:39;width:112px;height:123px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation;outline:none;}
+.pet{position:fixed;right:max(8px,env(safe-area-inset-right),calc((100vw - 780px) / 2 - 124px));bottom:max(58px,calc(env(safe-area-inset-bottom) + 52px));z-index:39;width:112px;height:123px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation;outline:none;}
 .pet[hidden]{display:none;}
 .pet svg{width:100%;height:100%;overflow:visible;pointer-events:none;}
 .pet:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:16px;}
@@ -710,7 +710,7 @@ const I18N = {
     title: "Kanji Flashcards — Yapon tili platformasi", brandSub: "Yapon tilini o'yin kabi o'rgan", pages: "Sahifalar",
     pgKana: "Kana", pgKotoba: "Kotoba", pgKanji: "Kanji",
     profile: "Profil", theme: "Mavzuni almashtirish", speak: "Tinglash", noSpeech: "Brauzeringiz ovozli o'qishni qo'llamaydi", noVoice: "Qurilmada yapon ovozi topilmadi. Ovoz sifati qurilmangizdagi yapon tili ovoziga bog'liq.",
-    rank_ronin: "Ronin", rank_samurai: "Samuray", rank_shogun: "Shogun", rank_sensei: "Sensei", rankUp: "Yangi unvon!", rankUpText: s => `Siz ${s} ball to'plab yangi unvonga erishdingiz.`,
+    rank_ronin: "Ronin", rank_samurai: "Samuray", rank_shogun: "Shogun", rank_daimyo: "Daymyo", rank_sensei: "Sensei", rankUp: "Yangi unvon!", rankUpText: s => `Siz ${s} ball to'plab yangi unvonga erishdingiz.`,
     toNext: (n, r) => `Keyingi unvon (${r}) uchun yana ${n} ball`, topRank: "Eng yuqori unvon!", points: "Ball", streak: "Kunlik seriya", streakTip: n => n ? `🔥 ${n} kun ketma-ket kirdingiz` : "Bugun kirib seriyani boshlang!",
     storage: "Saqlash", cloudOn: "Bulut (hamma qurilmada)", cloudOff: "Faqat shu qurilmada", rename: "Ismni o'zgartirish",
     welcome: "Xush kelibsiz!", nameIntro: "Reytingda ko'rinadigan noyob ismingizni tanlang. Katta-kichik harf farqlanmaydi: «Samurai» band bo'lsa, «samurai» ham band.",
@@ -758,7 +758,7 @@ const I18N = {
     title: "Kanji Flashcards — платформа японского", brandSub: "Учи японский как игру", pages: "Страницы",
     pgKana: "Кана", pgKotoba: "Слова", pgKanji: "Кандзи",
     profile: "Профиль", theme: "Сменить тему", speak: "Прослушать", noSpeech: "Браузер не поддерживает озвучку", noVoice: "На устройстве нет японского голоса. Качество звука зависит от японского голоса вашего устройства.",
-    rank_ronin: "Ронин", rank_samurai: "Самурай", rank_shogun: "Сёгун", rank_sensei: "Сэнсэй", rankUp: "Новое звание!", rankUpText: s => `Вы набрали ${s} очков и получили новое звание.`,
+    rank_ronin: "Ронин", rank_samurai: "Самурай", rank_shogun: "Сёгун", rank_daimyo: "Даймё", rank_sensei: "Сэнсэй", rankUp: "Новое звание!", rankUpText: s => `Вы набрали ${s} очков и получили новое звание.`,
     toNext: (n, r) => `До звания «${r}» осталось ${n} очков`, topRank: "Высшее звание!", points: "Очки", streak: "Серия дней", streakTip: n => n ? `🔥 ${n} дн. подряд` : "Зайдите сегодня, чтобы начать серию!",
     storage: "Хранение", cloudOn: "Облако (на всех устройствах)", cloudOff: "Только на этом устройстве", rename: "Сменить имя",
     welcome: "Добро пожаловать!", nameIntro: "Выберите уникальное имя для рейтинга. Регистр не важен: если занято «Samurai», то «samurai» тоже занято.",
@@ -818,6 +818,7 @@ const RANKS = [
   { id: "ronin",   min: 0,    jp: "浪人", lv: "N5" },
   { id: "samurai", min: 500,  jp: "侍",   lv: "N4" },
   { id: "shogun",  min: 1500, jp: "将軍", lv: "N3" },
+  { id: "daimyo",  min: 3500, jp: "大名", lv: "N2" },
   { id: "sensei",  min: Infinity, jp: "先生", lv: "∞", sp: true }   // given by hand only (profiles.title = 'sensei')
 ];
 
@@ -2394,7 +2395,7 @@ const GUIDE = [
   { m: "goal", uz: ["Kunlik maqsad", "Tepadagi chiziq — bugun nechta karta uchun to'g'ri javob berdingiz. Bossangiz statistika ochiladi. Maqsadni profilda o'zgartirasiz."], ru: ["Цель дня", "Полоса сверху показывает, на сколько карточек вы сегодня ответили верно. Нажмите — откроется статистика. Цель меняется в профиле."] },
   { m: "streak", uz: ["Streak 🔥", "Saytga har kun kirsangiz, streak ko'payadi. Bir kun o'tkazib yuborsangiz, yana 1 dan boshlanadi."], ru: ["Серия 🔥", "Заходите на сайт каждый день — серия растёт. Пропустите день — начнётся с 1."] },
   { m: "lb", tour: 1, uz: ["Reyting 🏆", "Ball yig'ib reytingda ko'tariling. Birinchi uch o'rin medal oladi."], ru: ["Рейтинг 🏆", "Набирайте очки и поднимайтесь в рейтинге. Первые три места получают медали."] },
-  { m: "rank", uz: ["Unvonlar", "Ball ko'paygan sari unvon o'sadi: Ronin (0), Samuray (500), Shogun (1500)."], ru: ["Звания", "С ростом очков растёт звание: Ронин (0), Самурай (500), Сёгун (1500)."] },
+  { m: "rank", uz: ["Unvonlar", "Ball ko'paygan sari unvon o'sadi: Ronin (0), Samuray (500), Shogun (1500), Daymyo (3500)."], ru: ["Звания", "С ростом очков растёт звание: Ронин (0), Самурай (500), Сёгун (1500), Даймё (3500)."] },
   { m: "prof", uz: ["Profil", "Profil tugmasini bosing: o'z kanjingizni karuseldan tanlang, yorug' yoki qorong'i mavzuni belgilang, ismni o'zgartiring."], ru: ["Профиль", "Нажмите на профиль: выберите свой кандзи в карусели, светлую или тёмную тему, смените имя."] },
   { m: "acct", uz: ["Akkaunt, parol va chiqish", "Parol bilan boshqa telefon yoki kompyuterdan ham kirasiz va ball, reytingingizni yo'qotmaysiz. Profilda parolni ko'rish va o'zgartirish mumkin. «Chiqish» shu qurilmadan chiqaradi, «Akkauntni o'chirish» hamma narsani butunlay o'chiradi. Parol esdan chiqsa, «Yordam: Telegram» tugmasi orqali yozing."], ru: ["Аккаунт, пароль и выход", "С паролем вы войдёте и с другого телефона или компьютера и не потеряете очки и рейтинг. В профиле пароль можно посмотреть и сменить. «Выйти» выводит из аккаунта на этом устройстве, «Удалить аккаунт» стирает всё навсегда. Если забыли пароль, напишите через кнопку «Помощь: Telegram»."] },
   { m: "app", uz: ["Ilova sifatida o'rnatish va internetsiz ishlash", "Android'da: profilda «Ilovani o'rnatish» tugmasi chiqadi. iPhone'da: Safari'da «Ulashish» → «Bosh ekranga qo'shish». Shunda ikonka bosh ekranda turadi va sayt ilovadek ochiladi. Bir marta ochilgandan keyin internetsiz ham ishlaydi: ball telefonda saqlanadi va internet qaytganda reytingga o'zi yuboriladi."], ru: ["Установка как приложение и работа без интернета", "На Android: в профиле появится кнопка «Установить приложение». На iPhone: в Safari «Поделиться» → «На экран Домой». Значок появится на главном экране, и сайт откроется как приложение. После первого открытия работает и без интернета: очки хранятся на телефоне и сами отправятся в рейтинг, когда сеть вернётся."] },
