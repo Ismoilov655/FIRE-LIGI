@@ -514,7 +514,7 @@ transition:transform .12s,border-color .2s,box-shadow .2s,background .2s;}
 .mist-row .mx:hover{color:var(--accent);}
 @media (max-width:420px){
   header.top{position:relative;}
-  header.top .brand{padding-right:96px;}
+  header.top .brand{padding-right:148px;}
   #langSel{position:absolute;top:0;right:0;height:38px;}
   .tools{gap:6px;}
   .tools .chip-btn{padding:0 10px;}
@@ -661,6 +661,35 @@ body.inquiz main{padding-bottom:104px;}
 @media (prefers-reduced-motion:reduce){.wr-hint{animation:none;stroke-dashoffset:0;}}
 .seo-cc{font-size:10.5px;opacity:.4;text-align:center;margin-top:6px;}.seo-cc a{color:inherit;}
 
+/* ---- exam ---- */
+.ex-mock .btn{margin-top:8px;}.ex-mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;}.ex-best{font-size:13px;color:var(--good);font-weight:700;}
+.ex-bar{position:sticky;top:78px;z-index:25;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;border-radius:16px;margin-bottom:12px;font-size:14px;}
+.ex-bar b{font-variant-numeric:tabular-nums;font-size:17px;}.ex-bar b.low{color:var(--bad);}
+.ex-mon{margin:18px 2px 10px;}.ex-mon .jp{font-size:16px;font-weight:700;line-height:1.5;}.ex-mon small{display:block;color:var(--ink-2);margin-top:2px;}
+.ex-q{border-radius:var(--r-md);padding:12px;margin-bottom:12px;}.ex-qh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.ex-no{display:inline-flex;min-width:30px;height:26px;padding:0 6px;border-radius:8px;border:1.5px solid var(--ink-2);align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.ex-no.ok{border-color:var(--good);color:var(--good);}.ex-no.no{border-color:var(--bad);color:var(--bad);}
+.ex-flag{border:0;background:transparent;font-size:18px;opacity:.28;cursor:pointer;padding:2px 6px;}.ex-flag.on{opacity:1;}
+.ex-stem{font-family:var(--font-jp);font-size:24px;line-height:1.6;margin:4px 0 12px;}.ex-stem.s{font-size:18px;}
+.ex-u{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1.5px;}
+.ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.ex-opts .opt.jp{font-size:17px;padding:12px 8px 12px 30px;min-height:48px;}
+.ex-opts .opt.jp .n{top:50%;transform:translateY(-50%);}
+.opt.sel{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}.opt.sel .n{border-color:currentColor;color:inherit;}
+.ex-rv{font-size:14px;line-height:1.7;}.ex-rv .g b{color:var(--good);}.ex-rv .b b{color:var(--bad);}
+
+body.inexam .pet,body.inexam .guide-fab{display:none !important;}.ex-bar span{white-space:nowrap;}
+
+.exam-fab{width:40px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--glass);color:var(--accent);font-family:var(--font-jp);font-size:20px;font-weight:700;cursor:pointer;order:5;}
+.exam-fab:active{transform:scale(.94);}
+@media(max-width:420px){.exam-fab{position:absolute;top:0;right:120px;z-index:2;}}
+
+.ex-pl{margin:4px 0 8px;}.ex-opts.c3{grid-template-columns:1fr 1fr 1fr;}.ex-opts.c3 .opt.jp{padding:12px 4px;font-size:15px;}.ex-opts.c3 .opt.jp .n{display:none;}
+
+details.ex-mock>summary{cursor:pointer;list-style:none;}details.ex-mock>summary::-webkit-details-marker{display:none;}details.ex-mock[open]>summary{margin-bottom:6px;}.ex-two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}.ex-two .btn{font-size:13px;padding:10px 6px;}
+.ex-bl{display:inline-block;min-width:34px;height:1.1em;border-bottom:2px solid var(--ink);vertical-align:-3px;margin:0 3px;text-align:center;font-size:.8em;}.ex-bl.st{border:1.5px solid var(--ink);border-radius:4px;min-width:34px;}.ex-bl.n{border:1.5px solid var(--ink);border-radius:4px;padding:0 5px;}
+.ex-pass{white-space:pre-line;line-height:2;font-size:16px;}.ex-q.ex-pass{margin-bottom:8px;}ruby rt{font-size:.5em;}
+.ex-opts.one{grid-template-columns:1fr;}.ex-opts.one .opt.jp{text-align:left;font-size:15px;}
+
 </style>
 </head>
 <body>
@@ -670,6 +699,7 @@ body.inquiz main{padding-bottom:104px;}
 <div class="app">
   <header class="top">
     <div class="brand"><b>Kanji <i>Flashcards</i></b><span id="brandSub"></span></div>
+    <button class="exam-fab" id="examBtn" type="button">試</button>
     <div class="tools">
       <button class="seal-btn" id="sealBtn" type="button"></button>
       <button class="chip-btn streak" id="streakBtn" type="button"></button>
@@ -693,6 +723,7 @@ body.inquiz main{padding-bottom:104px;}
     <section id="pg-kana" hidden></section>
     <section id="pg-kotoba" hidden></section>
     <section id="pg-kanji" hidden></section>
+    <section id="pg-exam" hidden></section>
   </main>
   <footer class="seo-foot"><nav aria-label="Yapon tili sahifalari">
     <a href="/kanji/n5/">N5 kanji</a><a href="/kanji/n4/">N4 kanji</a><a href="/kanji/n3/">N3 kanji</a><a href="/kanji/n2/">N2 kanji</a><a href="/kana/hiragana/">Hiragana</a><a href="/kana/katakana/">Katakana</a><a href="/soz/1/">So'zlar</a><a href="/yapon-tili/">Yapon tili</a><a href="/ru/" hreflang="ru">Русский</a>
@@ -856,8 +887,8 @@ function hl(text, q) {
    STATE
    ===================================================================== */
 const DEF = () => ({
-  v: 5, sen: false, acct: false, pw: "", petOff: false, petSeen: 0, profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
-  srs: {}, mist: [], goal: 20, act: {}, actIds: {}, stat: {}, bn: 0, bnv: 2, bseen: {}, tour: 0,
+  v: 5, sen: false, acct: false, pw: "", petOff: false, petSeen: 0, furi: false, profile: null, avatar: null, score: 0, streak: 0, lastDay: "", theme: null, lang: "uz",
+  srs: {}, mist: [], mock: [], exam: [], goal: 20, act: {}, actIds: {}, stat: {}, bn: 0, bnv: 2, bseen: {}, tour: 0,
   kana: { script: "hira", groups: ["basic"], chart: "hira", sys: "lat", dir: "mix", count: 20, shuffle: false },
   read: { level: 1, mode: "cards", dir: "mix", count: 10, stats: {}, shuffle: false },
   kotoba: { lesson: "all", mode: "cards", kanjiFirst: false, shuffle: false, dir: "mix", count: 20 },
@@ -1814,6 +1845,7 @@ const Kotoba = {
   }
 };
 
+const furi = (w, r) => (S.furi && r && r !== w) ? `<div class="under">${esc(r)}</div>` : "";
 /* =====================================================================
    KANJI (N5 / N4 / N3 / N2 — every kanji lives only in its easiest level)
    ===================================================================== */
@@ -1935,7 +1967,7 @@ const Kanji = {
       say: c => c.type === "kanji" ? sayOf(c.k.comp[0] ? c.k.comp[0].r : "") : sayOf(c.c.r),
       front: c => c.type === "kanji"
         ? `<div class="tags"><span class="tag lv">N${c.k.lv}</span><span class="tag">${esc(catLabel(c.k.cat))}</span></div><div class="big-k">${esc(c.k.k)}</div><div class="tap">${esc(t("tapOpen"))}</div>`
-        : `<div class="tags"><span class="tag pk">${esc(c.k.k)}</span><span class="tag">${esc(t("wordTag"))}</span></div><div class="big-w ${c.c.w.length > 7 ? "xs" : c.c.w.length > 4 ? "s" : "m"}">${esc(c.c.w)}</div><div class="tap">${esc(t("tapOpen"))}</div>`,
+        : `<div class="tags"><span class="tag pk">${esc(c.k.k)}</span><span class="tag">${esc(t("wordTag"))}</span></div><div class="big-w ${c.c.w.length > 7 ? "xs" : c.c.w.length > 4 ? "s" : "m"}">${esc(c.c.w)}</div>${furi(c.c.w, c.c.r)}<div class="tap">${esc(t("tapOpen"))}</div>`,
       back: c => c.type === "kanji"
         ? `<div class="readings"><span class="on-r">On: ${esc(c.k.on)}</span>${kunOf(c.k) ? `<span class="kun-r">Kun: ${esc(kunOf(c.k))}</span>` : ""}</div><div class="mean">${esc(tr(c.k))}</div>${c.k.st ? `<div class="strokes">✎ ${esc(t("strokes", c.k.st))}</div>` : ""}`
         : `<div class="under">${esc(c.c.r)}</div><div class="mean">${esc(tr(c.c))}</div><div class="parent"><b>${esc(c.k.k)}</b>${esc(t("parentFrom", tr(c.k)))}</div>`
@@ -1965,10 +1997,11 @@ const Kanji = {
 
   test() {
     const K = S.kanji, b = this.body(), n = this.cardsOf(K.kind).length;
-    b.innerHTML = `<div id="qSetup">${this.kindChips()}<div class="panel glass"><div class="lbl">${esc(t("askAbout"))}</div>${chipsHtml("kdir", [["mix", t("dirMix")], ["read", t("askRead")], ["mean", t("askMean")]], K.dir)}${K.dir === "mix" ? `<div class="lbl" style="margin-top:10px">${esc(t("mixOpt"))}</div>${chipsHtml("kmm", [["0", t("mixNo")], ["1", t("mixYes")]], K.mixMean ? "1" : "0")}` : ""}
+    b.innerHTML = `<div id="qSetup">${Mock.btn()}${this.kindChips()}<div class="panel glass"><div class="lbl">${esc(t("askAbout"))}</div>${chipsHtml("kdir", [["mix", t("dirMix")], ["read", t("askRead")], ["mean", t("askMean")]], K.dir)}${K.dir === "mix" ? `<div class="lbl" style="margin-top:10px">${esc(t("mixOpt"))}</div>${chipsHtml("kmm", [["0", t("mixNo")], ["1", t("mixYes")]], K.mixMean ? "1" : "0")}` : ""}
       <div class="lbl" style="margin-top:10px">${esc(t("howMany"))}</div><div class="cntrow">${chipsHtml("kcount", [["10", "10"], ["20", "20"], ["30", "30"], ["0", t("all")]], String(K.count))}${cntBox(K.count, [["10", "10"], ["20", "20"], ["30", "30"], ["0", t("all")]])}</div>
       <div class="info">${t("kanjiInfo", this.list().length, KLV[K.level].length)}</div>
       <button class="btn block" id="qGo" type="button" style="margin-top:14px" ${n < 4 ? "disabled" : ""}>${esc(t("startTest"))}</button></div></div><div id="qz"></div>`;
+    Mock.bind(b);
     bindChips(b, "kind", v => { K.kind = v; save(); this.test(); });
     bindChips(b, "kdir", v => { K.dir = v; save(); this.test(); });
     bindChips(b, "kmm", v => { K.mixMean = v === "1"; save(); this.test(); });
@@ -2007,7 +2040,7 @@ const Kanji = {
       const seen = new Set([tr(w)]), d = [];
       pool.forEach(o => { const m = tr(o.x); if (d.length < 3 && !seen.has(m)) { seen.add(m); d.push(o); } });
       return {
-        pts: 1, prompt: `<div class="big-w ${w.w.length > 5 ? "s" : "m"}">${esc(w.w)}</div><div class="qprompt">${esc(t("qMeaning"))}</div>`, correct: "me",
+        pts: 1, prompt: `<div class="big-w ${w.w.length > 5 ? "s" : "m"}">${esc(w.w)}</div>${furi(w.w, w.r)}<div class="qprompt">${esc(t("qMeaning"))}</div>`, correct: "me",
         opts: [{ id: "me", label: esc(tr(w)) }, ...d.map((o, i) => ({ id: "d" + i, label: esc(tr(o.x)) }))], explain: ex
       };
     }
@@ -2075,13 +2108,14 @@ function profileModal() {
     <button class="btn ghost block" type="button" id="pfStat" style="margin-top:10px">📊 ${esc(t("statBtn"))}</button>
     <div class="lbl" style="margin-top:12px">${esc(t("themeLbl"))}</div>
     ${chipsHtml("theme", [["light", "☀️ " + t("themeLight")], ["dark", "🌙 " + t("themeDark")]], dark ? "dark" : "light")}
+    ${furiBlock()}
     ${petBlock()}
     ${installBlock()}
     ${acctBlock()}
     <div class="col"><button class="btn ghost" type="button" data-rename>${esc(t("rename"))}</button></div>`);
   $("[data-close]", m).onclick = () => closeModal();
   $("[data-rename]", m).onclick = () => askName(false);
-  bindAcct(m); bindInstall(m); bindPet(m);
+  bindAcct(m); bindInstall(m); bindPet(m); bindFuri(m);
   let cur = Math.max(0, AVATARS.findIndex(x => x.k === S.avatar));
   const big = $("#avBig", m), stage = $("#avStage", m), pick = $("#avPick", m);
   const show = dir => {
@@ -2634,7 +2668,7 @@ const PET_LINES = {
     jump: "Hop! Zo'r kun bo'ldi!", look1: "Nima bor u yerda?", look2: "Mana bu yoqda ham bor!", wow: "Voy! Bu yangi kanji-ku!",
     cross: "Tayyorman! Boshlaymizmi?", think: "Hmm… bu kanji qanday o'qilardi?", clap: "Barakalla! Qarsak sizga!", yawn: "Aaah… sal charchadim.",
     shake: "Yo'q, yo'q, bu emas!", tremble: "Brr… sovuq-ku!", wink: "Sirimni aytmayman.",
-    petLbl: "Robot Kuro", petOn: "Ko'rsatilmoqda", petOffTxt: "Yashirilgan", petTgl: "Robotni yashirish / ko'rsatish"
+    furiLbl: "Furigana (Kanji bo'limi)", furiOn: "Ko'rsatilmoqda", furiOff: "Yashirilgan", petLbl: "Robot Kuro", petOn: "Ko'rsatilmoqda", petOffTxt: "Yashirilgan", petTgl: "Robotni yashirish / ko'rsatish"
   },
   ru: {
     ok: ["Верно!", "Отлично!", "Молодец!", "Супер!", "Мастер!", "Да, именно!"], bad: ["Ничего страшного!", "Попробуем ещё!", "Ошибки учат!", "Следующий твой!", "Запомнится!"],
@@ -2644,7 +2678,7 @@ const PET_LINES = {
     jump: "Оп! Отличный день!", look1: "Что там такое?", look2: "И здесь тоже есть!", wow: "Ого! Это новый кандзи!",
     cross: "Я готов! Начнём?", think: "Хм… как же читался этот кандзи?", clap: "Молодец! Аплодисменты тебе!", yawn: "Аааа… немного устал.",
     shake: "Нет-нет, это не то!", tremble: "Бр-р… холодно!", wink: "Я никому не скажу.",
-    petLbl: "Робот Куро", petOn: "Показан", petOffTxt: "Скрыт", petTgl: "Скрыть / показать робота"
+    furiLbl: "Фуригана (раздел Кандзи)", furiOn: "Показана", furiOff: "Скрыта", petLbl: "Робот Куро", petOn: "Показан", petOffTxt: "Скрыт", petTgl: "Скрыть / показать робота"
   }
 };
 const ptPick = a => a[Math.floor(Math.random() * a.length)];
@@ -2802,6 +2836,13 @@ const Pet = {
 function petBlock() {
   return `<div class="lbl" style="margin-top:14px">🤖 ${esc(pl("petLbl"))}</div><button class="btn ghost block" type="button" data-pet>${esc(S.petOff ? pl("petOffTxt") : pl("petOn"))}</button>`;
 }
+function furiBlock() {
+  return `<div class="lbl" style="margin-top:14px">あ ${esc(pl("furiLbl"))}</div><button class="btn ghost block" type="button" data-furi>${esc(S.furi ? pl("furiOn") : pl("furiOff"))}</button>`;
+}
+function bindFuri(m) {
+  const b = $("[data-furi]", m); if (!b) return;
+  b.onclick = () => { S.furi = !S.furi; save(); b.textContent = S.furi ? pl("furiOn") : pl("furiOff"); };
+}
 function bindPet(m) {
   const b = $("[data-pet]", m); if (!b) return;
   b.onclick = () => { S.petOff = !S.petOff; save(); Pet.refresh(); b.textContent = S.petOff ? pl("petOffTxt") : pl("petOn"); if (!S.petOff) { Pet.greeted = false; Pet.greet(); } };
@@ -2901,9 +2942,507 @@ const Write = {
 };
 
 /* =====================================================================
+   JLPT N5 MOCK: timed 40-question test (kanji + words), result history
+   ===================================================================== */
+const ML = {
+  uz: { btn: "🎓 JLPT N5 mock test", title: "JLPT N5 mock test", sub: "40 ta savol, 25 daqiqa. Kanji va so'zlar (o'qilishi va ma'nosi). Tinglash va grammatika bu yerda yo'q.", go: "Boshlash", hist: "Oxirgi natijalar", none: "Hali natija yo'q", left: "Qolgan vaqt", res: "Natija", pass: "JLPT N5'dan o'tish chegarasi taxminan 44%, lekin tinglash va grammatika ham kerak.", v4: "Ajoyib! Bu qismni yaxshi bilasan.", v3: "Yaxshi. Xatolarni takrorlasang, 90% ga chiqasan.", v2: "Chegara atrofida. Xatolar daftarini takrorla.", v1: "Hali mashq kerak. Kanji va so'zlarni qayta o'rgan.", time: "Vaqt tugadi", used: "Sarflangan vaqt", again: "Qayta topshirish", close: "Yopish", wr: "Xato qilganlaring Xatolar daftariga (📓) tushdi." },
+  ru: { btn: "🎓 JLPT N5 мок-тест", title: "JLPT N5 мок-тест", sub: "40 вопросов, 25 минут. Кандзи и слова (чтение и значение). Аудирования и грамматики здесь нет.", go: "Начать", hist: "Последние результаты", none: "Пока нет результатов", left: "Осталось", res: "Результат", pass: "Проходной порог JLPT N5 около 44%, но нужны ещё аудирование и грамматика.", v4: "Отлично! Эту часть ты знаешь хорошо.", v3: "Хорошо. Повтори ошибки, и выйдешь на 90%.", v2: "Около порога. Повтори тетрадь ошибок.", v1: "Нужна практика. Повтори кандзи и слова.", time: "Время вышло", used: "Затрачено", again: "Пройти снова", close: "Закрыть", wr: "Ошибки попали в Тетрадь ошибок (📓)." }
+};
+const ml = k => ML[lang === "ru" ? "ru" : "uz"][k];
+const Mock = {
+  N: 40, SEC: 1500,
+  btn() { return `<button class="btn block" id="mockBtn" type="button" style="margin-bottom:12px">${esc(ml("btn"))}</button>`; },
+  bind(root) { const b = $("#mockBtn", root); if (b) b.onclick = () => this.open(); },
+  hist() { return Array.isArray(S.mock) ? S.mock : (S.mock = []); },
+  open() {
+    const m = openModal(`${SAKURA_BTN}<div id="mkBody"></div>`, { onClose: () => this.stop() }); m.classList.add("wide");
+    $("[data-close]", m).onclick = () => closeModal();
+    this.setup();
+  },
+  stop() { clearInterval(this.tm); this.tm = 0; document.body.classList.remove("inquiz"); },
+  setup() {
+    this.stop();
+    const b = $("#mkBody"); if (!b) return;
+    const H = this.hist().slice(-8).reverse();
+    b.innerHTML = `<div class="lb-head"><h2>${esc(ml("title"))}</h2><p>${esc(ml("sub"))}</p></div>
+      <div class="panel glass"><div class="lbl">${esc(ml("hist"))}</div>${H.length ? H.map(h => `<div class="mist-row"><span class="mt"><b>${h.p}%</b><small>${esc(h.d)} · ${h.o}/${h.n}</small></span></div>`).join("") : `<div class="info">${esc(ml("none"))}</div>`}</div>
+      <button class="btn block" id="mkGo" type="button" style="margin-top:14px">${esc(ml("go"))}</button>`;
+    $("#mkGo", b).onclick = () => this.run();
+  },
+  cards() {
+    const ks = shuffle(KLV[5].slice()), out = [];
+    ks.forEach((k, i) => {
+      if (out.length >= this.N) return;
+      const w = k.comp.length ? Math.floor(Math.random() * k.comp.length) : -1;
+      if (i % 2 === 0 || w < 0) out.push({ id: "k_" + k.idx, type: "kanji", g: k.idx, k });
+      else out.push({ id: "w_" + k.idx + "_" + w, type: "word", g: k.idx, k, c: k.comp[w] });
+    });
+    return out;
+  },
+  makeQ(c) {
+    const K = S.kanji, o = [K.dir, K.mixMean, K.level];
+    K.dir = "mix"; K.mixMean = true; K.level = 5;
+    try { return Kanji.makeQ(c); } finally { [K.dir, K.mixMean, K.level] = o; }
+  },
+  run() {
+    const b = $("#mkBody"); if (!b) return;
+    this.t0 = Date.now(); this.done = false;
+    b.innerHTML = `<div class="qtop"><span>⏱ ${esc(ml("left"))}: <b id="mkT"></b></span></div><div id="mkQ"></div>`;
+    const qz = this.qz = new Quiz($("#mkQ", b), { src: "kanji", noPts: true, onRun: () => {}, onSetup: () => this.setup(), makeQ: c => this.makeQ(c), onFinish: q => this.finish(q, false) });
+    qz.start(this.cards());
+    const tick = () => {
+      const left = Math.max(0, this.SEC - Math.round((Date.now() - this.t0) / 1000)), e = $("#mkT");
+      if (e) { e.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0"); e.style.color = left < 120 ? "#E5484D" : ""; }
+      if (!left && !this.done) { const q = this.qz; q.phase = "result"; this.finish(q, true); }
+    };
+    clearInterval(this.tm); this.tm = setInterval(tick, 500); tick();
+  },
+  finish(q, timeout) {
+    this.done = true; clearInterval(this.tm); this.tm = 0; document.body.classList.remove("inquiz");
+    const n = q.items.length, ok = q.ok, p = Math.round(ok / n * 100), sec = Math.min(this.SEC, Math.round((Date.now() - this.t0) / 1000));
+    if (timeout) for (let i = q.i + (q.answered ? 1 : 0); i < n; i++) Mist.rec("kanji", q.items[i], false);
+    const H = this.hist(); H.push({ d: new Date().toLocaleDateString("en-GB"), p, o: ok, n }); if (H.length > 30) H.shift(); save();
+    if (timeout) Pet.react("end", p);
+    const v = p >= 80 ? "v4" : p >= 60 ? "v3" : p >= 44 ? "v2" : "v1";
+    const b = $("#mkBody"); if (!b) return;
+    b.innerHTML = `<div class="done glass"><div class="em">${p >= 80 ? "🏆" : p >= 60 ? "🎉" : p >= 44 ? "👍" : "💪"}</div><h2>${esc(timeout ? ml("time") : ml("res"))}</h2><div class="score-big">${p}%</div>
+      <p style="margin:0">${ok} / ${n}</p><p style="margin:6px 0 0">${esc(ml("used"))}: ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}</p>
+      <p style="margin:10px 0 0"><b>${esc(ml(v))}</b></p><p style="margin:6px 0 0;font-size:13px;opacity:.8">${esc(ml("pass"))}</p>${q.wrong.length || timeout ? `<p style="margin:6px 0 0;font-size:13px">${esc(ml("wr"))}</p>` : ""}
+      <div class="col"><button class="btn" id="mkAgain" type="button">${esc(ml("again"))}</button><button class="btn ghost" id="mkClose" type="button">${esc(ml("close"))}</button></div></div>`;
+    if (p >= 80) confetti();
+    $("#mkAgain", b).onclick = () => this.run(); $("#mkClose", b).onclick = () => closeModal();
+  }
+};
+
+/* Handwritten JLPT N5-style items. Format: "stem|correct|wrong1|wrong2|wrong3". ＿＿ is the blank. */
+let EX_M3 = `まいあさ ＿＿を のみます。|コーヒー|ほん|くつ|でんしゃ
+この ＿＿は ちいさいですから、かばんに はいります。|さいふ|やま|ビル|こうえん
+ともだちに ＿＿を かけました。|でんわ|てがみ|しゃしん|えいが
+あしたは ＿＿ですから、かいしゃに いきません。|やすみ|あさ|せんせい|みせ
+この ＿＿は とても おいしいです。|りょうり|くつ|まど|えき
+＿＿が いたいので、びょういんに いきました。|あたま|ひるごはん|かばん|しごと
+てんきが いいですから、＿＿を あけます。|まど|あめ|やま|こえ
+＿＿で あたらしい くつを かいました。|デパート|びょういん|ぎんこう|ゆうびんきょく
+わたしの うちは えきから ＿＿です。|ちかい|あつい|からい|おもい
+ここで ＿＿を とってください。|しゃしん|あめ|みち|ふゆ
+ふゆは ＿＿ですから、コートを きます。|さむい|あつい|あまい|ひろい
+＿＿ですから、かさを さします。|あめ|はれ|おなか|きっぷ
+としょかんで ほんを ＿＿。|かります|かいます|あらいます|ひきます
+まいばん 11じに ＿＿。|ねます|わかります|たちます|なります
+この カメラは ＿＿ですから、かえません。|たかい|おいしい|ひろい|ねむい
+＿＿に のって かいしゃに いきます。|でんしゃ|えいが|ざっし|しゃしん
+すみません、おてあらいは ＿＿ですか。|どこ|いくら|なんじ|だれ
+わたしの ＿＿は せんせいです。|ちち|くつ|かばん|ペン
+ここに なまえを ＿＿ ください。|かいて|のんで|およいで|ならんで
+えいがは ＿＿から はじまります。|3じ|3ひき|3さつ|3かい
+＿＿を あらって、ごはんを たべます。|て|ぼうし|ほん|でんき
+あした ともだちと ＿＿に いきます。|かいもの|ねつ|ぎゅうにゅう|あたま
+＿＿は あまり すきじゃありません。|さかな|ことし|けさ|いま
+＿＿が ふっています。|あめ|かぜ|くもり|はれ
+おなかが すいたので、＿＿を たべたいです。|ごはん|くるま|ぎんこう|でんわ
+この ＿＿は ひとが おおいです。|えき|ぼうし|にく|ちず
+どうぞ ＿＿に すわってください。|いす|しお|かぎ|さら
+＿＿で おかねを おろします。|ぎんこう|スーパー|びょういん|きっさてん
+けさは ＿＿ですから、でんしゃが とまりました。|ゆき|ふゆ|ごご|あさごはん
+おとうとは ＿＿を ならっています。|ピアノ|ざっし|しお|まど
+たくさん ＿＿ましたから、あしが いたいです。|あるき|のみ|ねむり|わらい
+この ＿＿は あたたかいです。|セーター|アイス|れいぞうこ|プール
+＿＿を して、からだを きれいに します。|シャワー|ケーキ|テスト|ニュース
+わたしの へやは ＿＿ですから、つくえと ベッドしか ありません。|せまい|ちかい|ながい|からい
+ともだちに ＿＿を おくりました。|メール|びょうき|りょこう|しゅくだい
+＿＿を おして ください。|ドア|ゆき|うた|ふく
+おばさんは ＿＿を しています。|しごと|てんき|おなか|かんじ
+きょうは ＿＿ですから、がっこうが ありません。|にちようび|おととい|まいあさ|ことし
+＿＿の なかに ほんが はいって います。|かばん|はな|くも|みち
+すみません、＿＿を すこし おおきく して ください。|こえ|あし|ぎゅうにゅう|ひこうき
+＿＿を ひいて、あたまが いたいです。|かぜ|ねつ|くすり|けが
+コーヒーに ＿＿を いれます。|さとう|さかな|しゃしん|えいが
+あの ＿＿に のぼって、うみを みました。|やま|ぎんこう|スーパー|としょかん
+＿＿を かぶって でかけます。|ぼうし|くつした|てぶくろ|めがね
+＿＿が わるいので、やすみます。|からだ|さかな|かさ|いす
+だいどころで ＿＿を つかって りょうりを します。|ナイフ|ペン|テレビ|かさ
+あそこの ＿＿を わたって ください。|はし|おなか|おんがく|ふゆ
+＿＿が たかい ひとは バスケットボールが じょうずです。|せ|め|て|あたま
+いそがしかった ですから、ひるごはんを たべませんでした。|いそがしかった|おいしかった|やすかった|あかるかった
+でんしゃが ＿＿ ので、がっこうに おくれました。|おくれた|おいた|おりた|おきた`.split("\n").map(l => l.split("|"));
+const EX_M4 = `この へやは ひろいです。|この へやは せまくないです。|この へやは あつくないです。|この へやは ふるくないです。|この へやは あかるくないです。
+わたしは さかなが きらいです。|わたしは さかなが すきじゃありません。|わたしは さかなが すきです。|わたしは さかなが たべたいです。|わたしは さかなが じょうずです。
+ゆうべ、よく ねました。|ゆうべ、ながい じかん ねました。|ゆうべ、すこし ねました。|ゆうべ、ねませんでした。|ゆうべ、はやく おきました。
+ここは しずかです。|ここは うるさくないです。|ここは にぎやかです。|ここは ひろくないです。|ここは あかるくないです。
+わたしの おとうとは じゅうごさいです。|わたしの おとうとは わたしより わかいです。|わたしの おとうとは わたしより としうえです。|わたしの おとうとは わたしと おなじ としです。|わたしの おとうとは がくせいじゃありません。
+あの みせは やすいです。|あの みせは たかくないです。|あの みせは やすくないです。|あの みせは ひろくないです。|あの みせは ちかくないです。
+ここで たばこを すわないで ください。|ここは たばこを すっては いけません。|ここは たばこを すっても いいです。|ここは たばこを すいたくないです。|ここは たばこを すいませんでした。
+あしたは やすみです。|あした、かいしゃに いきません。|あした、かいしゃに いきます。|あした、かいしゃから かえります。|あした、かいしゃに きます。
+ははは かいものに いきました。|ははは いま うちに いません。|ははは いま うちに います。|ははは いま ねています。|ははは いま ごはんを つくっています。
+この かばんは おもくありません。|この かばんは かるいです。|この かばんは おもいです。|この かばんは ちいさいです。|この かばんは あたらしいです。
+ちちは かいしゃいんです。|ちちは かいしゃで はたらいています。|ちちは かいしゃに いきません。|ちちは かいしゃを つくりました。|ちちは がっこうで はたらいています。
+ゆうびんきょくは あの ビルの となりです。|ゆうびんきょくの となりに あの ビルが あります。|ゆうびんきょくの うしろに あの ビルが あります。|ゆうびんきょくの まえに あの ビルが あります。|ゆうびんきょくの なかに あの ビルが あります。
+パーティーは 7じに おわりました。|パーティーは 7じまででした。|パーティーは 7じから でした。|パーティーは 7じに はじまりました。|パーティーは 7じに いきました。
+おなかが いっぱいです。|もう たべたくないです。|もっと たべたいです。|すこし たべました。|まだ たべていません。
+あの かたは わたしの せんせいです。|あの ひとは わたしの せんせいです。|あの ひとは わたしの ともだちです。|あの ひとは わたしの がくせいです。|あの ひとは わたしの きょうだいです。`.split("\n").map(l => l.split("|"));
+
+EX_M3.push(...`ともだちに ＿＿を もらいました。|プレゼント|おなか|てんき|あさ
+あついですから、＿＿を のみたいです。|みず|かさ|いす|ほん
+ここは ＿＿です。ほんが たくさん あります。|としょかん|やおや|ぎんこう|ゆうびんきょく
+いもうとは ＿＿が じょうずです。|うた|あめ|くつ|えき
+この りんごは ＿＿ですか。|いくら|だれ|どこ|いつ
+ともだちが ＿＿ きました。|ふたり|ふたつ|にまい|にほん
+りんごを ＿＿ かいました。|みっつ|さんにん|さんぼん|さんさつ
+ほんを ＿＿ かりました。|さんさつ|さんびき|さんぼん|さんだい
+ビールを ＿＿ ください。|にほん|にさつ|にだい|にひき
+くるまが ＿＿ とまっています。|さんだい|さんまい|さんさつ|さんびき
+かみを ＿＿ ください。|いちまい|いっぽん|いっさつ|いっこ
+うちに ねこが ＿＿ います。|にひき|にだい|にまい|にほん
+この みせの ラーメンは ＿＿ですから、すきです。|おいしい|うるさい|いそがしい|ねむい
+おふろは ＿＿ですから、はいれません。|あつい|あかるい|おもい|とおい
+この もんだいは ＿＿ですから、わかりません。|むずかしい|やさしい|おいしい|あかるい
+この じしょは ＿＿ですから、もつのが たいへんです。|おもい|あまい|からい|ひくい
+にほんごの テストは ＿＿ですから、すぐ おわりました。|やさしい|むずかしい|いそがしい|ながい
+へやが ＿＿ですから、でんきを つけます。|くらい|あかるい|ひろい|うるさい
+ここは ＿＿ですから、べんきょうが できます。|しずか|にぎやか|じょうず|げんき
+まいあさ しんぶんを ＿＿。|よみます|のります|あびます|はきます
+あさ、シャワーを ＿＿。|あびます|ひきます|はきます|きます
+ここに くるまを ＿＿ ください。|とめて|あびて|はいて|きて
+じてんしゃに ＿＿ がっこうへ いきます。|のって|おりて|あけて|ふいて
+でんきを ＿＿ ください。|けして|ぬいで|あびて|はいて
+あした テストが ありますから、いま ＿＿ います。|べんきょうして|かりて|ぬいで|あびて
+ゆっくり ＿＿ ください。|はなして|ぬいで|あびて|はいて
+ともだちを ここで ＿＿ います。|まって|かりて|おりて|ぬいで
+ここで くつを ＿＿ ください。|ぬいで|あけて|かけて|ひいて
+がっこうは 9じに ＿＿。|はじまります|あらいます|はきます|かけます
+きのう ともだちと えいがを ＿＿。|みました|ひきました|あびました|はきました
+たなかさんは めがねを ＿＿ います。|かけて|あびて|のんで|ひいて
+ピアノを ＿＿ のが すきです。|ひく|あびる|かぶる|はく
+あついので、＿＿を つけます。|エアコン|ノート|テープ|コップ
+この ＿＿で ごはんを たべます。|レストラン|エレベーター|ポスト|プール
+＿＿に のって、5かいに いきます。|エレベーター|ポスト|ラジオ|ストーブ
+＿＿を ひらいて、メールを かきます。|パソコン|ズボン|ナイフ|スプーン
+＿＿で スープを のみます。|スプーン|ナイフ|ペン|ボタン
+あした ＿＿が ありますから、べんきょうします。|テスト|ストーブ|スカート|ボールペン
+＿＿を はいて、あるきます。|ズボン|ネクタイ|シャツ|セーター
+わたしは よく ＿＿を ききます。|おんがく|にく|きって|おふろ
+＿＿で にほんの ニュースを みます。|テレビ|はし|くつ|かばん
+＿＿を のんで、ねます。|くすり|けさ|ふく|おふろ
+しろい ＿＿を きています。|シャツ|くつ|ぼうし|めがね
+＿＿に はいって、からだを あらいます。|おふろ|ひこうき|レストラン|れいぞうこ
+さむいですから、＿＿を つけます。|ストーブ|カメラ|ボタン|スプーン
+ははは まいにち ＿＿を つくります。|ゆうごはん|ぎんこう|ひこうき|でんわ
+＿＿、ともだちと あいました。|きのう|あした|らいしゅう|らいねん
+この みちは ＿＿ですから、いつも ひとが たくさん います。|ゆうめい|しずか|ひま|きらい
+ゆうびんきょくで ＿＿を かいます。|きって|ぎゅうにゅう|くつ|ネクタイ
+おとうとは まいにち ＿＿を します。|しゅくだい|かぜ|ゆき|ほし`.split("\n").map(l => l.split("|")));
+EX_M4.push(...`わたしは まいにち じてんしゃで がっこうに いきます。|わたしは まいにち じてんしゃに のって がっこうに いきます。|わたしは まいにち あるいて がっこうに いきます。|わたしは まいにち でんしゃに のって がっこうに いきます。|わたしは まいにち バスに のって がっこうに いきます。
+この かばんは たかいです。|この かばんは やすくないです。|この かばんは たかくないです。|この かばんは おもくないです。|この かばんは ちいさくないです。
+きょうは だれも きませんでした。|きょうは ひとが ひとりも きませんでした。|きょうは ひとが たくさん きました。|きょうは ひとが ひとり きました。|きょうは だれかが きました。
+ともだちに ほんを かしました。|ともだちは わたしから ほんを かりました。|ともだちは わたしに ほんを かしました。|わたしは ともだちから ほんを かりました。|わたしは ともだちの ほんを かいました。
+わたしの うちは がっこうに ちかいです。|わたしの うちから がっこうは とおくないです。|わたしの うちから がっこうは とおいです。|わたしの うちは ひろいです。|わたしの うちは あたらしいです。
+わたしは まいにち 8じに うちを でます。|わたしは まいにち 8じに うちから でかけます。|わたしは まいにち 8じに うちに かえります。|わたしは まいにち 8じに うちに つきます。|わたしは まいにち 8じに うちで ごはんを たべます。
+この もんだいは やさしいです。|この もんだいは むずかしくないです。|この もんだいは むずかしいです。|この もんだいは おもしろくないです。|この もんだいは ながいです。
+たなかさんは きのう がっこうを やすみました。|たなかさんは きのう がっこうに きませんでした。|たなかさんは きのう がっこうに きました。|たなかさんは きのう がっこうで べんきょうしました。|たなかさんは きのう がっこうに いきたいです。
+この へやに テレビは ありません。|この へやに テレビは ないです。|この へやに テレビが あります。|この へやで テレビを かいます。|この へやの テレビは ふるいです。`.split("\n").map(l => l.split("|")));
+
+const EX_GR = [{"g1":[{"s":"わたしは まいあさ 六時《ろくじ》（　）起《お》きます。","o":["に","を","で","が"],"a":1},{"s":"きのうは 雨《あめ》（　）ふりました。","o":["が","を","に","で"],"a":1},{"s":"つくえの 上《うえ》（　）ほんが 二《ふた》つ あります。","o":["を","で","に","へ"],"a":3},{"s":"A「この シャツは （　）ですか。」\nB「千円《せんえん》です。」","o":["いつ","どこ","いくら","だれ"],"a":3},{"s":"山下《やました》「（　）で 本《ほん》を 買《か》いましたか。」\n田中《たなか》「えきの 前《まえ》の 店《みせ》で 買《か》いました。」","o":["だれ","いつ","なんじ","どこ"],"a":4},{"s":"あしたは 雨《あめ》ですから、どこへも 行《い》き（　）。","o":["ます","ません","ました","たいです"],"a":2},{"s":"きのうは 雨《あめ》（　）、どこへも 行《い》きませんでした。","o":["で","が","を","に"],"a":1},{"s":"ここは しずか（　）へやです。","o":["な","に","で","い"],"a":1},{"s":"ノートを 三《さん》（　）買《か》いました。","o":["まい","ほん","さつ","だい"],"a":3},{"s":"きのう おなかが いたかった（　）、学校《がっこう》を 休《やす》みました。","o":["から","と","を","に"],"a":1},{"s":"A「いま 何《なに》を して いますか。」\nB「本《ほん》を 読《よ》んで（　）。」","o":["ありません","いきます","ください","います"],"a":4},{"s":"わたしは ねこ（　）すきです。","o":["が","に","で","へ"],"a":1},{"s":"パン（　）ぎゅうにゅうを 買《か》いました。","o":["に","が","と","へ"],"a":3},{"s":"月曜日《げつようび》から 金曜日《きんようび》（　）、学校《がっこう》が あります。","o":["ごろ","から","ぐらい","まで"],"a":4},{"s":"雨《あめ》が ふって います。かさを （　）ください。","o":["持《も》つ","持《も》って","持《も》ち","持《も》たな"],"a":2},{"s":"ここで しゃしんを とって（　）いいですか。","o":["が","を","は","も"],"a":4}],"g2":[{"s":"つくえの ＿ ＿ ★ ＿ あります。","o":["かばんが","二《ふた》つ","上《うえ》に","赤《あか》い"],"ord":[3,4,1,2],"star":3,"a":1},{"s":"あの ＿ ★ ＿ ＿ 人《ひと》は 田中《たなか》さんです。","o":["いる","白《しろ》い","きて","シャツを"],"ord":[2,4,3,1],"star":2,"a":4},{"s":"田中《たなか》さんは ＿ ＿ ★ ＿ 人《ひと》です。","o":["いる","兄《あに》の","はたらいて","会社《かいしゃ》で"],"ord":[2,4,3,1],"star":3,"a":3},{"s":"田中《たなか》さんは ＿ ＿ ★ ＿ はたらいて います。","o":["ある","ぎんこうで","駅《えき》の","前《まえ》に"],"ord":[3,4,1,2],"star":3,"a":1},{"s":"これは きのう ＿ ＿ ＿ ★ かばんです。","o":["店《みせ》で","買《か》った","前《まえ》の","駅《えき》の"],"ord":[4,3,1,2],"star":4,"a":2}],"g3":{"p":"きのうは 日曜日《にちようび》でした。あさから 雨《あめ》が 【1】 いました。【2】、どこへも 行《い》きませんでした。うちで 母《はは》【3】 いっしょに ケーキを 作《つく》りました。ケーキは すこし あまかったです。【4】、とても おいしかったです。それから、友《とも》だち【5】 でんわを かけました。","q":[{"o":["ふる","ふって","ふり","ふった"],"a":2},{"o":["でも","それから","だから","あと"],"a":3},{"o":["を","に","が","と"],"a":4},{"o":["ですから","でも","だから","それから"],"a":2},{"o":["に","を","が","の"],"a":1}]},"r4":[{"p":"田中《たなか》さんへ\nわたしは きょう かぜで 学校《がっこう》を 休《やす》みます。あしたは 行《い》きます。きょうの しゅくだいは 十五《じゅうご》ページの 三《さん》ばんです。すみませんが、おしえて ください。\n山下《やました》","q":"山下《やました》さんは 田中《たなか》さんに 何《なに》を おねがいしましたか。","o":["ノートを かして ください。","しゅくだいを おしえて ください。","学校《がっこう》へ 来《き》て ください。","かぜの くすりを 買《か》って ください。"],"a":2},{"p":"きのうは 友《とも》だちの たんじょうびでした。わたしは プレゼントに 花《はな》を 買《か》って、友《とも》だちの うちへ 行《い》きました。友《とも》だちは 「ありがとう」と 言《い》いました。そして、みんなで ケーキを 食《た》べました。","q":"きのう 「わたし」は 何《なに》を しましたか。","o":["ケーキを 作《つく》って、うちで 食《た》べました。","友《とも》だちから 花《はな》を もらいました。","友《とも》だちと 学校《がっこう》へ 行《い》きました。","花《はな》を 買《か》って、友《とも》だちの うちへ 行《い》きました。"],"a":4},{"p":"山田《やまだ》さん\nあしたの ハイキングは 雨《あめ》ですから、やめます。あさっての 土曜日《どようび》に します。時間《じかん》は おなじです。駅《えき》に 九時《くじ》に 来《き》て ください。\nたなか","q":"ハイキングは いつに なりましたか。","o":["あした 九時《くじ》","きょう 九時《くじ》","土曜日《どようび》の 九時《くじ》","あさって 十時《じゅうじ》"],"a":3}],"r5":[{"p":"日曜日《にちようび》に 友《とも》だちの 田中《たなか》さんと かいものに 行《い》きました。わたしは 白《しろ》い くつを 買《か》いたかったです。でも、高《たか》くて 買《か》いませんでした。田中《たなか》さんは 赤《あか》い かばんを 買《か》いました。そのあと、二人《ふたり》で きっさてんで お茶《ちゃ》を のみました。お茶《ちゃ》は 二《ふた》つで 四百円《よんひゃくえん》でした。うちへ 帰《かえ》る とき、雨《あめ》が ふって いました。田中《たなか》さんの かさで いっしょに 帰《かえ》りました。","q":"「わたし」は どうして くつを 買《か》いませんでしたか。","o":["高《たか》かったから","雨《あめ》が ふって いたから","白《しろ》い くつが なかったから","田中《たなか》さんが 買《か》ったから"],"a":1},{"p":"わたしの 学校《がっこう》は 九時《くじ》に はじまります。わたしは まいあさ 七時《しちじ》に うちを 出《で》て、バスで 駅《えき》へ 行《い》きます。駅《えき》から 学校《がっこう》まで 歩《ある》いて 十五分《じゅうごふん》です。でも、きょうは 雨《あめ》が たくさん ふって いましたから、駅《えき》から 学校《がっこう》まで バスに のりました。バスは 人《ひと》が 多《おお》かったですが、九時《くじ》五分前《ごふんまえ》に 学校《がっこう》へ 来《き》ました。よかったです。","q":"「わたし」は きょう 駅《えき》から 学校《がっこう》まで どうやって 行《い》きましたか。","o":["歩《ある》いて","電車《でんしゃ》で","じてんしゃで","バスで"],"a":4}],"r6":{"p":"スーパー ひまわり セール\nりんご （一《ひと》ふくろ） 三百円《さんびゃくえん》\nたまご （一《ひと》パック） 二百円《にひゃくえん》\nぎゅうにゅう （一本《いっぽん》） 百五十円《ひゃくごじゅうえん》\nパン （一《ひと》つ） 百円《ひゃくえん》\n◎ 日曜日《にちようび》は ぜんぶ 一《ひと》つ 十円《じゅうえん》 安《やす》く なります。\n時間《じかん》： 九時《くじ》～ 八時《はちじ》\n休《やす》み： 水曜日《すいようび》","q":"日曜日《にちようび》に りんごを 一《ひと》ふくろと、たまごを 一《ひと》パック 買《か》うと、いくらですか。","o":["五百円《ごひゃくえん》","四百八十円《よんひゃくはちじゅうえん》","四百五十円《よんひゃくごじゅうえん》","五百十円《ごひゃくじゅうえん》"],"a":2}},{"g1":[{"s":"ちちは 会社《かいしゃ》（　）はたらいて います。","o":["で","に","が","を"],"a":1},{"s":"わたしは 母《はは》（　）プレゼントを あげました。","o":["と","を","に","で"],"a":3},{"s":"えきまで バス（　）行《い》きます。","o":["を","に","が","で"],"a":4},{"s":"学校《がっこう》まで 電車《でんしゃ》で どのぐらい（　）か。","o":["かきます","かかります","あります","します"],"a":2},{"s":"A「あれは （　）の かさですか。」\nB「山下《やました》さんの です。」","o":["いつ","どこ","だれ","なに"],"a":3},{"s":"うちに いぬが 二《に》（　）います。","o":["ひき","ほん","まい","だい"],"a":1},{"s":"あの 店《みせ》の カレーは おいしいです（　）、すこし 高《たか》いです。","o":["へ","が","を","に"],"a":2},{"s":"わたしは まだ ごはんを 食《た》べて（　）。","o":["います","ありません","ください","いません"],"a":4},{"s":"ともだちが うちへ 来《き》ます。いま へやを そうじして（　）。","o":["ありません","いきます","います","したい"],"a":3},{"s":"わたしの しゅみは 本《ほん》を 読《よ》む（　）です。","o":["こと","とき","ところ","ほう"],"a":1},{"s":"わたしは テニス（　）じょうずです。","o":["に","を","へ","が"],"a":4},{"s":"ここで たばこを すわ（　）ください。","o":["ない","ないで","なくて","なかった"],"a":2},{"s":"あした 天気《てんき》が よ（　）なります。","o":["に","で","く","な"],"a":3},{"s":"この バスは えき（　）行《い》きますか。","o":["へ","を","が","で"],"a":1},{"s":"A「（　）のみものが すきですか。」\nB「あたたかい お茶《ちゃ》が すきです。」","o":["いくつ","どこ","いつ","どんな"],"a":4},{"s":"山下《やました》さんの かぞくは （　）ですか。","o":["なんまい","何人《なんにん》","なんびき","なんさい"],"a":2}],"g2":[{"s":"あの、＿ ★ ＿ ＿ ですか。","o":["どこ","バスは","行《い》く","駅《えき》へ"],"ord":[4,3,2,1],"star":2,"a":3},{"s":"あの ＿ ＿ ＿ ★ いる 人《ひと》は 田中《たなか》さんの お父《とう》さんです。","o":["立《た》って","青《あお》い","前《まえ》に","車《くるま》の"],"ord":[2,4,3,1],"star":4,"a":1},{"s":"すみません、＿ ★ ＿ ＿ ください。","o":["見《み》せて","シャツを","その","赤《あか》い"],"ord":[3,4,2,1],"star":2,"a":4},{"s":"山下《やました》さんの ＿ ＿ ★ ＿ わたしの 母《はは》です。","o":["人《ひと》は","いる","となりに","すわって"],"ord":[3,4,2,1],"star":3,"a":2},{"s":"先週《せんしゅう》、母《はは》に ＿ ＿ ★ ＿。","o":["あげました","赤《あか》い","買《か》って","ぼうしを"],"ord":[2,4,3,1],"star":2,"a":4}],"g3":{"p":"日曜日《にちようび》に 家族《かぞく》と すしを 食《た》べ【1】 行《い》きました。うちから 店《みせ》まで 電車《でんしゃ》【2】 三十分《さんじゅっぷん》 かかりました。店《みせ》は 人《ひと》が とても 多《おお》かったです。【3】、三十分《さんじゅっぷん》 待《ま》ちました。すしは 安《やす》くて おいしかったです。わたしは さかなが 【4】 すきですから、たくさん 食《た》べました。母《はは》は 「また 来《き》ましょう」と 【5】。","q":[{"o":["を","が","に","で"],"a":3},{"o":["で","を","に","が"],"a":1},{"o":["でも","だから","では","それとも"],"a":2},{"o":["あまり","ぜんぶ","とても","ちっとも"],"a":3},{"o":["食《た》べました","行《い》きました","買《か》いました","言《い》いました"],"a":4}]},"r4":[{"p":"お知《し》らせ\n来週《らいしゅう》の 水曜日《すいようび》は、プールが 休《やす》みです。木曜日《もくようび》に また あきます。時間《じかん》は 九時《くじ》から 六時《ろくじ》までです。くつは 入《い》り口《ぐち》の はこに 入《い》れて ください。","q":"プールは いつ また あきますか。","o":["来週《らいしゅう》の 水曜日《すいようび》","来週《らいしゅう》の 木曜日《もくようび》","今週《こんしゅう》の 木曜日《もくようび》","来週《らいしゅう》の 金曜日《きんようび》"],"a":2},{"p":"お母《かあ》さんへ\nきょうは 友《とも》だちと ばんごはんを 食《た》べて、八時《はちじ》ごろ 帰《かえ》ります。うちでは ばんごはんを 食《た》べません。あしたは 学校《がっこう》が ありますから、早《はや》く ねます。ゆうた","q":"ゆうたさんは きょう どうしますか。","o":["うちで ばんごはんを 食《た》べます。","友《とも》だちと 食《た》べて、八時《はちじ》ごろ 帰《かえ》ります。","八時《はちじ》に 友《とも》だちと うちで 食《た》べます。","ばんごはんを 作《つく》って 待《ま》ちます。"],"a":2},{"p":"わたしの しゅみは 山《やま》に 行《い》く ことです。先月《せんげつ》、友《とも》だちと 山《やま》へ 行《い》きました。山《やま》の 上《うえ》は とても さむかったです。でも、空《そら》が きれいでした。","q":"山《やま》の 上《うえ》は どうでしたか。","o":["あつかったです。でも、空《そら》が きれいでした。","さむかったです。でも、空《そら》が くらかったです。","あつくて、空《そら》も あつかったです。","さむかったです。でも、空《そら》が きれいでした。"],"a":4}],"r5":[{"p":"わたしの かぞくは 四人《よにん》です。父《ちち》は 会社《かいしゃ》で はたらいて います。まいあさ 六時《ろくじ》に うちを 出《で》て、電車《でんしゃ》で 会社《かいしゃ》へ 行《い》きます。母《はは》は 近《ちか》くの 花《はな》の 店《みせ》で はたらいて います。姉《あね》は 大学生《だいがくせい》で、まいにち バスで 大学《だいがく》へ 行《い》きます。日曜日《にちようび》は、みんなで いっしょに ごはんを 作《つく》ります。父《ちち》が 作《つく》る カレーは とても おいしいです。","q":"「わたし」の 母《はは》は どこで はたらいて いますか。","o":["会社《かいしゃ》","大学《だいがく》","花《はな》の 店《みせ》","うち"],"a":3},{"p":"わたしの しゅみは りょうりです。毎週《まいしゅう》 日曜日《にちようび》に 友《とも》だちを うちに よんで、いっしょに ごはんを 作《つく》ります。先週《せんしゅう》は カレーを 作《つく》りました。わたしが やさいを きって、友《とも》だちが 肉《にく》を 入《い》れました。カレーは すこし あまかったです。でも、みんな 「おいしい」と 言《い》いました。来週《らいしゅう》は すしを 作《つく》りたいです。みんなで 話《はな》すのが とても たのしいです。","q":"先週《せんしゅう》、友《とも》だちは 何《なに》を しましたか。","o":["肉《にく》を 入《い》れました。","やさいを きりました。","すしを 作《つく》りました。","カレーを 買《か》いました。"],"a":1}],"r6":{"p":"こども えいが かい\n日《ひ》： 三月《さんがつ》 十日《とおか》 （日曜日《にちようび》）\n時間《じかん》： 午前《ごぜん》 十時《じゅうじ》から 十二時《じゅうにじ》まで\nところ： 町《まち》の としょかん\nお金《かね》： おとな 五百円《ごひゃくえん》、こども 二百円《にひゃくえん》\n三《さん》さいまでの こどもは 0円《えん》です。","q":"母《はは》と、六《ろく》さいの 子《こ》と、二《に》さいの 子《こ》が 行《い》きます。ぜんぶで いくらですか。","o":["五百円《ごひゃくえん》","九百円《きゅうひゃくえん》","四百円《よんひゃくえん》","七百円《ななひゃくえん》"],"a":4}},{"g1":[{"s":"あした 友《とも》だち（　）いっしょに えいがを 見《み》ます。","o":["を","と","が","で"],"a":2},{"s":"A「あした わたしの うちへ（　）ませんか。」 B「ええ、ありがとう。」","o":["こ","くる","き","きて"],"a":3},{"s":"A「パーティーは（　）からですか。」 B「六時《ろくじ》からです。」","o":["何時《なんじ》","何人《なんにん》","何《なに》","どこ"],"a":1},{"s":"なつは あついです（　）、あきは すずしいです。","o":["を","に","へ","が"],"a":4},{"s":"わたしは ふゆ（　）いちばん すきです。","o":["を","が","へ","で"],"a":2},{"s":"A「何人《なんにん》で 行《い》きますか。」 B「わたしと 友《とも》だちの（　）です。」","o":["ひとつ","いちまい","ふたり","さんびき"],"a":3},{"s":"山下《やました》「きのう どこで ばんごはんを 食《た》べましたか。」 田中《たなか》「えきの ちかくの レストラン（　）食《た》べました。」","o":["で","に","を","へ"],"a":1},{"s":"きょうは（　）ですから、コートを きます。","o":["さむく","さむくて","さむだ","さむい"],"a":4},{"s":"ごはんを 食《た》べる（　）、てを あらいます。","o":["まえに","あとで","ながら","たり"],"a":1},{"s":"A「いっしょに ごはんを 食《た》べに 行《い》きませんか。」 B「ええ、わたしも（　）。」","o":["行《い》きません","行《い》きました","行《い》きたいです","行《い》きませんか"],"a":3},{"s":"A「ラーメンと カレーと どちらが すきですか。」 B「カレー（　）すきです。」","o":["よりが","のほうが","がほうが","はほうが"],"a":2},{"s":"デパートへ プレゼントを 買《か》い（　）行《い》きます。","o":["を","で","が","に"],"a":4},{"s":"この レストランは きれい（　）、ひろいです。","o":["く","で","に","な"],"a":2},{"s":"なつは あついです。（　）、わたしは なつが すきです。","o":["だから","それから","でも","では"],"a":3},{"s":"わたしは まいにち 学校《がっこう》（　）うちまで あるきます。","o":["から","に","で","が"],"a":1},{"s":"きのうは あめでしたから、どこへも（　）。","o":["行《い》きます","行《い》きました","行《い》きませんでした","行《い》きましょう"],"a":3}],"g2":[{"s":"すみません、＿ ＿ ★ ＿ ください。","o":["赤《あか》い","かばんを","見《み》せて","その"],"ord":[4,1,2,3],"star":3,"a":2},{"s":"あした、＿ ＿ ★ ＿ 行《い》きます。","o":["たんじょうびの","わたしの","パーティーに","友《とも》だちの"],"ord":[2,4,1,3],"star":3,"a":1},{"s":"わたしは ＿ ＿ ★ ＿ いちばん すきです。","o":["きせつの","あきが","中《なか》で","四《よっ》つの"],"ord":[4,1,3,2],"star":3,"a":3},{"s":"この レストランは ＿ ＿ ★ ＿ か。","o":["何時《なんじ》","います","まで","あいて"],"ord":[1,3,4,2],"star":3,"a":4},{"s":"いま、わたしは ＿ ＿ ★ ＿。","o":["見《み》て","母《はは》の","います","しゃしんを"],"ord":[2,4,1,3],"star":3,"a":1}],"g3":{"p":"わたしは きのう、友《とも》だちの 山下《やました》さん【1】 でんわを しました。「日曜日《にちようび》に いっしょに レストランへ 行《い》きませんか。」と 言《い》いました。山下《やました》さんは「いいですね。わたしも あの レストランへ 行《い》き【2】です。」と 言《い》いました。あの レストランは あたらし【3】、りょうりが おいしいです。【4】、すこし 高《たか》いです。日曜日《にちようび》は 五時《ごじ》【5】 えきで 会《あ》います。","q":[{"o":["を","が","で","に"],"a":4},{"o":["たい","たく","ます","ませ"],"a":1},{"o":["いくて","いで","くて","いて"],"a":3},{"o":["だから","でも","それから","では"],"a":2},{"o":["で","に","を","が"],"a":2}]},"r4":[{"p":"山下《やました》さんへ\nあした、いっしょに えいがを 見《み》ませんか。えいがは 三時《さんじ》からです。えきの 前《まえ》で 二時半《にじはん》に 会《あ》いましょう。\n田中《たなか》","q":"二人《ふたり》は 何時《なんじ》に 会《あ》いますか。","o":["二時《にじ》","三時《さんじ》","二時半《にじはん》","三時半《さんじはん》"],"a":3},{"p":"きょうは 十月《じゅうがつ》十日《とおか》です。すずしく なりました。こうえんの 木《き》が すこし 赤《あか》く なって います。あした、友《とも》だちと こうえんへ 行《い》って、おべんとうを 食《た》べます。","q":"「わたし」は あした なにを しますか。","o":["友《とも》だちと こうえんで おべんとうを 食《た》べます。","かぞくと えいがを 見《み》ます。","ひとりで 木《き》を 見《み》ます。","うちで 休《やす》みます。"],"a":1},{"p":"山下《やました》さん、すみません。あしたの パーティーは 六時《ろくじ》では ありません。七時《しちじ》からです。ばしょは 山下《やました》さんの うちです。\n田中《たなか》","q":"パーティーは なんじから ですか。","o":["五時《ごじ》","六時《ろくじ》","八時《はちじ》","七時《しちじ》"],"a":4}],"r5":[{"p":"わたしは ふゆが すきです。ゆきが ふると、とても きれいだからです。日曜日《にちようび》は 友《とも》だちと 山《やま》へ 行《い》って、ゆきで あそびます。その あとで、小《ちい》さい レストランで あついスープを 飲《の》みます。わたしの 母《はは》は ふゆが きらいです。さむいからです。でも、母《はは》も スープは すきです。","q":"「わたし」は 日曜日《にちようび》に なにを しますか。","o":["うちで ひとりで スープを 飲《の》みます。","えいがを 見《み》に 行《い》きます。","山《やま》で ゆきを 見《み》て、あとで うちで ねます。","友《とも》だちと 山《やま》へ 行《い》って あそんで、レストランで スープを 飲《の》みます。"],"a":4},{"p":"田中《たなか》さん\nこんにちは。来週《らいしゅう》の 金曜日《きんようび》は わたしの たんじょうびです。うちの ちかくの イタリアの レストランで ごはんを 食《た》べます。友《とも》だちが 五人《ごにん》 来《き》ます。田中《たなか》さんも 来《き》ませんか。六時《ろくじ》に レストランの 前《まえ》で 会《あ》いましょう。ピザが とても おいしい みせです。\n山下《やました》","q":"金曜日《きんようび》に 山下《やました》さんは なにを しますか。","o":["田中《たなか》さんの うちで ケーキを 作《つく》ります。","友《とも》だちと レストランで ごはんを 食《た》べます。","しごとを して、七時《しちじ》に かえります。","えきで 田中《たなか》さんを 待《ま》ちます。"],"a":2}],"r6":{"p":"レストラン「さくら」\n【メニュー】\nラーメン　六百円《ろっぴゃくえん》\nカレー　七百円《ななひゃくえん》\nサラダ　三百円《さんびゃくえん》\nコーヒー　二百円《にひゃくえん》\n【ランチセット】十一時《じゅういちじ》から 二時《にじ》まで\nラーメン＋サラダ　八百円《はっぴゃくえん》\nカレー＋コーヒー　八百円《はっぴゃくえん》","q":"山下《やました》さんは 午後《ごご》一時《いちじ》に カレーと コーヒーを たのみます。いくらですか。","o":["八百円《はっぴゃくえん》","六百円《ろっぴゃくえん》","七百円《ななひゃくえん》","九百円《きゅうひゃくえん》"],"a":1}},{"g1":[{"s":"父《ちち》は まいあさ 七時《しちじ》（　）しごとに 行《い》きます。","o":["を","に","が","と"],"a":2},{"s":"田中《たなか》「もしもし、山下《やました》さんの うちですか。」 山下《やました》「はい、そうです。（　）ですか。」","o":["どこ","どなた","なに","いつ"],"a":2},{"s":"A「りょこうは（　）行《い》きましたか。」 B「友《とも》だちと 行《い》きました。」","o":["いつと","どこと","なにと","だれと"],"a":4},{"s":"へやが きたないです（　）、そうじを します。","o":["から","を","で","に"],"a":1},{"s":"家《いえ》の 前《まえ》に 車《くるま》が 二《に》（　）とまって います。","o":["ほん","まい","だい","ひき"],"a":3},{"s":"ここで たばこを すっては（　）。","o":["ありません","いけません","いいません","しません"],"a":2},{"s":"田中《たなか》「もしもし、田中《たなか》ですが、山下《やました》さんは いますか。」 母《はは》「いま、ちょっと 出《で》かけて（　）。」","o":["あります","ください","います","ましょう"],"a":3},{"s":"すみません、もう いちど ゆっくり（　）ください。","o":["話《はな》し","話《はな》す","話《はな》した","話《はな》して"],"a":4},{"s":"まだ しごとが おわって（　）。","o":["いません","いきません","ありません","ませんでした"],"a":1},{"s":"ホテルは えき（　）あるいて 五分《ごふん》です。","o":["を","が","から","へ"],"a":3},{"s":"ここから くうこう（　）バスで 一時間《いちじかん》 かかります。","o":["が","を","と","まで"],"a":4},{"s":"休《やす》みの 日《ひ》は ほんを 読《よ》んだり、テレビを 見《み》（　）します。","o":["たり","て","ながら","ない"],"a":1},{"s":"さむいですから、まどを（　）ください。","o":["あけて","しめて","つけて","けして"],"a":2},{"s":"この へやは ひろくて（　）。","o":["あかるく","あかるいだ","あかるくです","あかるいです"],"a":4},{"s":"かいぎは 九時《くじ》から 十時《じゅうじ》（　）です。","o":["に","を","まで","が"],"a":3},{"s":"きのうの ばん、あたまが いたかったので、はやく（　）。","o":["寝《ね》ました","寝《ね》ます","寝《ね》ましょう","寝《ね》たいです"],"a":1}],"g2":[{"s":"山下《やました》さんは ＿ ＿ ★ ＿ はたらいて います。","o":["ある","会社《かいしゃ》で","駅《えき》の","前《まえ》に"],"ord":[3,4,1,2],"star":3,"a":1},{"s":"この くすりを ＿ ＿ ★ ＿ ください。","o":["飲《の》んで","食《た》べた","あとで","ごはんを"],"ord":[4,2,3,1],"star":2,"a":2},{"s":"スーパーは ＿ ＿ ★ ＿。","o":["あの","中《なか》に","たてものの","あります"],"ord":[1,3,2,4],"star":3,"a":2},{"s":"すみません、＿ ＿ ★ ＿ ください。","o":["教《おし》えて","この","くすりの","名前《なまえ》を"],"ord":[2,3,4,1],"star":3,"a":4},{"s":"来月《らいげつ》、わたしは ＿ ＿ ★ ＿。","o":["行《い》って","北《きた》の","みます","町《まち》へ"],"ord":[2,4,1,3],"star":3,"a":1}],"g3":{"p":"きのう、あたまが いたかった【1】、会社《かいしゃ》を 休《やす》みました。そして、病院《びょういん》【2】 行《い》きました。医者《いしゃ》は「かぜですね。くすりを 飲《の》んで、休《やす》んで ください。」と 言《い》いました。【3】、うちへ 帰《かえ》って、くすりを 飲《の》んで、寝《ね》ました。きょうは もう げんき【4】。会社《かいしゃ》の 人《ひと》と 電話《でんわ》【5】 話《はな》しました。","q":[{"o":["のに","のを","ので","のが"],"a":3},{"o":["へ","を","が","で"],"a":1},{"o":["でも","では","それとも","それから"],"a":4},{"o":["ます","です","ました","ません"],"a":2},{"o":["を","に","が","で"],"a":4}]},"r4":[{"p":"田中《たなか》さんへ\n十時《じゅうじ》ごろ、山下《やました》さんから でんわが ありました。あしたの かいぎは 九時《くじ》では ありません。十時《じゅうじ》からです。\n山口《やまぐち》","q":"かいぎは なんじから ですか。","o":["十時《じゅうじ》","九時《くじ》","十一時《じゅういちじ》","八時《はちじ》"],"a":1},{"p":"わたしは 先月《せんげつ》、あたらしい 家《いえ》を 買《か》いました。えきから ちかいです。へやは 二《ふた》つ あります。ひろい にわは ありませんが、小《ちい》さい 花《はな》の にわが あります。","q":"あたらしい 家《いえ》に ある ものは なんですか。","o":["ひろい にわ","小《ちい》さい 花《はな》の にわ","三《みっ》つの へや","大《おお》きい 花《はな》の にわ"],"a":2},{"p":"山下《やました》さんは きのうから ねつが あります。きょうは 学校《がっこう》を 休《やす》みました。あした、医者《いしゃ》に 行《い》きます。そして、くすりを もらいます。","q":"山下《やました》さんは あした なにを しますか。","o":["学校《がっこう》へ 行《い》って べんきょうします。","うちで ほんを 読《よ》みます。","医者《いしゃ》に 行《い》って、くすりを もらいます。","友《とも》だちに でんわを します。"],"a":3}],"r5":[{"p":"先週《せんしゅう》の 日曜日《にちようび》、家族《かぞく》と 山《やま》の こうえんへ 行《い》きました。家《いえ》から 車《くるま》で 二時間《にじかん》 かかりました。こうえんは とても 大《おお》きくて、花《はな》が たくさん ありました。そのあとで、魚《さかな》の りょうりを 食《た》べました。とても おいしかったです。かえりの 車《くるま》の 中《なか》で、父《ちち》は 話《はな》して いましたが、母《はは》と わたしは ねて いました。","q":"「わたし」は かえりの 車《くるま》の 中《なか》で 何《なに》を して いましたか。","o":["話《はな》して いました。","魚《さかな》の りょうりを 食《た》べて いました。","ねて いました。","本《ほん》を 読《よ》んで いました。"],"a":3},{"p":"山口《やまぐち》さんは 会社《かいしゃ》で 働《はたら》いて います。まいあさ 八時《はちじ》に 会社《かいしゃ》へ 行《い》きます。九時《くじ》から 十二時《じゅうにじ》まで しごとを して、ひるごはんを 食《た》べます。午後《ごご》は でんわで 話《はな》す しごとが 多《おお》いです。いつもは 五時《ごじ》に しごとが おわります。でも、月曜日《げつようび》と 木曜日《もくようび》は しごとが 長《なが》くて、七時《しちじ》ごろ 家《いえ》へ 帰《かえ》ります。","q":"山口《やまぐち》さんは いつ 七時《しちじ》ごろ 家《いえ》へ 帰《かえ》りますか。","o":["月曜日《げつようび》と 木曜日《もくようび》","火曜日《かようび》と 金曜日《きんようび》","水曜日《すいようび》と 木曜日《もくようび》","月曜日《げつようび》と 金曜日《きんようび》"],"a":1}],"r6":{"p":"さくら 病院《びょういん》\n月曜日《げつようび》・火曜日《かようび》・木曜日《もくようび》・金曜日《きんようび》\n　あさ 九時《くじ》から 十二時《じゅうにじ》まで\n　午後《ごご》 二時《にじ》から 五時《ごじ》まで\n水曜日《すいようび》・土曜日《どようび》\n　あさ 九時《くじ》から 十二時《じゅうにじ》まで\n日曜日《にちようび》　やすみ","q":"山下《やました》さんは 午後《ごご》三時《さんじ》に 医者《いしゃ》に 行《い》きたいです。いつ 行《い》けますか。","o":["水曜日《すいようび》","金曜日《きんようび》","土曜日《どようび》","日曜日《にちようび》"],"a":2}},{"g1":[{"s":"友《とも》だち（　）いっしょに こうえんへ 行《い》きます。","o":["と","を","が","に"],"a":1},{"s":"日曜日《にちようび》は こうえん（　）サッカーを します。","o":["を","で","が","へ"],"a":2},{"s":"たんじょうびに 姉《あね》（　）くつを もらいました。","o":["を","で","に","へ"],"a":3},{"s":"プールで 一時間《いちじかん》（　）およぎました。","o":["で","に","を","ぐらい"],"a":4},{"s":"わたしは テニス（　）好《す》きです。","o":["が","を","に","へ"],"a":1},{"s":"あしたは 雨《あめ》（　）ふりますから、サッカーは しません。","o":["を","が","に","で"],"a":2},{"s":"A「パーティーに（　）が 来《き》ますか。」 B「山田《やまだ》さんと 田中《たなか》さんです。」","o":["どこ","いつ","だれ","なに"],"a":3},{"s":"A「たんじょうびは（　）ですか。」 B「五月《ごがつ》十日《とおか》です。」","o":["どこ","だれ","なに","いつ"],"a":4},{"s":"A「この くつは（　）ですか。」 B「三千円《さんぜんえん》です。」","o":["いくら","いくつ","どれ","どこ"],"a":1},{"s":"本《ほん》を 五《ご》（　）かいました。","o":["まい","さつ","だい","ひき"],"a":2},{"s":"子《こ》どもが こうえんで 走《はし》（　）います。","o":["る","った","って","り"],"a":3},{"s":"こうえんで たばこを すわ（　）ください。","o":["なくて","ないに","ません","ないで"],"a":4},{"s":"あの 赤《あか》い（　）が わたしの かさです。","o":["の","に","で","を"],"a":1},{"s":"あしたは たんじょうびですから、プレゼントを かい（　）です。","o":["ます","たい","て","に"],"a":2},{"s":"A「いっしょに テニスを しませんか。」 B「ええ、（　）。」","o":["しません","しました","しましょう","しない"],"a":3},{"s":"わたしは テニスが あまり 上手《じょうず》（　）。","o":["ありません","です","ないです","じゃ ありません"],"a":4}],"g2":[{"s":"こうえんで ＿ ＿ ★ ＿ わたしの 兄《あに》です。","o":["いる","人《ひと》は","サッカーを","して"],"ord":[3,4,1,2],"star":2,"a":4},{"s":"雨《あめ》が ＿ ＿ ★ ＿ しません。","o":["から","テニスは","いる","ふって"],"ord":[4,3,1,2],"star":2,"a":3},{"s":"兄《あに》は ＿ ＿ ★ ＿。","o":["はいて","新《あたら》しい","います","くつを"],"ord":[2,4,1,3],"star":2,"a":4},{"s":"これは きのう ＿ ＿ ★ ＿ です。","o":["黒《くろ》い","かばん","もらった","友《とも》だちに"],"ord":[4,3,1,2],"star":2,"a":3},{"s":"ここで ＿ ＿ ★ ＿。","o":["ボールを","いけません","は","使《つか》って"],"ord":[1,4,3,2],"star":4,"a":2}],"g3":{"p":"きょうは 友《とも》だちの たんじょうびでした。わたしは 午後《ごご》二時《にじ》【1】 家《いえ》を 出《で》ました。友《とも》だち【2】 いっしょに こうえんへ 行《い》きました。そこで サッカーを しました。【3】、みんなで ケーキを 食《た》べました。わたしは 友《とも》だちに プレゼント【4】 あげました。友《とも》だちは 「ありがとう」と 言《い》いました。わたしも とても うれし【5】。","q":[{"o":["を","が","に","で"],"a":3},{"o":["と","に","で","を"],"a":1},{"o":["しかし","それから","だから","でも"],"a":2},{"o":["が","と","に","を"],"a":4},{"o":["いでした","くです","かったです","なかったです"],"a":3}]},"r4":[{"p":"山下《やました》さんへ\nあしたの こうえんの サッカーは 雨《あめ》ですから、ありません。来週《らいしゅう》の 土曜日《どようび》に します。時間《じかん》は おなじ 午前《ごぜん》九時《くじ》です。\n田中《たなか》","q":"サッカーは いつ ありますか。","o":["あしたの 午前《ごぜん》九時《くじ》","来週《らいしゅう》の 土曜日《どようび》の 午前《ごぜん》九時《くじ》","来週《らいしゅう》の 土曜日《どようび》の 午後《ごご》九時《くじ》","来週《らいしゅう》の 日曜日《にちようび》の 午前《ごぜん》九時《くじ》"],"a":2},{"p":"メモ\nとしょかんで 本《ほん》を 二《に》さつ かりました。かえす 日《ひ》は 来週《らいしゅう》の 水曜日《すいようび》です。水曜日《すいようび》は 学校《がっこう》の あとで 友《とも》だちと あそびますから、火曜日《かようび》に かえします。","q":"「わたし」は いつ 本《ほん》を かえしますか。","o":["きょう","水曜日《すいようび》","火曜日《かようび》","木曜日《もくようび》"],"a":3},{"p":"あしたは 母《はは》の たんじょうびです。わたしは 父《ちち》と デパートへ 行《い》きます。ケーキは 父《ちち》が つくります。わたしは 母《はは》に 花《はな》を かいます。","q":"「わたし」は あした 何《なに》を かいますか。","o":["ケーキ","くつ","本《ほん》","花《はな》"],"a":4}],"r5":[{"p":"日曜日《にちようび》、わたしは 兄《あに》と こうえんへ 行《い》きました。兄《あに》は テニスが とても 上手《じょうず》です。わたしは あまり 上手《じょうず》じゃ ありません。ですから、兄《あに》が わたしに テニスを 教《おし》えました。二時間《にじかん》 テニスを して、とても あつかったです。そのあと、ふたりで アイスクリームを 食《た》べました。","q":"「わたし」は こうえんで 何《なに》を しましたか。","o":["兄《あに》と サッカーを しました。","兄《あに》と 本《ほん》を 読《よ》みました。","兄《あに》と テニスを しました。","兄《あに》と プールで およぎました。"],"a":3},{"p":"ジョンさんへ\n来週《らいしゅう》の 金曜日《きんようび》は 山下《やました》さんの たんじょうびです。クラスの みんなで プレゼントを あげます。ひとり 三百円《さんびゃくえん》です。山下《やました》さんは 本《ほん》が 好《す》きですから、本《ほん》を かいたいです。月曜日《げつようび》に お金《かね》を わたしに ください。金曜日《きんようび》の 午後《ごご》三時《さんじ》に としょかんの 前《まえ》で 会《あ》いましょう。\n田中《たなか》","q":"ジョンさんは 月曜日《げつようび》に 何《なに》を しますか。","o":["田中《たなか》さんに 三百円《さんびゃくえん》を あげます。","本《ほん》を かいます。","山下《やました》さんに プレゼントを あげます。","としょかんで 田中《たなか》さんに 会《あ》います。"],"a":1}],"r6":{"p":"【こうえんの プール】\nあいて いる 時間《じかん》：午前《ごぜん》九時《くじ》から 午後《ごご》五時《ごじ》まで\n休《やす》み：月曜日《げつようび》\nおとな：四百円《よんひゃくえん》\n子《こ》ども（十二《じゅうに》さいまで）：二百円《にひゃくえん》\n午後《ごご》三時《さんじ》からは、みんな 百円《ひゃくえん》 やすく なります。","q":"山下《やました》さんは おとなです。火曜日《かようび》の 午後《ごご》四時《よじ》に プールへ 行《い》きます。いくら ですか。","o":["四百円《よんひゃくえん》","三百円《さんびゃくえん》","二百円《にひゃくえん》","百円《ひゃくえん》"],"a":2}},{"g1":[{"s":"毎日《まいにち》 電車《でんしゃ》（　）学校《がっこう》へ 行《い》きます。","o":["で","を","に","と"],"a":1},{"s":"駅《えき》（　）うちまで バスで 十五分《じゅうごふん》です。","o":["を","から","で","へ"],"a":2},{"s":"山下《やました》「この バスは 駅《えき》の 前《まえ》（　）とまりますか。」","o":["を","が","に","へ"],"a":3},{"s":"A「いま 何時《なんじ》ですか。」 B「三時《さんじ》（　）です。」","o":["を","に","で","半《はん》"],"a":4},{"s":"この 電車《でんしゃ》は 九時《くじ》（　）出《で》ます。","o":["に","を","が","へ"],"a":1},{"s":"学校《がっこう》は 八時《はちじ》半《はん》（　）三時《さんじ》までです。","o":["と","から","で","を"],"a":2},{"s":"駅《えき》へ 行《い》く 道《みち》を 友《とも》だち（　）聞《き》きました。","o":["を","が","に","で"],"a":3},{"s":"A「駅《えき》は（　）ですか。」 B「あの 道《みち》を 右《みぎ》へ 行《い》って ください。」","o":["いつ","だれ","いくら","どこ"],"a":4},{"s":"A「ここから 駅《えき》まで（　）かかりますか。」 B「歩《ある》いて 十分《じゅっぷん》です。」","o":["どのぐらい","どれ","どこ","いくつ"],"a":1},{"s":"バスが 二《に》（　）とまって います。","o":["ひき","だい","さつ","まい"],"a":2},{"s":"おきゃくさんは 駅《えき》の 前《まえ》で バスを 待《ま》（　）います。","o":["る","った","って","ち"],"a":3},{"s":"電車《でんしゃ》の 中《なか》で 電話《でんわ》を かけ（　）ください。","o":["なくて","ない","ません","ないで"],"a":4},{"s":"ホテルへ 行《い》く 道《みち》が よく わかり（　）。","o":["ません","ない","たい","なくて"],"a":1},{"s":"すみません、この バスは 駅《えき》へ 行《い》き（　）か。","o":["です","ます","に","ない"],"a":2},{"s":"駅《えき》は 近《ちか》い（　）、歩《ある》いて 行《い》きましょう。","o":["のに","でも","から","まで"],"a":3},{"s":"ホテルは 駅《えき》から あまり 遠《とお》く（　）。","o":["ないでした","ませんでした","でした","ありません"],"a":4}],"g2":[{"s":"この ホテルの ＿ ＿ ★ ＿ か。","o":["いくら","です","へやは","ひとりの"],"ord":[4,3,1,2],"star":3,"a":1},{"s":"きょうは ＿ ＿ ★ ＿ 、バスで 行《い》きます。","o":["から","いる","とまって","電車《でんしゃ》が"],"ord":[4,3,2,1],"star":2,"a":3},{"s":"この バスの きっぷは ＿ ＿ ★ ＿ 安《やす》いです。","o":["きっぷ","より","電車《でんしゃ》の","あの"],"ord":[4,3,1,2],"star":4,"a":2},{"s":"ホテルは ＿ ＿ ★ ＿ あります。","o":["あの","うしろに","たてものの","白《しろ》い"],"ord":[1,4,3,2],"star":2,"a":4},{"s":"ここで ＿ ＿ ★ ＿。","o":["いけません","電話《でんわ》を","は","して"],"ord":[2,4,3,1],"star":3,"a":3}],"g3":{"p":"先週《せんしゅう》の 土曜日《どようび》、わたしは 友《とも》だちと きょうとへ 行《い》きました。うちから 駅《えき》まで バス【1】 十五分《じゅうごふん》でした。駅《えき》から きょうとまで 電車《でんしゃ》で 二時間《にじかん》【2】 かかりました。きょうとの ホテルは とても 大《おお》きかったです【3】、へやは あまり 新《あたら》しく【4】。ホテルの 人《ひと》は とても しんせつでした。【5】、また ここへ 来《き》たいです。","q":[{"o":["を","で","に","が"],"a":2},{"o":["ぐらい","から","を","が"],"a":1},{"o":["に","で","が","を"],"a":3},{"o":["ませんでした","ないでした","でした","ありませんでした"],"a":4},{"o":["だから","でも","しかし","それから"],"a":1}]},"r4":[{"p":"ホテルの おしらせ\nあさごはんは 午前《ごぜん》七時《しちじ》から 九時《くじ》までです。一《いっ》かいの しょくどうで 食《た》べて ください。チェックアウトは 十一時《じゅういちじ》です。","q":"あさごはんは 何時《なんじ》から 何時《なんじ》までですか。","o":["午後《ごご》七時《しちじ》から 九時《くじ》まで","午前《ごぜん》九時《くじ》から 十一時《じゅういちじ》まで","午前《ごぜん》七時《しちじ》から 九時《くじ》まで","午前《ごぜん》七時《しちじ》から 十一時《じゅういちじ》まで"],"a":3},{"p":"山下《やました》さんへ\nあした 十時《じゅうじ》に 駅《えき》で 会《あ》いましょう。でも、十時《じゅうじ》の 電車《でんしゃ》は 少《すこ》し おそく なります。ですから、駅《えき》の 前《まえ》の 店《みせ》で 待《ま》って ください。\n田中《たなか》","q":"山下《やました》さんは どこで 待《ま》ちますか。","o":["駅《えき》の 前《まえ》の 店《みせ》","電車《でんしゃ》の 中《なか》","ホテルの 前《まえ》","うち"],"a":1},{"p":"わたしの うちから 駅《えき》まで バスで 二十分《にじゅっぷん》です。歩《ある》くと 四十分《よんじゅっぷん》です。でも、きょうは いい 天気《てんき》ですから、歩《ある》いて 行《い》きます。","q":"「わたし」は どうやって 駅《えき》へ 行《い》きますか。","o":["バスで 二十分《にじゅっぷん》","歩《ある》いて 四十分《よんじゅっぷん》","電車《でんしゃ》で 四十分《よんじゅっぷん》","バスで 四十分《よんじゅっぷん》"],"a":2}],"r5":[{"p":"木曜日《もくようび》、わたしは 友《とも》だちと 駅《えき》の 近《ちか》くの ホテルへ ごはんを 食《た》べに 行《い》きました。うちから 駅《えき》まで 電車《でんしゃ》で 二十分《にじゅっぷん》です。駅《えき》から ホテルまでは バスが ありますが、わたしたちは 歩《ある》きました。道《みち》が わかりませんでしたから、駅《えき》の 人《ひと》に 聞《き》きました。ホテルまで 十五分《じゅうごふん》 かかりました。ごはんは とても おいしかったです。","q":"「わたし」は どうして 駅《えき》の 人《ひと》に 聞《き》きましたか。","o":["バスが 来《こ》なかったから","電車《でんしゃ》が おそかったから","ごはんが 食《た》べたかったから","ホテルへ 行《い》く 道《みち》が わからなかったから"],"a":4},{"p":"山下《やました》さんへ\n来週《らいしゅう》の 金曜日《きんようび》に 友《とも》だち 三人《さんにん》で 山《やま》の ホテルへ 行《い》きます。電車《でんしゃ》で 駅《えき》まで 行《い》って、そこから バスで 行《い》きます。バスは 九時《くじ》と 十時《じゅうじ》と 十一時《じゅういちじ》に 駅《えき》を 出《で》ます。わたしは 十時《じゅうじ》の バスに のりたいです。九時半《くじはん》に 駅《えき》の 前《まえ》で 会《あ》いませんか。\n田中《たなか》","q":"田中《たなか》さんは 何時《なんじ》の バスに のりたいですか。","o":["九時《くじ》","九時半《くじはん》","十時《じゅうじ》","十一時《じゅういちじ》"],"a":3}],"r6":{"p":"【ホテルさくらの バス】\n駅《えき》 → ホテル\n午前《ごぜん》：八時《はちじ》 九時《くじ》 十時《じゅうじ》 十一時《じゅういちじ》\n午後《ごご》：一時《いちじ》 三時《さんじ》 五時《ごじ》 七時《しちじ》\nかかる 時間《じかん》：十分《じゅっぷん》\nお金《かね》：0円《えん》\n日曜日《にちようび》は 午後《ごご》の バスは ありません。","q":"山下《やました》さんは 土曜日《どようび》の 午後《ごご》二時《にじ》に 駅《えき》に 来《き》ます。つぎの バスは 何時《なんじ》ですか。","o":["午後三時《さんじ》","午後二時《にじ》","午後五時《ごじ》","午後七時《しちじ》"],"a":1}},{"g1":[{"s":"わたしは きのう 友《とも》だち（　） えいがを 見《み》ました。","o":["と","を","が","へ"],"a":1},{"s":"この えいがは あまり（　）。","o":["おもしろいです","おもしろくないです","おもしろいでした","おもしろくです"],"a":2},{"s":"兄《あに》は ギター（　） 上手《じょうず》です。","o":["を","に","が","へ"],"a":3},{"s":"しゃしんを とりますから、ここに（　）ください。","o":["立《た》ち","立《た》たない","立《た》つ","立《た》って"],"a":4},{"s":"A「この しゃしんは（　）の ですか。」 B「父《ちち》の です。」","o":["だれ","どこ","いつ","なに"],"a":1},{"s":"A「カレーに（　） 入《い》れますか。」 B「にくと やさいです。」","o":["なにに","なにを","なにが","なにの"],"a":2},{"s":"いもうとは いま だいどころで ごはんを 作《つく》って（　）。","o":["あります","ください","なります","います"],"a":4},{"s":"この ナイフは とても（　）から、子《こ》どもは 使《つか》わないで ください。","o":["あぶない","あぶなく","あぶなくて","あぶないに"],"a":1},{"s":"まいあさ 六時《ろくじ》（　） 起《お》きて、あさごはんを 作《つく》ります。","o":["に","で","を","が"],"a":1},{"s":"わたしは 新《あたら》しい カメラが（　）です。","o":["ほしく","ほしくて","ほしい","ほしいに"],"a":3},{"s":"おさらが 三《さん》（　） あります。","o":["ほん","ひき","まい","だい"],"a":3},{"s":"えいがは 六時《ろくじ》から 八時《はちじ》（　） です。","o":["を","まで","へ","で"],"a":2},{"s":"A「えいがかんは（　）ですか。」 B「駅《えき》の 前《まえ》です。」","o":["いつ","なに","だれ","どこ"],"a":4},{"s":"この みせの ラーメンは 安《やす》くて、（　）です。","o":["おいしく","おいしくて","おいしいに","おいしい"],"a":4},{"s":"しゃしんを とって（　）、いいですか。","o":["が","も","を","に"],"a":2},{"s":"ごはんを 食《た》べる（　）、手《て》を あらいます。","o":["あとで","けど","まえに","ながら"],"a":3}],"g2":[{"s":"わたしの しゅみは ＿ ★ ＿ ＿ ことです。","o":["を","山《やま》の","とる","しゃしん"],"ord":[2,4,1,3],"star":2,"a":4},{"s":"わたしは ＿ ＿ ★ ＿。","o":["食《た》べて","母《はは》の","みました","ケーキを"],"ord":[2,4,1,3],"star":3,"a":1},{"s":"いま、おじいさんは にわで ＿ ＿ ★ ＿。","o":["とって","花《はな》の","います","しゃしんを"],"ord":[2,4,1,3],"star":2,"a":4},{"s":"わたしは 母《はは》に ＿ ＿ ＿ ★ もらいました。","o":["を","作《つく》って","たんじょうびの","ケーキ"],"ord":[3,4,1,2],"star":4,"a":2},{"s":"この しゃしんで ＿ ＿ ＿ ★ わたしの いもうとです。","o":["人《ひと》は","木《き》の","立《た》って いる","前《まえ》に"],"ord":[2,4,3,1],"star":4,"a":1}],"g3":{"p":"きのう、わたしは 母《はは》と いっしょに ケーキを 作《つく》りました。はじめに、たまごと さとうを 入《い》れました。【1】、ぎゅうにゅうを 入《い》れました。ケーキは 少《すこ》し 大《おお》きかったです【2】、とても おいしかったです。父《ちち》は ケーキを 食《た》べて、わたしに 「おいしい」【3】 言《い》いました。ケーキが まだ たくさん あります。【4】、あした 友《とも》だちに あげ【5】です。","q":[{"o":["でも","だから","それから","では"],"a":3},{"o":["と","が","に","を"],"a":2},{"o":["が","を","へ","と"],"a":4},{"o":["だから","でも","しかし","ところで"],"a":1},{"o":["て","たい","ますか","よう"],"a":2}]},"r4":[{"p":"ゆかへ\nわたしは 今日《きょう》 六時《ろくじ》に 帰《かえ》ります。れいぞうこに カレーが あります。ごはんは ありませんから、パンと いっしょに 食《た》べて ください。\n母《はは》より","q":"ゆかさんは カレーを どう 食《た》べますか。","o":["パンと いっしょに 食《た》べます。","ごはんと いっしょに 食《た》べます。","母《はは》と いっしょに 食《た》べます。","食《た》べないで 母《はは》を 待《ま》ちます。"],"a":1},{"p":"田中《たなか》さんへ\nあした えいがに 行《い》きませんか。『さくら』と いう えいがです。二時《にじ》に 駅《えき》で 会《あ》いましょう。えいがの あと、コーヒーを 飲《の》みに 行《い》きましょう。\n山下《やました》より","q":"えいがの あと、山下《やました》さんは なにを したいですか。","o":["かいものを したいです。","さくらを 見《み》に 行《い》きたいです。","ごはんを 作《つく》りたいです。","コーヒーを 飲《の》みたいです。"],"a":4},{"p":"日曜日《にちようび》、わたしは こうえんで 花《はな》の しゃしんを たくさん とりました。うちに 帰《かえ》って、母《はは》に 見《み》せました。母《はは》は「きれいですね」と 言《い》いました。あしたは 学校《がっこう》に 持《も》って 行《い》きたいです。","q":"「わたし」は あした なにを したいですか。","o":["母《はは》と こうえんへ 行《い》きたいです。","花《はな》の しゃしんを 学校《がっこう》に 持《も》って 行《い》きたいです。","花《はな》を 買《か》いたいです。","しゃしんを とりたいです。"],"a":2}],"r5":[{"p":"わたしは おんがくが 好《す》きです。毎日《まいにち》 学校《がっこう》から 帰《かえ》ると、まず おんがくを 聞《き》きます。きのうは 兄《あに》が ギターを ひいて、わたしが うたいました。兄《あに》は 上手《じょうず》ですが、わたしは うたが あまり 上手《じょうず》では ありません。でも、兄《あに》と いっしょに うたうのは とても たのしいです。来週《らいしゅう》、父《ちち》の たんじょうびですから、二人《ふたり》で 父《ちち》の 好《す》きな うたを うたいたいと 思《おも》って います。","q":"「わたし」と 兄《あに》は どうして 父《ちち》の 好《す》きな うたを うたいたいですか。","o":["学校《がっこう》で テストが あるから","母《はは》が ギターを 買《か》って くれたから","来週《らいしゅう》 父《ちち》の たんじょうびが あるから","友《とも》だちと コンサートに 行《い》くから"],"a":3},{"p":"わたしは 先週《せんしゅう》から、まいあさ おべんとうを 作《つく》って います。早《はや》く 起《お》きますが、だいどころで りょうりを するのは たのしいです。きのうは たまごやきを 作《つく》りましたが、さとうを たくさん 入《い》れましたから、とても あまく なりました。今日《きょう》は 母《はは》が 見《み》て いましたから、おいしく できました。来週《らいしゅう》は 魚《さかな》の りょうりを 作《つく》りたいです。","q":"きのうの たまごやきは どうでしたか。","o":["おいしく できました。","母《はは》が 作《つく》りました。","とても 小《ちい》さかったです。","とても あまかったです。"],"a":4}],"r6":{"p":"さくらえいがかん\n【きょうの じかん】\nA『ねこの たび』　 10:00　13:30　17:00\nB『うみの こえ』　 11:00　15:00　19:00\nC『ロボットの 友《とも》だち』　 12:00　14:30　18:00\n【りょうきん】\nおとな 1,800円《えん》　こども 1,000円《えん》\n毎週《まいしゅう》 水曜日《すいようび》は だれでも 1,200円《えん》","q":"水曜日《すいようび》に おとな 二人《ふたり》で えいがを 見《み》ます。ぜんぶで いくらですか。","o":["3,600円《えん》","2,000円《えん》","2,400円《えん》","1,200円《えん》"],"a":3}},{"g1":[{"s":"わたしは 先生《せんせい》（　） しつもんを しました。","o":["を","が","で","に"],"a":4},{"s":"しゅくだいが 多《おお》（　）、あそびに 行《い》けません。","o":["いで","くて","に","さ"],"a":2},{"s":"A「しけんは（　）ですか。」 B「あさっての 午前《ごぜん》です。」","o":["どこ","だれ","いつ","なに"],"a":3},{"s":"テストは 九時《くじ》（　） はじまります。","o":["で","と","を","に"],"a":4},{"s":"ノートを 二《に》（　） 買《か》いました。","o":["こ","さつ","ほん","だい"],"a":2},{"s":"先生《せんせい》の 話《はなし》は むずかしくて、ぜんぜん（　）。","o":["わかります","わかりたい","わかって","わかりません"],"a":4},{"s":"友《とも》だちが わたしに ノートを 見《み》せて（　）。","o":["くれました","もらいました","あげました","ください"],"a":1},{"s":"あしたは 学校《がっこう》が 休《やす》みですから、アルバイト（　） 行《い》きます。","o":["に","を","が","で"],"a":1},{"s":"アルバイトは 四時《よじ》から 九時《くじ》（　） です。","o":["を","まで","へ","より"],"a":2},{"s":"この アルバイトは しごとが かんたん（　）、おもしろいです。","o":["くて","に","で","だ"],"a":3},{"s":"先生《せんせい》は 学生《がくせい》に「しけんの とき、話《はな》（　）ください」と 言《い》いました。","o":["さないで","さなくて","すと","した"],"a":1},{"s":"きょうしつに だれ（　） いません。","o":["も","が","を","と"],"a":1},{"s":"しゅくだいを（　）あとで、テレビを 見《み》ます。","o":["する","して","した","し"],"a":3},{"s":"大学《だいがく》は うちから 電車《でんしゃ》で 一時間《いちじかん》（　）。","o":["あります","かかります","かけます","あけます"],"a":2},{"s":"としょかんで 本《ほん》を（　）、うちで 読《よ》みます。","o":["かして","かって","かりて","かえして"],"a":3},{"s":"A「アルバイトに 一週間《いっしゅうかん》に（　） 行《い》きますか。」 B「三《さん》かい 行《い》きます。」","o":["いくつ","なんにん","いくら","何《なん》かい"],"a":4}],"g2":[{"s":"しゅくだいは ＿ ＿ ★ ＿ ください。","o":["持《も》って","来《き》て","先生《せんせい》の","へやに"],"ord":[3,4,1,2],"star":2,"a":4},{"s":"つくえの ＿ ＿ ＿ ★ あります。","o":["ノートが","上《うえ》に","二《に》さつ","かばんと"],"ord":[2,4,1,3],"star":4,"a":3},{"s":"わたしは ★ ＿ ＿ ＿ 帰《かえ》ります。","o":["から","うちへ","おわって","アルバイトが"],"ord":[4,3,1,2],"star":1,"a":4},{"s":"あそこで 先生《せんせい》は ＿ ＿ ★ ＿。","o":["持《も》って","大《おお》きい","います","かばんを"],"ord":[2,4,1,3],"star":2,"a":4},{"s":"わたしの 大学《だいがく》は ★ ＿ ＿ ＿ あります。","o":["十分《じゅっぷん》の","ところに","駅《えき》から","歩《ある》いて"],"ord":[3,4,1,2],"star":1,"a":3}],"g3":{"p":"きのうは 大学《だいがく》で 日本語《にほんご》の しけんが ありました。毎日《まいにち》 よる おそくまで 勉強《べんきょう》しました。【1】、しけんは むずかしかったです。【2】、あまり よく 書《か》けませんでした。しけんの あと、友《とも》だち【3】 いっしょに コンビニへ 行《い》きました。そこで、先月《せんげつ》から アルバイト【4】 して いる 友《とも》だちが、ジュースを 買《か》って くれました。わたしも アルバイトを したい【5】 思《おも》いました。","q":[{"o":["だから","でも","それから","では"],"a":2},{"o":["でも","ところで","では","だから"],"a":4},{"o":["と","が","を","へ"],"a":1},{"o":["が","に","を","で"],"a":3},{"o":["を","が","に","と"],"a":4}]},"r4":[{"p":"みなさんへ\nあしたの しけんは 九時《くじ》に はじまります。八時半《はちじはん》に きょうしつへ 来《き》て ください。えんぴつと けしゴムを 持《も》って 来《き》て ください。じしょは 持《も》って 来《こ》ないで ください。\n田中《たなか》先生《せんせい》","q":"しけんの 日《ひ》、学生《がくせい》は なにを 持《も》って 来《き》ますか。","o":["ノートと じしょ","えんぴつと けしゴム","じしょと けしゴム","えんぴつと じしょ"],"a":2},{"p":"さとうさんへ\nあしたは 人《ひと》が 多《おお》いですから、いつもの 四時《よじ》では なくて、三時《さんじ》に 来《き》て ください。おねがいします。\n店《みせ》の 山本《やまもと》より","q":"さとうさんは あした なんじに アルバイトに 行《い》きますか。","o":["五時《ごじ》","四時《よじ》","二時《にじ》","三時《さんじ》"],"a":4},{"p":"きょうの じゅぎょうで、先生《せんせい》が「来週《らいしゅう》 しけんを します」と 言《い》いました。うちでは あまり 勉強《べんきょう》が できませんから、じゅぎょうの あとで としょかんで 勉強《べんきょう》します。","q":"「わたし」は じゅぎょうの あと、どこで 勉強《べんきょう》しますか。","o":["としょかんで 勉強《べんきょう》します。","うちで 勉強《べんきょう》します。","きょうしつで 勉強《べんきょう》します。","アルバイトの みせで 勉強《べんきょう》します。"],"a":1}],"r5":[{"p":"わたしは 四月《しがつ》から 大学《だいがく》に 行《い》って います。大学《だいがく》は うちから 遠《とお》いですから、まいあさ 六時《ろくじ》に 起《お》きて、電車《でんしゃ》で 一時間《いちじかん》 かけて 行《い》きます。大学《だいがく》の 先生《せんせい》は みんな やさしいですが、しゅくだいが 多《おお》くて たいへんです。でも、新《あたら》しい 友《とも》だちが たくさん できましたから、毎日《まいにち》 たのしいです。","q":"「わたし」は どうして 毎日《まいにち》 たのしいですか。","o":["大学《だいがく》が うちから 近《ちか》いですから","しゅくだいが 少《すく》ないですから","新《あたら》しい 友《とも》だちが たくさん できましたから","先生《せんせい》が 毎日《まいにち》 しけんを しますから"],"a":3},{"p":"わたしは 先月《せんげつ》から レストランで アルバイトを して います。月曜日《げつようび》と 木曜日《もくようび》の 午後《ごご》五時《ごじ》から 九時《くじ》まで 働《はたら》きます。さいしょは メニューが わかりませんでした。でも、店《みせ》の 人《ひと》は みんな やさしかったです。今《いま》は しごとが たのしいです。アルバイトの おかねで、来月《らいげつ》 母《はは》に 花《はな》を 買《か》いたいと 思《おも》って います。","q":"「わたし」は アルバイトの おかねで なにを したいですか。","o":["母《はは》に 花《はな》を 買《か》いたいです。","メニューを 買《か》いたいです。","レストランを 休《やす》みたいです。","友《とも》だちに ごはんを 作《つく》りたいです。"],"a":1}],"r6":{"p":"【アルバイト】 さくらカフェ\nしごと： コーヒーや ごはんを 出《だ》す\nじかん：\n①月曜日《げつようび》～金曜日《きんようび》 17:00～21:00\n②土曜日《どようび》・日曜日《にちようび》 10:00～18:00\n一時間《いちじかん》の お金《かね》： ①1,000円《えん》 ②1,100円《えん》\n※ 学生《がくせい》の 人《ひと》は ①だけです。\nでんわ： 03-1234-5678","q":"大学《だいがく》の 学生《がくせい》が 火曜日《かようび》の よる 4時間《じかん》 はたらきます。いくら もらいますか。","o":["1,000円《えん》","4,400円《えん》","8,800円《えん》","4,000円《えん》"],"a":4}},{"g1":[{"s":"駅《えき》の 前《まえ》に 大《おお》きい 本《ほん》や（　） あります。","o":["で","を","へ","が"],"a":4},{"s":"A「この ぼうしは （　）ですか。」\nB「千円《せんえん》です。」","o":["だれ","なに","どこ","いくら"],"a":4},{"s":"きのう デパートで 新《あたら》しい くつを （　）。","o":["買《か》いました","買《か》いたいです","買《か》います","買《か》って います"],"a":1},{"s":"この 町《まち》には ぎんこうが 二《ふた》（　） あります。","o":["まい","だい","つ","さつ"],"a":3},{"s":"この シャツは あの シャツ（　） 高《たか》いです。","o":["ほど","まで","より","から"],"a":3},{"s":"ゆうびんきょくで きってを 五《ご》（　） 買《か》いました。","o":["ひき","だい","まい","ほん"],"a":3},{"s":"ぎんこうは 午前《ごぜん》九時《くじ》（　） 午後《ごご》三時《さんじ》までです。","o":["から","に","で","を"],"a":1},{"s":"あの 店《みせ》は 安《やす》（　）、おいしいです。","o":["に","な","いで","くて"],"a":4},{"s":"雨《あめ》ですから、かさを （　） 出《で》かけましょう。","o":["持《も》つ","持《も》って","持《も》ち","持《も》たない"],"a":2},{"s":"この 手《て》がみを アメリカ（　） 出《だ》したいです。","o":["と","へ","を","が"],"a":2},{"s":"この ズボンを はいて （　） いいですか。","o":["みては","みます","みても","みないで"],"a":3},{"s":"ぎんこうの 前《まえ》に 人《ひと》が たくさん （　）。","o":["きます","います","します","あります"],"a":2},{"s":"ここで しゃしんを とっては （　）。","o":["ましょう","ください","いいです","いけません"],"a":4},{"s":"この セーターは あまり 高《たか》（　） ありません。","o":["くて","い","に","く"],"a":4},{"s":"A「きのう 何《なに》を 買《か》いましたか。」\nB「（　） 買《か》いませんでした。」","o":["なにも","だれも","なにか","いつも"],"a":1},{"s":"友《とも》だちの たんじょうびに 花《はな》（　） あげました。","o":["を","で","が","に"],"a":1}],"g2":[{"s":"あの ＿ ＿ ★ ＿ 人《ひと》は わたしの 母《はは》です。","o":["かぶって","いる","白《しろ》い","ぼうしを"],"ord":[3,4,1,2],"star":3,"a":1},{"s":"きのう わたしは ＿ ＿ ★ ＿ 買《か》いました。","o":["花《はな》を","母《はは》に","赤《あか》い","あげる"],"ord":[2,4,3,1],"star":3,"a":3},{"s":"あの ＿ ＿ ＿ ★ いくらですか。","o":["ぼうしは","前《まえ》の","店《みせ》の","ぎんこうの"],"ord":[4,2,3,1],"star":4,"a":1},{"s":"雨《あめ》が ★ ＿ ＿ ＿ 行《い》きません。","o":["ので","ふって","デパートへ","いる"],"ord":[2,4,1,3],"star":1,"a":2},{"s":"あした 友《とも》だちと ＿ ＿ ★ ＿ デパートへ 行《い》きます。","o":["前《まえ》で","会《あ》って","えきの","から"],"ord":[3,1,2,4],"star":3,"a":2}],"g3":{"p":"きのうは 日曜日《にちようび》でした。わたしは 友《とも》だち【1】 デパートへ 行《い》きました。デパートは 駅《えき》から 近《ちか》【2】、とても 人《ひと》が 多《おお》かったです。わたしは 白《しろ》い くつを 見《み》ました。とても きれいでした。【3】、少《すこ》し 高《たか》かったです。ですから、わたしは くつを 【4】。そのあと、駅《えき》の 前《まえ》の 店《みせ》で ひるごはんを 食《た》べました。来週《らいしゅう》、また デパートへ 行《い》き【5】。","q":[{"o":["が","と","を","に"],"a":2},{"o":["な","くて","に","いで"],"a":2},{"o":["だから","それから","でも","では"],"a":3},{"o":["買《か》いましょう","買《か》いたいです","買《か》いませんでした","買《か》って います"],"a":3},{"o":["ました","ませんでした","ます","ましたか"],"a":3}]},"r4":[{"p":"山田《やまだ》さんへ\nきょうは ぎんこうへ 行《い》ってから、ゆうびんきょくで きってを 買《か》います。午後《ごご》三時《さんじ》に 帰《かえ》ります。\nリサ","q":"リサさんは さいしょに どこへ 行《い》きますか。","o":["うち","ゆうびんきょく","ぎんこう","デパート"],"a":3},{"p":"田中《たなか》さんへ\nこんにちは。あしたの 土曜日《どようび》、いっしょに 買《か》いものに 行《い》きませんか。わたしは 新《あたら》しい かばんが ほしいです。駅《えき》の 前《まえ》で 十時《じゅうじ》に 会《あ》いましょう。\nスミス","q":"スミスさんは 何《なに》が ほしいですか。","o":["かばん","ぼうし","シャツ","くつ"],"a":1},{"p":"きょうは 雨《あめ》でした。かさを 持《も》たないで 出《で》かけました。雨《あめ》が たくさん ふって いました。ゆうびんきょくの 人《ひと》に かさを もらいました。とても うれしかったです。","q":"「わたし」は どうして うれしかったですか。","o":["かさを 買《か》ったから","友《とも》だちに 会《あ》ったから","ゆうびんきょくの 人《ひと》に かさを もらったから","雨《あめ》が ふらなく なったから"],"a":3}],"r5":[{"p":"わたしの 母《はは》は 毎週《まいしゅう》 土曜日《どようび》に 駅《えき》の 前《まえ》の スーパーへ 買《か》いものに 行《い》きます。そこは 魚《さかな》や 肉《にく》が 安《やす》いです。でも、くだものは 少《すこ》し 高《たか》いです。ですから、母《はは》は くだものを 近《ちか》くの 小《ちい》さい 店《みせ》で 買《か》います。きょうは わたしも いっしょに 行《い》って、にもつを 持《も》ちました。","q":"母《はは》は どうして くだものを 小《ちい》さい 店《みせ》で 買《か》いますか。","o":["スーパーの くだものは 少《すこ》し 高《たか》いから","小《ちい》さい 店《みせ》は 駅《えき》の 前《まえ》に あるから","小《ちい》さい 店《みせ》の 魚《さかな》が 安《やす》いから","スーパーは 土曜日《どようび》に 休《やす》みだから"],"a":1},{"p":"きのう わたしは ぎんこうと ゆうびんきょくへ 行《い》きました。ぎんこうでは 一万円《いちまんえん》を おろしました。ゆうびんきょくでは 友《とも》だちに てがみを 出《だ》しました。てがみは アメリカへ 行《い》きますから、きってが 百五十円《ひゃくごじゅうえん》 かかりました。そのあと、駅《えき》の 前《まえ》の 店《みせ》で 六百円《ろっぴゃくえん》の おべんとうを 買《か》って、うちへ 帰《かえ》りました。","q":"「わたし」が ゆうびんきょくと 店《みせ》で 使《つか》った おかねは ぜんぶで いくらですか。","o":["六百円《ろっぴゃくえん》","七百五十円《ななひゃくごじゅうえん》","百五十円《ひゃくごじゅうえん》","一万七百五十円《いちまんななひゃくごじゅうえん》"],"a":2}],"r6":{"p":"【ふくの 店《みせ》 さくら】\nシャツ 二千円《にせんえん》\nセーター 四千五百円《よんせんごひゃくえん》\nぼうし 千円《せんえん》\nくつ 五千円《ごせんえん》\n\n日曜日《にちようび》は どれも 一《ひと》つ 五百円《ごひゃくえん》 やすく なります。\n月曜日《げつようび》は 休《やす》みです。\n午前《ごぜん》十時《じゅうじ》から 午後《ごご》七時《しちじ》まで","q":"日曜日《にちようび》に シャツと ぼうしを 一《ひと》つずつ 買《か》うと、ぜんぶで いくらですか。","o":["千五百円《せんごひゃくえん》","二千円《にせんえん》","三千円《さんぜんえん》","二千五百円《にせんごひゃくえん》"],"a":2}},{"g1":[{"s":"休《やす》みの 日《ひ》に 山《やま》（　） 行《い》きます。","o":["へ","を","が","の"],"a":1},{"s":"きのう 見《み》た ぞうは とても （　）。","o":["大《おお》きでした","大《おお》きくでした","大《おお》きかったです","大《おお》きいでした"],"a":3},{"s":"わたしの うちには いぬが 二《に》（　） います。","o":["ひき","さつ","まい","ほん"],"a":1},{"s":"天気《てんき》が いい（　）、さんぽに 行《い》きましょう。","o":["から","を","に","で"],"a":1},{"s":"びょういんは 九時《くじ》（　） 十二時《じゅうにじ》まで あいて います。","o":["を","へ","に","から"],"a":4},{"s":"あたまが いたかったので、くすりを （　）。","o":["飲《の》みましょう","飲《の》みました","飲《の》んで","飲《の》みません"],"a":2},{"s":"山《やま》の 上《うえ》は 町《まち》（　） 空気《くうき》が きれいです。","o":["ほど","まで","から","より"],"a":4},{"s":"ねこは 魚《さかな》（　） 好《す》きです。","o":["を","が","に","で"],"a":2},{"s":"うみへ およぎ（　） 行《い》きました。","o":["で","が","に","を"],"a":3},{"s":"ここで ごはんを 食《た》べて （　） いいですか。","o":["は","も","が","を"],"a":2},{"s":"ねこは いま いすの 上《うえ》で 寝《ね》て （　）。","o":["あります","ください","きます","います"],"a":4},{"s":"あした また 来《き》て （　）。","o":["です","ました","ください","あります"],"a":3},{"s":"ねつが ありますから、おふろに はいら（　） ください。","o":["ません","なくて","ない","ないで"],"a":4},{"s":"この 川《かわ》は きれい（　）、魚《さかな》が たくさん います。","o":["く","で","な","に"],"a":2},{"s":"あしたは 日曜日《にちようび》ですから、学校《がっこう》へ 行《い》き（　）。","o":["ました","ますか","ませんでした","ません"],"a":4},{"s":"A「（　） いぬが 好《す》きですか。」\nB「大《おお》きい いぬが 好《す》きです。」","o":["なに","どれ","どう","どんな"],"a":4}],"g2":[{"s":"＿ ＿ ＿ ★ ねこです。","o":["中《なか》で","どうぶつの","すきなのは","いちばん"],"ord":[2,1,4,3],"star":4,"a":3},{"s":"あの ＿ ★ ＿ ＿ 人《ひと》は わたしの 先生《せんせい》です。","o":["いる","赤《あか》い","さして","かさを"],"ord":[2,4,3,1],"star":2,"a":4},{"s":"あの ＿ ＿ ★ ＿ 何《なん》ですか。","o":["上《うえ》に","木《き》の","鳥《とり》は","いる"],"ord":[2,1,4,3],"star":3,"a":4},{"s":"★ ＿ ＿ ＿ 先生《せんせい》です。","o":["ある","前《まえ》に","びょういんの","駅《えき》の"],"ord":[4,2,1,3],"star":1,"a":4},{"s":"これは ＿ ＿ ★ ＿ です。","o":["本《ほん》","兄《あに》が","新《あたら》しい","買《か》った"],"ord":[2,4,3,1],"star":3,"a":3}],"g3":{"p":"先週《せんしゅう》の 土曜日《どようび》、家族《かぞく》【1】 山《やま》へ 行《い》きました。天気《てんき》が よくて、空《そら》が とても きれいでした。山《やま》には 鳥《とり》が たくさん【2】。【3】、小《ちい》さい 川《かわ》も あって、魚《さかな》も 見《み》ました。ひるごはんは 川《かわ》の そば【4】 おべんとうを 食《た》べました。また 行《い》き【5】。","q":[{"o":["を","で","が","と"],"a":4},{"o":["なりました","ありました","いました","きました"],"a":3},{"o":["それから","でも","だから","しかし"],"a":1},{"o":["で","が","は","を"],"a":1},{"o":["ですか","たいです","ません","ました"],"a":2}]},"r4":[{"p":"山本《やまもと》さんへ\nきょうは あたまが いたいので、びょういんへ 行《い》きます。会社《かいしゃ》は 午後《ごご》から 来《き》ます。\n木村《きむら》","q":"木村《きむら》さんは いつから 会社《かいしゃ》へ 来《き》ますか。","o":["午前《ごぜん》から","午後《ごご》から","きょうは 来《こ》ません","あしたから"],"a":2},{"p":"リンさんへ\nこんにちは。土曜日《どようび》と 日曜日《にちようび》は いい 天気《てんき》です。どうぶつえんへ 行《い》きませんか。日曜日《にちようび》は 友《とも》だちと 山《やま》へ 行《い》きますから、土曜日《どようび》が いいです。\n山田《やまだ》","q":"山田《やまだ》さんは いつ どうぶつえんへ 行《い》きたいですか。","o":["土曜日《どようび》","金曜日《きんようび》","月曜日《げつようび》","日曜日《にちようび》"],"a":1},{"p":"うちの ねこの 名前《なまえ》は ミケです。ミケは 毎日《まいにち》 あさ 六時《ろくじ》に 起《お》きます。そして、わたしの ベッドの 上《うえ》に 来《き》て、「ニャー」と 言《い》います。ですから、わたしも 早《はや》く 起《お》きます。","q":"「わたし」は どうして 早《はや》く 起《お》きますか。","o":["ミケが あさ ベッドの 上《うえ》で ないて いるから","雨《あめ》が ふって いるから","ミケが ごはんを 食《た》べないから","学校《がっこう》が 早《はや》いから"],"a":1}],"r5":[{"p":"先週《せんしゅう》の 日曜日《にちようび》、わたしは 兄《あに》と 山《やま》へ 行《い》きました。あさ 七時《しちじ》に うちを 出《で》て、電車《でんしゃ》で 一時間《いちじかん》 行《い》きました。山《やま》の 上《うえ》は 少《すこ》し さむかったです。でも、花《はな》が たくさん ありました。赤《あか》い 花《はな》と 白《しろ》い 花《はな》を 見《み》ました。ひるごはんは 川《かわ》の そばで 食《た》べました。午後《ごご》四時《よじ》に うちへ 帰《かえ》りました。","q":"「わたし」は 何《なん》で 山《やま》へ 行《い》きましたか。","o":["バス","電車《でんしゃ》","歩《ある》いて","車《くるま》"],"a":2},{"p":"わたしの 友《とも》だちの 山本《やまもと》さんは どうぶつの 医者《いしゃ》です。びょういんには いぬや ねこが よく 来《き》ます。きのう、山本《やまもと》さんの びょういんに 小《ちい》さい 鳥《とり》が 来《き》ました。鳥《とり》は 足《あし》が いたかったです。山本《やまもと》さんは 鳥《とり》の 足《あし》を 見《み》て、くすりを あげました。鳥《とり》は 三日《みっか》 休《やす》んで、げんきに なりました。","q":"鳥《とり》は どうして 山本《やまもと》さんの びょういんへ 来《き》ましたか。","o":["からだが 白《しろ》かったから","おなかが すいたから","足《あし》が いたかったから","ねつが あったから"],"a":3}],"r6":{"p":"【やまもと びょういん】\n月曜日《げつようび》・火曜日《かようび》・木曜日《もくようび》・金曜日《きんようび》\n　午前《ごぜん》九時《くじ》から 十二時《じゅうにじ》まで\n　午後《ごご》三時《さんじ》から 六時《ろくじ》まで\n水曜日《すいようび》・土曜日《どようび》\n　午前《ごぜん》九時《くじ》から 十二時《じゅうにじ》まで\n日曜日《にちようび》は 休《やす》みです。","q":"午後《ごご》四時《よじ》に びょういんへ 行《い》きたいです。いつ 行《い》けますか。","o":["土曜日《どようび》","日曜日《にちようび》","木曜日《もくようび》","水曜日《すいようび》"],"a":3}}];
+
+/* Listening items (read by the device voice). Lines of a dialogue are split by "／", speaker prefix 女: / 男:.
+   M1/M2: "dialogue|question|correct|wrong1|wrong2|wrong3"   M3: "situation|correct|wrong1|wrong2"   M4: "line|correct|wrong1|wrong2" */
+const sp = s => s.trim().split("\n").map(l => l.split("|"));
+const EX_C1 = sp(`
+女:すみません、この ほんを かりたいんですが。／男:カードは ありますか。／女:いいえ、ありません。／男:じゃ、ここに なまえを かいて ください。|女の ひとは まず なにを しますか。|なまえを かきます|カードを つくります|ほんを さがします|おかねを はらいます
+女:おなかが いたいんです。／男:くすりは のみましたか。／女:いいえ。／男:じゃ、まず びょういんに いった ほうが いいですよ。|女の ひとは これから なにを しますか。|びょういんに いきます|くすりを のみます|ねます|ごはんを たべます
+男:あした、パーティーに なにを もって いきますか。／女:わたしは ケーキを つくります。／男:じゃ、わたしは のみものを かいます。／女:おねがいします。|男の ひとは なにを もって いきますか。|のみもの|ケーキ|くだもの|はな
+女:きょう、かいものに いきます。なにが いりますか。／男:たまごと ぎゅうにゅうを おねがいします。パンは まだ あります。／女:わかりました。|女の ひとは なにを かいますか。|たまごと ぎゅうにゅう|たまごと パン|パンと ぎゅうにゅう|たまごと パンと ぎゅうにゅう
+男:しゅくだいは おわりましたか。／女:まだです。すうがくが のこって います。／男:えいごは？／女:えいごは もう おわりました。|女の がくせいは これから なんの しゅくだいを しますか。|すうがく|えいご|こくご|れきし
+女:すみません、えきは どこですか。／男:この みちを まっすぐ いって、2つめの しんごうを みぎに まがって ください。／女:2つめですね。ありがとうございます。|女の ひとは どう いきますか。|まっすぐ いって、2つめの しんごうで みぎ|まっすぐ いって、1つめの しんごうで みぎ|まっすぐ いって、2つめの しんごうで ひだり|みぎに まがって、2つめの しんごうで まっすぐ
+女:いらっしゃいませ。ごちゅうもんは？／男:コーヒーを ひとつ おねがいします。／女:おさとうは いれますか。／男:いいえ、いりません。|男の ひとは なにを たのみましたか。|さとうなしの コーヒー|さとうありの コーヒー|さとうなしの こうちゃ|さとうありの こうちゃ
+男:おべんとうを つくりましたか。／女:はい。でも おちゃを わすれました。／男:じゃ、わたしが コンビニで かって きます。|おちゃを かうのは だれですか。|男の ひと|女の ひと|ふたり|だれも かいません
+女:ここで しゃしんを とっても いいですか。／男:すみません、ここは だめです。あそこなら いいですよ。／女:ありがとうございます。|女の ひとは どこで しゃしんを とりますか。|あそこ|ここ|びじゅつかんの なか|にわ
+男:けさ、なんじに おきましたか。／女:6じです。／男:はやいですね。／女:ええ。まいあさ はしって いますから。|女の ひとは けさ なにを しましたか。|はしりました|およぎました|べんきょうしました|ねました
+女:あしたは あめですから、かさを もって いって ください。／男:はい。あ、でも わたしの かさは こわれて います。／女:じゃ、わたしのを かして あげます。|男の ひとは あした なにを もって いきますか。|女の ひとの かさ|じぶんの かさ|あたらしい かさ|なにも もちません
+男:でんわばんごうを おしえて ください。／女:090の 1234の 5678です。／男:090の 1234の 5678ですね。|男の ひとは なにを ききましたか。|でんわばんごう|じゅうしょ|なまえ|ねだん
+女:すみません、トイレは どこですか。／男:エレベーターの よこです。／女:2かいの エレベーターですか。／男:はい。|トイレは どこに ありますか。|エレベーターの よこ|エレベーターの まえ|かいだんの よこ|いりぐちの よこ
+男:にちようびは なにを しましたか。／女:ともだちと えいがを みました。それから ごはんを たべました。／男:いいですね。|女の ひとは にちようびに なにを しましたか。|えいがを みて、ごはんを たべました|えいがを みて、かいものを しました|ごはんを たべて、かえりました|ともだちの うちに いきました
+女:テストは なんじからですか。／男:10じからです。でも 9じ30ぷんまでに きょうしつに はいって ください。／女:わかりました。|女の ひとは なんじまでに きょうしつに はいりますか。|9じ30ぷん|9じ|10じ|10じ30ぷん
+男:この くすりは いつ のみますか。／女:ごはんの あとに のんで ください。1にちに 3かいです。／男:わかりました。|くすりは いつ のみますか。|ごはんの あとに 1にち3かい|ごはんの まえに 1にち3かい|ごはんの あとに 1にち2かい|ねる まえに 1かい
+女:けさの ニュースを みましたか。／男:いいえ、みませんでした。なにか ありましたか。／女:あしたから ゆきが ふるそうです。|あしたの てんきは どうですか。|ゆき|あめ|はれ|くもり
+男:あした、うみに いきませんか。／女:いいですね。でも あしたは しごとが あります。／男:じゃ、あさっては？／女:あさっては だいじょうぶです。|ふたりは いつ うみに いきますか。|あさって|あした|きょう|らいしゅう
+女:ここに ごみを すてても いいですか。／男:いいえ、それは もえない ごみですから、あちらに すてて ください。|女の ひとは ごみを どこに すてますか。|あちら|ここ|へやの なか|テーブルの うえ
+男:レストランを よやくしましたか。／女:はい、7じに よやくしました。ふたりです。／男:ありがとう。|レストランは なんじ なんにんですか。|7じ ふたり|7じ よにん|6じ ふたり|8じ ふたり
+男:ペンを かして ください。／女:わたしのは いま つかって いるんです。あの つくえの うえに ありますよ。／男:ありがとうございます。|男の ひとは どの ペンを つかいますか。|つくえの うえの ペン|女の ひとの ペン|かばんの なかの ペン|じぶんの ペン`);
+const EX_C2 = sp(`
+女:きのう、どうして がっこうを やすみましたか。／男:ねつが ありましたから。|男の がくせいは どうして やすみましたか。|ねつが ありましたから|いそがしかったから|あめが ふったから|ねぼうしたから
+男:この レストランは どうですか。／女:りょうりは おいしいですが、すこし たかいです。|レストランは どうですか。|おいしいが、たかい|おいしくて、やすい|まずくて、たかい|まずいが、やすい
+女:たなかさんは なにが すきですか。／男:スポーツが すきです。とくに サッカーが すきです。|たなかさんは なにが いちばん すきですか。|サッカー|やきゅう|テニス|すいえい
+男:けさは なんじに うちを でましたか。／女:7じ30ぷんです。でも でんしゃが おくれて、かいしゃに 9じに つきました。|女の ひとは なんじに かいしゃに つきましたか。|9じ|7じ30ぷん|8じ|8じ30ぷん
+女:おとうとさんは なんさいですか。／男:12さいです。ちゅうがくせいです。わたしは 18さいです。|おとうとは なんさいですか。|12さい|18さい|6さい|15さい
+男:あの ひとは だれですか。／女:わたしの あねです。いま だいがくに いって います。|あの ひとは だれですか。|女の ひとの あね|女の ひとの いもうと|男の ひとの あね|女の ひとの ははおや
+女:きょうは あついですね。／男:ええ。さっき ニュースで 35どと いって いました。／女:ほんとうですか。|きょうは なんどですか。|35ど|30ど|25ど|40ど
+男:たんじょうびは いつですか。／女:5がつ 3にちです。／男:もうすぐですね。|女の ひとの たんじょうびは いつですか。|5がつ3にち|3がつ5にち|5がつ13にち|3がつ15にち
+女:かぞくは なんにん いますか。／男:ちち、はは、あねと わたしの 4にんです。|男の ひとの かぞくは なんにんですか。|4にん|3にん|5にん|6にん
+男:まいにち なにで かいしゃに いきますか。／女:うちから えきまで あるいて、でんしゃに のります。|女の ひとは なにで えきまで いきますか。|あるいて|バスで|じてんしゃで|くるまで
+女:すみません、きょうは なんようびですか。／男:もくようびです。／女:じゃ、あしたは きんようびですね。|きょうは なんようびですか。|もくようび|きんようび|すいようび|かようび
+男:おさけは すきですか。／女:いいえ、あまり すきじゃありません。ビールは すこし のみますが。|女の ひとは なにを すこし のみますか。|ビール|ワイン|ジュース|おちゃ
+女:ことしの なつやすみは どこかへ いきましたか。／男:いいえ。うちで ゆっくり やすみました。|男の ひとは なつやすみに なにを しましたか。|うちで やすみました|りょこうに いきました|アルバイトを しました|うみに いきました
+男:この ペンは いくらですか。／女:2ほんで 300えんです。／男:じゃ、4ほん ください。|ぜんぶで いくらですか。|600えん|300えん|1200えん|400えん
+女:なんじに ねますか。／男:ふつうは 11じです。でも きのうは 1じに ねました。／女:ねぶそくですね。|男の ひとは きのう なんじに ねましたか。|1じ|11じ|12じ|2じ
+男:さとうさんは どこに すんで いますか。／女:とうきょうに すんでいます。うまれは おおさかです。|さとうさんは いま どこに すんで いますか。|とうきょう|おおさか|きょうと|ほっかいどう
+女:その かばんは いいですね。どこで かいましたか。／男:たんじょうびに ともだちに もらいました。|男の ひとは かばんを どうしましたか。|ともだちに もらいました|みせで かいました|じぶんで つくりました|かりました
+男:あした、どこで あいますか。／女:えきの まえの コンビニは どうですか。／男:いいですよ。|ふたりは どこで あいますか。|えきの まえの コンビニ|えきの なか|コンビニの うしろ|びょういんの まえ`);
+const EX_C3 = sp(`
+ともだちに ひさしぶりに あいました。なんと いいますか。|おひさしぶりです|いってきます|ごめんください
+ごはんを たべる まえに なんと いいますか。|いただきます|ごちそうさま|いってきます
+うちを でる とき、なんと いいますか。|いってきます|ただいま|おかえりなさい
+ひとの へやに はいります。なんと いいますか。|しつれいします|さようなら|おやすみなさい
+ひとに ものを もらいました。なんと いいますか。|ありがとうございます|どういたしまして|おねがいします
+まちがえて ひとの あしを ふみました。なんと いいますか。|すみません|おめでとう|いらっしゃいませ
+ともだちの たんじょうびです。なんと いいますか。|おたんじょうび おめでとう|おげんきで|おだいじに
+ともだちが びょうきです。なんと いいますか。|おだいじに|おめでとう|いってらっしゃい
+よる、ねる まえに なんと いいますか。|おやすみなさい|おはようございます|こんにちは
+みせで ねだんを ききます。なんと いいますか。|これは いくらですか|これは なんですか|これを どうぞ
+せんせいに しつもんが あります。なんと いいますか。|すみません、ちょっと いいですか|いただきます|ただいま
+もう いちど ききたいです。なんと いいますか。|もう いちど おねがいします|もう いいです|どういたしまして
+ともだちを うちに よびます。なんと いいますか。|どうぞ、あがって ください|しつれいします|おじゃまします
+うちに かえって きました。うちの ひとに なんと いいますか。|ただいま|いってきます|いただきます
+かいしゃで、さきに かえる ひとに なんと いいますか。|おつかれさまでした|おやすみなさい|いってらっしゃい`);
+const EX_C4 = sp(`
+おなまえは？|やまだです|はい、そうです|ありがとう
+コーヒーと こうちゃと どちらが いいですか。|コーヒーが いいです|はい、どうぞ|いいえ、ちがいます
+いま なんじですか。|3じです|3にんです|3さいです
+ごはんを もう すこし いかがですか。|いいえ、もう いっぱいです|はい、いってきます|どうぞ ごゆっくり
+おげんきですか。|はい、げんきです|はい、いいです|はい、ありました
+この ほんは あなたのですか。|いいえ、ともだちのです|はい、どうぞ|いいえ、ありません
+しゅくだいは おわりましたか。|いいえ、まだです|はい、いきました|いいえ、いません
+あした いっしょに えいがを みませんか。|いいですね、いきましょう|はい、みました|いいえ、いきました
+なんさいですか。|20さいです|20ほんです|20まいです
+どこに すんで いますか。|ウズベキスタンです|ありがとう|はい、すみます
+だれと いきますか。|ともだちと いきます|あしたです|バスです
+どうして おくれましたか。|でんしゃが おくれたからです|はい、おくれました|あしたです
+これ、どうぞ。|ありがとうございます|どういたしまして|いってきます
+おさきに しつれいします。|おつかれさまでした|いただきます|いらっしゃいませ
+かぜを ひきました。|だいじょうぶですか|おめでとう|いただきます
+ここに すわっても いいですか。|ええ、どうぞ|ええ、いきます|ええ、おいしいです
+トイレは どこですか。|あちらです|3じです|ひとりです
+りょうりは じょうずですか。|いいえ、あまり じょうずじゃありません|はい、おいしかったです|いいえ、いきません`);
+
+/* =====================================================================
+   IMTIHON: paper-style JLPT N5 mock. All questions on one page, fixed time,
+   answer in any order, flag hard ones, submit at the end.
+   Parts: moji (25 min), more parts are added to PARTS later.
+   ===================================================================== */
+const EXL = {
+  uz: {
+    title: "Imtihon (JLPT N5 mock)", sub: "Haqiqiy imtihondagidek: hamma savol bir sahifada, vaqt cheklangan. Oson savollardan boshlab, qiyinlarini oxirida yeching.",
+    moji: "Mojigoi (so'z va kanji)", min: "daqiqa", q: "ta savol", soon: "Tez orada", mock: "Mock", best: "Eng yaxshi", start: "Boshlash", left: "Qolgan vaqt",
+    left2: "javobsiz", flag: "Belgilash", jump: "Javobsizga o'tish", submit: "Topshirish", confirm: n => `${n} ta savolga javob berilmagan. Baribir topshirasizmi?`, quitC: "Imtihondan chiqilsinmi? Natija saqlanmaydi.",
+    res: "Natija", timeUp: "Vaqt tugadi", used: "Sarflangan vaqt", of: "To'g'ri", onlyWrong: "Faqat xatolar", all: "Hammasi", yours: "Sizning javobingiz", right: "To'g'ri javob", none: "javob yo'q", back: "Orqaga", again: "Qayta topshirish", hist: "Oxirgi natijalar", nohist: "Hali natija yo'q",
+    off: "Rasmiy JLPT namuna (2009)", offSub: "Savollar jlpt.jp saytida (yangi oynada ochiladi), javoblarni shu yerda belgilaysiz. Savollar soni haqiqiy testdan kam.", offPdf: "Savollarni ochish (PDF)", offAud: "Tinglash audiosi", offScr: "Tinglash matni (tekshirish uchun)", offV: "Mojigoi · 8 savol · 10 daq", offG: "Grammatika + dokkai · 13 savol · 20 daq", offL: "Chokai · 8 savol · 15 daq", qn: "-savol",
+    gr: "Grammatika + dokkai (文法・読解)", grN: "Grammatika + dokkai · 32 savol · 50 daq", gN: "Faqat grammatika · 26 savol", rN: "Faqat dokkai · 6 savol",
+    mg: ["1-mondai · Qavs o'rniga nima qo'yiladi?", "2-mondai · ★ o'rniga nima kiradi?", "3-mondai · Matnning ma'nosiga qarab bo'sh joylarni to'ldiring.", "4-mondai · Qisqa matnlarni o'qib, savollarga javob bering.", "5-mondai · O'rtacha matnlarni o'qib, savollarga javob bering.", "6-mondai · Matn va jadvaldan kerakli ma'lumotni toping."], ans: "Javob",
+    cho: "Chokai (tinglash)", full: "To'liq mock (ketma-ket)", play: n => `▶ Tinglash (qoldi: ${n})`, noPl: "Tinglash tugadi", nextP: "Keyingi qism →", tr: "Matn", noVoice: "Telefonda yapon ovozi topilmadi. Sozlamalardan yapon tilini qo'shing.", chNote: "Tinglash telefoningizning yapon ovozi bilan o'qiladi. 1-2 mondai 2 marta, 3-4 mondai 1 marta eshitiladi.", chN: "Chokai · 24 savol · 30 daq", ph: "Tez orada",
+    mc: ["1-mondai · Avval savolni, keyin suhbatni tinglang. Eng to'g'ri javobni tanlang.", "2-mondai · Savolni tinglang, suhbatni tinglang va javobni tanlang.", "3-mondai · Vaziyatni o'qing. Qanday deysiz? 1-3 dan tanlang (variantlar faqat eshitiladi).", "4-mondai · Gapni tinglang va eng mos javobni 1-3 dan tanlang."],
+    note: "Savollar o'zim tuzgan va JLPT uslubida yozilgan. Rasmiy test emas.",
+    m: ["1-mondai · Tagiga chizilgan so'z hiragana bilan qanday yoziladi?", "2-mondai · Tagiga chizilgan so'z (hiragana) qanday yoziladi?", "3-mondai · Qavs o'rniga nima qo'yiladi?", "4-mondai · Tagiga chizilgan gapga ma'nosi yaqin gapni tanlang."]
+  },
+  ru: {
+    title: "Экзамен (JLPT N5 мок)", sub: "Как на настоящем экзамене: все вопросы на одной странице, время ограничено. Начинайте с лёгких, сложные оставьте на конец.",
+    moji: "Модзигоби (слова и кандзи)", min: "мин", q: "вопросов", soon: "Скоро", mock: "Мок", best: "Лучший", start: "Начать", left: "Осталось",
+    left2: "без ответа", flag: "Пометить", jump: "К неотвеченному", submit: "Сдать", confirm: n => `Без ответа осталось вопросов: ${n}. Всё равно сдать?`, quitC: "Выйти из экзамена? Результат не сохранится.",
+    res: "Результат", timeUp: "Время вышло", used: "Затрачено", of: "Верно", onlyWrong: "Только ошибки", all: "Все", yours: "Ваш ответ", right: "Верный ответ", none: "нет ответа", back: "Назад", again: "Пересдать", hist: "Последние результаты", nohist: "Пока нет результатов",
+    off: "Официальный образец JLPT (2009)", offSub: "Вопросы на сайте jlpt.jp (открываются в новом окне), ответы отмечаете здесь. Вопросов меньше, чем на настоящем экзамене.", offPdf: "Открыть вопросы (PDF)", offAud: "Аудио для аудирования", offScr: "Текст аудирования (для проверки)", offV: "Модзигоби · 8 вопросов · 10 мин", offG: "Грамматика + чтение · 13 вопросов · 20 мин", offL: "Аудирование · 8 вопросов · 15 мин", qn: "-й вопрос",
+    gr: "Грамматика + чтение (文法・読解)", grN: "Грамматика + чтение · 32 вопроса · 50 мин", gN: "Только грамматика · 26 вопросов", rN: "Только чтение · 6 вопросов",
+    mg: ["Мондай 1 · Что вставить в скобки?", "Мондай 2 · Что окажется на месте ★?", "Мондай 3 · Заполните пропуски по смыслу текста.", "Мондай 4 · Прочитайте короткие тексты и ответьте на вопросы.", "Мондай 5 · Прочитайте тексты средней длины и ответьте на вопросы.", "Мондай 6 · Найдите нужную информацию в тексте и таблице."], ans: "Ответ",
+    cho: "Аудирование", full: "Полный мок (подряд)", play: n => `▶ Слушать (осталось: ${n})`, noPl: "Прослушивание закончено", nextP: "Следующая часть →", tr: "Текст", noVoice: "На телефоне нет японского голоса. Добавьте японский язык в настройках.", chNote: "Аудио читает японский голос телефона. Мондай 1–2 слушаются 2 раза, мондай 3–4 один раз.", chN: "Аудирование · 24 вопроса · 30 мин", ph: "Скоро",
+    mc: ["Мондай 1 · Сначала вопрос, потом разговор. Выберите лучший ответ.", "Мондай 2 · Послушайте вопрос и разговор, выберите ответ.", "Мондай 3 · Прочитайте ситуацию. Что вы скажете? Варианты 1–3 только на слух.", "Мондай 4 · Послушайте фразу и выберите лучший ответ 1–3."],
+    note: "Вопросы составлены мной в стиле JLPT. Это не официальный тест.",
+    m: ["Мондай 1 · Как пишется подчёркнутое слово хираганой?", "Мондай 2 · Как пишется подчёркнутое слово (хирагана)?", "Мондай 3 · Что вставить в скобки?", "Мондай 4 · Выберите предложение, близкое по смыслу к подчёркнутому."]
+  }
+};
+const ex = k => EXL[lang === "ru" ? "ru" : "uz"][k];
+const EX_JP = ["もんだい1　＿＿の ことばは ひらがなで どう かきますか。", "もんだい2　＿＿の ことばは どう かきますか。", "もんだい3　（　）に なにを いれますか。", "もんだい4　＿＿の ぶんと だいたい おなじ いみの ぶんが あります。"];
+
+const EXC_JP = ["もんだい1　はじめに しつもんを きいて ください。それから はなしを きいて、1から4の なかから、いちばん いい ものを ひとつ えらんで ください。", "もんだい2　はじめに しつもんを きいて ください。それから はなしを きいて、1から4の なかから、いちばん いい ものを ひとつ えらんで ください。", "もんだい3　じょうきょうを よんで ください。なんと いいますか。1から3の なかから、いちばん いい ものを ひとつ えらんで ください。", "もんだい4　ぶんを きいて ください。1から3の なかから、いちばん いい ものを ひとつ えらんで ください。"];
+
+const EXG_JP = ["もんだい1　（　）に なにを いれますか。1・2・3・4から いちばん いい ものを ひとつ えらんで ください。", "もんだい2　★に はいる ものは どれですか。1・2・3・4から いちばん いい ものを ひとつ えらんで ください。", "もんだい3　【21】から【25】に なにを いれますか。ぶんしょうの いみを かんがえて、1・2・3・4から いちばん いい ものを ひとつ えらんで ください。", "もんだい4　つぎの (1)から (3)の ぶんしょうを よんで、しつもんに こたえて ください。こたえは、1・2・3・4から いちばん いい ものを ひとつ えらんで ください。", "もんだい5　つぎの (1)と (2)の ぶんしょうを よんで、しつもんに こたえて ください。こたえは、1・2・3・4から いちばん いい ものを ひとつ えらんで ください。", "もんだい6　つぎの ぶんしょうと ひょうを みて、しつもんに こたえて ください。こたえは、1・2・3・4から いちばん いい ものを ひとつ えらんで ください。"];
+const rb = s => esc(s).replace(/([一-鿿]+)《([^》]+)》/g, "<ruby>$1<rt>$2</rt></ruby>");
+const Say = {
+  tok: 0,
+  vs() { try { return speechSynthesis.getVoices().filter(v => /^ja/i.test(v.lang)); } catch (e) { return []; } },
+  voice(who) {
+    const vs = this.vs(); if (!vs.length) return null;
+    const male = vs.find(v => /otoya|hattori|ichiro|takumi|keita|male|男/i.test(v.name) && !/female/i.test(v.name)), fem = vs.find(v => /kyoko|haruka|ayumi|sayaka|o-ren|nanami|mizuki|female|女/i.test(v.name));
+    return who === "男" ? (male || (vs.length > 1 ? vs[vs.length - 1] : vs[0])) : (fem || vs[0]);
+  },
+  stop() { this.tok++; try { speechSynthesis.cancel(); } catch (e) {} },
+  play(parts, done) {
+    if (!SPEECH_OK) { toast(ex("noVoice")); return; }
+    this.stop(); const my = this.tok; let i = 0;
+    if (!this.vs().length) toast(ex("noVoice"));
+    const next = () => {
+      if (my !== this.tok) return;
+      if (i >= parts.length) { if (done) done(); return; }
+      const p = parts[i++];
+      if (p.pause) { setTimeout(next, p.pause); return; }
+      const u = new SpeechSynthesisUtterance(p.t); u.lang = "ja-JP"; u.rate = 0.85;
+      const v = this.voice(p.who); if (v) u.voice = v;
+      if (p.who === "男") u.pitch = this.vs().length > 1 ? 0.9 : 0.7; else if (p.who === "女") u.pitch = this.vs().length > 1 ? 1.05 : 1.25;
+      u.onend = () => setTimeout(next, 350); u.onerror = () => setTimeout(next, 100);
+      try { speechSynthesis.speak(u); } catch (e) { next(); }
+    };
+    next();
+  }
+};
+const Exam = {
+  PARTS: { moji: { min: 25 }, c: { min: 30 }, gr: { min: 50 }, g: { min: 25 }, r: { min: 25 } },
+  NC: 3,
+  NMOCK: 10,
+  OFF: { oV: { min: 10, key: [1, 4, 4, 2, 1, 3, 3, 2] }, oG: { min: 20, key: [4, 3, 2, 1, 4, 3, 2, 1, 3, 4, 2, 1, 1] }, oL: { min: 15, key: [3, 4, 3, 4, 3, 2, 2, 1] } },
+  PDF: "https://www.jlpt.jp/e/samples/pdf/N5-mondai.pdf", MP3: "https://www.jlpt.jp/e/samples/mp3/N5Sample.mp3", SCR: "https://www.jlpt.jp/e/samples/pdf/N5-script.pdf",
+  init(root) { this.root = root; this.render(); },
+  render() { if (!this.root) return; this.run ? this.viewRun() : this.run === null && this.res ? this.viewRes() : this.viewHome(); },
+  rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; },
+  shufS(a, r) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; },
+  pool() {
+    if (this._pool) return this._pool;
+    const n5 = new Set(KLV[5].map(k => k.k)), kan = c => /[一-鿿]/.test(c);
+    const ok = VW.filter(x => x.k && x.w !== x.r && [...x.w].every(c => !kan(c) || n5.has(c)) && /^[぀-ゟ]+$/.test(x.r) && x.w.length <= 5);
+    return this._pool = this.shufS(uniqBy(ok, x => x.w), this.rng(20260506));
+  },
+  mojiQs(m) {              // m = 0..4
+    const P = this.pool(), r = this.rng(1000 + m), qs = [];
+    const take = (lo, n) => Array.from({ length: n }, (_, i) => P[(lo + i) % P.length]);
+    const opts4 = (right, others) => { const o = this.shufS([right, ...others], r); return { opts: o, ans: o.indexOf(right) }; };
+    take(m * 12, 12).forEach(x => {
+      const seen = new Set([x.r]), d = [];
+      likeSort(this.shufS(P.filter(y => y !== x), r), x.w, x.r).forEach(y => { if (d.length < 3 && !seen.has(y.r)) { seen.add(y.r); d.push(y.r); } });
+      qs.push({ mi: 0, stem: `<span class="ex-u jp">${esc(x.w)}</span>`, jp: true, ...opts4(x.r, d), w: x });
+    });
+    take(120 + m * 8, 8).forEach(x => {
+      const seen = new Set([x.w]), d = [];
+      likeSort(this.shufS(P.filter(y => y !== x), r), x.w, x.r).forEach(y => { if (d.length < 3 && !seen.has(y.w)) { seen.add(y.w); d.push(y.w); } });
+      qs.push({ mi: 1, stem: `<span class="ex-u jp">${esc(x.r)}</span>`, jp: true, ...opts4(x.w, d), w: x });
+    });
+    Array.from({ length: 10 }, (_, i) => EX_M3[(m * 10 + i) % EX_M3.length]).forEach(a => {
+      const o = opts4(a[1], a.slice(2));
+      qs.push({ mi: 2, stem: `<span class="jp">${esc(a[0]).replace("＿＿", "（　　）")}</span>`, jp: true, ...o });
+    });
+    Array.from({ length: 3 }, (_, i) => EX_M4[(m * 3 + i) % EX_M4.length]).forEach(a => {
+      const o = opts4(a[1], a.slice(2));
+      qs.push({ mi: 3, stem: `<span class="ex-u jp">${esc(a[0])}</span>`, jp: true, ...o });
+    });
+    return qs;
+  },
+
+
+  grQs(m, part) {
+    const D = EX_GR[m % EX_GR.length], qs = [];
+    const add = (mi, o) => qs.push(Object.assign({ mi, gr: true, stem: "", opts: [], ans: 0 }, o));
+    D.g1.forEach(x => add(0, { stem: `<span class="jp">${rb(x.s)}</span>`, opts: x.o, ans: x.a - 1, rich: true }));
+    D.g2.forEach(x => {
+      let k = 0; const sent = x.s.replace(/＿|★/g, c => c === "★" ? '<span class="ex-bl st">★</span>' : '<span class="ex-bl"></span>');
+      const filled = x.s.replace(/＿|★/g, () => x.o[x.ord[k++] - 1]);
+      add(1, { stem: `<span class="jp">${rb(x.s).replace(/＿|★/g, c => c === "★" ? '<span class="ex-bl st">★</span>' : '<span class="ex-bl"></span>')}</span>`, opts: x.o, ans: x.a - 1, tr: filled.replace(/《[^》]*》/g, "") });
+    });
+    D.g3.q.forEach((x, i) => add(2, { pass: i === 0 ? rb(D.g3.p).replace(/【(\d)】/g, (_, d) => `<span class="ex-bl n">${20 + +d}</span>`) : "", opts: x.o, ans: x.a - 1, lab: 21 + i }));
+    [...D.r4.map(x => [3, x]), ...D.r5.map(x => [4, x]), [5, D.r6]].forEach(([mi, x]) => add(mi, { pass: "", stem: `<div class="ex-pass jp">${rb(x.p)}</div><div class="ex-stem s jp">${rb(x.q)}</div>`, opts: x.o, ans: x.a - 1 }));
+    return part === "g" ? qs.filter(q => q.mi < 3) : part === "r" ? qs.filter(q => q.mi >= 3) : qs;
+  },
+  cQs(m) {
+    const r = this.rng(5000 + m), qs = [], S1 = (a, k, n) => a.slice(k * n, k * n + n);
+    const mk = (mi, row, dlg, plays) => {
+      const co = dlg ? row.slice(2) : row.slice(1), o = this.shufS(co, r), n = dlg ? 2 : 1;
+      const lines = dlg ? row[0].split("／").map(s => ({ who: s[0], t: s.slice(2) })) : [];
+      let speak, tr;
+      if (mi < 2) { const qq = { who: "N", t: row[1] }; speak = [qq, { pause: 700 }, ...lines.flatMap(l => [l, { pause: 250 }]), { pause: 500 }, qq]; tr = row[0].replace(/／/g, "\n") + "\n" + row[1]; }
+      else if (mi === 2) { speak = [{ who: "N", t: row[0] }, { pause: 900 }, ...o.flatMap((x, j) => [{ who: "N", t: (j + 1) + "ばん" }, { pause: 200 }, { who: "N", t: x }, { pause: 700 }])]; tr = row[0]; }
+      else { speak = [{ who: "N", t: row[0] }, { pause: 1200 }, ...o.flatMap((x, j) => [{ who: "N", t: (j + 1) + "ばん" }, { pause: 200 }, { who: "N", t: x }, { pause: 800 }])]; tr = row[0]; }
+      qs.push({ mi, c: true, speak, plays, left: plays, show: mi < 2, sit: mi === 2 ? row[0] : "", stem: "", opts: o, ans: o.indexOf(dlg ? row[2] : row[1]), tr });
+    };
+    S1(EX_C1, m, 7).forEach(x => mk(0, x, true, 2)); S1(EX_C2, m, 6).forEach(x => mk(1, x, true, 2));
+    S1(EX_C3, m, 5).forEach(x => mk(2, x, false, 1)); S1(EX_C4, m, 6).forEach(x => mk(3, x, false, 1));
+    return qs;
+  },
+  hist() { return Array.isArray(S.exam) ? S.exam : (S.exam = []); },
+  bestOf(m, part) { return this.hist().filter(h => h.m === m && h.p === part).reduce((a, h) => Math.max(a, h.pct), -1); },
+  viewHome() {
+    const H = this.hist().slice(-6).reverse();
+    this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 6px">🎓 ${esc(ex("title"))}</h2><p class="info" style="margin:0">${esc(ex("sub"))}</p></div>
+      ${[...Array(this.NMOCK).keys()].map(m => { const b = this.bestOf(m, "moji"); return `<details class="panel glass ex-mock"${m === 0 ? " open" : ""}><summary class="ex-mh"><b>${esc(ex("mock"))} ${m + 1}</b>${b >= 0 ? `<span class="ex-best">${esc(ex("best"))}: ${b}%</span>` : ""}</summary>
+        <button class="btn block ghost" data-m="${m}" data-p="moji" type="button">${esc(ex("moji"))} · ${this.PARTS.moji.min} ${esc(ex("min"))} · 33 ${esc(ex("q"))}</button>
+        <button class="btn block ghost" data-m="${m}" data-p="gr" type="button">${esc(ex("grN"))}</button><div class="ex-two"><button class="btn ghost" data-m="${m}" data-p="g" type="button">${esc(ex("gN"))}</button><button class="btn ghost" data-m="${m}" data-p="r" type="button">${esc(ex("rN"))}</button></div>
+        <button class="btn block ghost" ${m < this.NC ? `data-m="${m}" data-p="c"` : "disabled"} type="button">${esc(m < this.NC ? ex("chN") : "聴解 · " + ex("ph"))}</button><button class="btn block" data-seq="${m}" type="button">${esc(ex("full"))}</button></details>`; }).join("")}
+      <div class="panel glass ex-mock"><div class="ex-mh"><b>${esc(ex("off"))}</b></div><p class="info" style="margin:4px 0 0">${esc(ex("offSub"))}</p>${["oV","oG","oL"].map(p => `<button class="btn block ghost" data-m="-1" data-p="${p}" type="button">${esc(ex({ oV: "offV", oG: "offG", oL: "offL" }[p]))}</button>`).join("")}</div>
+      <div class="panel glass"><div class="lbl">${esc(ex("hist"))}</div>${H.length ? H.map(h => `<div class="mist-row"><span class="mt"><b>${h.pct}%</b><small>${h.m < 0 ? esc(ex("off")) : esc(ex("mock")) + " " + (h.m + 1)} · ${esc(h.d)} · ${h.o}/${h.n}</small></span></div>`).join("") : `<div class="info">${esc(ex("nohist"))}</div>`}</div>
+      <p class="info" style="text-align:center">${esc(ex("chNote"))}</p><p class="info" style="text-align:center">${esc(ex("note"))}</p>`;
+    $$("[data-m]", this.root).forEach(b => b.onclick = () => { this.seq = null; this.start(+b.dataset.m, b.dataset.p); });
+    $$("[data-seq]", this.root).forEach(b => b.onclick = () => { this.seq = { m: +b.dataset.seq, list: ["moji", "gr", ...(+b.dataset.seq < this.NC ? ["c"] : [])], i: 0 }; this.start(this.seq.m, "moji"); });
+  },
+  start(m, part) {
+    const off = m < 0, cho = part === "c", grp = part === "gr" || part === "g" || part === "r", qs = off ? this.OFF[part].key.map(a => ({ mi: 0, stem: "", opts: ["1", "2", "3", "4"], ans: a - 1 })) : cho ? this.cQs(m) : grp ? this.grQs(m, part) : this.mojiQs(m);
+    this.run = { m, part, qs, off, cho, grp, ans: qs.map(() => -1), flag: qs.map(() => false), t0: Date.now(), sec: (off ? this.OFF[part].min : this.PARTS[part].min) * 60 };
+    this.res = null; document.body.classList.add("inexam"); Say.stop(); clearInterval(this.tm); this.tm = setInterval(() => this.tick(), 500);
+    this.viewRun(); window.scrollTo({ top: 0 });
+  },
+  left() { return Math.max(0, this.run.sec - Math.round((Date.now() - this.run.t0) / 1000)); },
+  tick() {
+    if (!this.run) { clearInterval(this.tm); return; }
+    const l = this.left(), e = $("#exT"); if (e) { e.textContent = Math.floor(l / 60) + ":" + String(l % 60).padStart(2, "0"); e.classList.toggle("low", l < 300); }
+    if (!l) this.finish(true);
+  },
+  viewRun() {
+    const R = this.run; let last = -1;
+    const body = R.qs.map((q, i) => {
+      let h = ""; if (!R.off && q.mi !== last) { last = q.mi; h = `<div class="ex-mon"><div class="jp">${esc((R.cho ? EXC_JP : R.grp ? EXG_JP : EX_JP)[q.mi])}</div><small>${esc((R.cho ? ex("mc") : R.grp ? ex("mg") : ex("m"))[q.mi])}</small></div>`; }
+      if (q.pass) h += `<div class="ex-q glass ex-pass jp">${q.pass}</div>`;
+      return h + `<div class="ex-q glass" id="exq${i}"><div class="ex-qh"><span class="ex-no">${q.lab || i + 1}</span><button class="ex-flag ${R.flag[i] ? "on" : ""}" data-f="${i}" type="button" aria-label="${esc(ex("flag"))}">🚩</button></div>
+        ${R.off ? "" : q.c ? `<button class="btn ghost ex-pl" data-pl="${i}" type="button">${esc(ex("play")(q.left))}</button>${q.sit ? `<div class="ex-stem s">${esc(q.sit)}</div>` : ""}` : `<div class="ex-stem ${q.mi === 3 ? "s" : ""}">${q.stem}</div>`}
+        <div class="ex-opts ${q.c && !q.show ? "c3" : ""} ${q.opts.some(o => o.length > 11) ? "one" : ""}">${q.opts.map((o, j) => `<button class="opt jp ex-o ${R.ans[i] === j ? "sel" : ""}" data-q="${i}" data-o="${j}" type="button"><span class="n">${j + 1}</span>${q.c && !q.show ? (j + 1) + "ばん" : R.grp ? rb(o) : esc(o)}</button>`).join("")}</div></div>`;
+    }).join("");
+    const links = R.off ? `<div class="panel glass"><a class="btn block ghost" href="${this.PDF}" target="_blank" rel="noopener">${esc(ex("offPdf"))}</a>${R.part === "oL" ? `<div class="lbl" style="margin-top:10px">${esc(ex("offAud"))}</div><audio controls preload="none" src="${this.MP3}" style="width:100%"></audio>` : ""}</div>` : "";
+    this.root.innerHTML = `${links}<div class="ex-bar glass"><span>⏱ <b id="exT"></b></span><span id="exC"></span><button class="btn ghost sm" id="exJ" type="button">${esc(ex("jump"))}</button></div>${body}
+      <button class="btn block" id="exS" type="button" style="margin:10px 0 6px">${esc(ex("submit"))}</button><button class="btn block ghost" id="exX" type="button">✕ ${esc(ex("back"))}</button>`;
+    this.upd(); this.tick();
+    $$(".ex-o", this.root).forEach(b => b.onclick = () => { const i = +b.dataset.q, j = +b.dataset.o; R.ans[i] = R.ans[i] === j ? -1 : j; $$(`[data-q="${i}"]`, this.root).forEach(x => x.classList.toggle("sel", +x.dataset.o === R.ans[i])); this.upd(); });
+    $$(".ex-pl", this.root).forEach(b => b.onclick = () => { const q = R.qs[+b.dataset.pl]; if (q.left <= 0) { toast(ex("noPl")); return; } q.left--; b.textContent = q.left ? ex("play")(q.left) : ex("noPl"); b.disabled = false; Say.play(q.speak); });
+    $$(".ex-flag", this.root).forEach(b => b.onclick = () => { const i = +b.dataset.f; R.flag[i] = !R.flag[i]; b.classList.toggle("on", R.flag[i]); });
+    $("#exJ", this.root).onclick = () => {
+      const n = R.qs.length, cur = Math.max(0, R.qs.findIndex((_, i) => $("#exq" + i).getBoundingClientRect().bottom > 90));
+      let f = -1; for (let k = 1; k <= n; k++) { const i = (cur + k) % n; if (R.ans[i] < 0) { f = i; break; } }
+      if (f < 0) f = R.flag.findIndex(x => x);
+      if (f >= 0) $("#exq" + f).scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+    $("#exS", this.root).onclick = () => { const n = R.ans.filter(a => a < 0).length; if (!n || confirm(ex("confirm")(n))) this.finish(false); };
+    $("#exX", this.root).onclick = () => { if (confirm(ex("quitC"))) { Say.stop(); this.seq = null; this.run = null; this.res = null; clearInterval(this.tm); document.body.classList.remove("inexam"); this.viewHome(); window.scrollTo({ top: 0 }); } };
+  },
+  upd() { const R = this.run, n = R.ans.filter(a => a < 0).length, e = $("#exC"); if (e) e.textContent = `✓ ${R.qs.length - n}/${R.qs.length}`; },
+  finish(timeUp) {
+    const R = this.run; if (!R) return; Say.stop(); clearInterval(this.tm); this.tm = 0; document.body.classList.remove("inexam");
+    const o = R.qs.filter((q, i) => R.ans[i] === q.ans).length, n = R.qs.length, pct = Math.round(o / n * 100);
+    const used = Math.min(R.sec, Math.round((Date.now() - R.t0) / 1000));
+    this.hist().push({ m: R.m, p: R.part, pct, o, n, d: new Date().toLocaleDateString("en-GB") }); if (S.exam.length > 60) S.exam.shift(); save();
+    this.res = { R, o, n, pct, used, timeUp, onlyWrong: true }; this.run = null;
+    Pet.react("end", pct); if (pct >= 80) confetti();
+    this.viewRes(); window.scrollTo({ top: 0 });
+  },
+  viewRes() {
+    const X = this.res, R = X.R, per = R.off ? [] : [...new Set(R.qs.map(q => q.mi))].sort().map(k => { const ix = R.qs.map((q, i) => q.mi === k ? i : -1).filter(i => i >= 0); return [ix.filter(i => R.ans[i] === R.qs[i].ans).length, ix.length, k + 1]; });
+    const list = R.qs.map((q, i) => ({ q, i })).filter(({ q, i }) => !X.onlyWrong || R.ans[i] !== q.ans);
+    this.root.innerHTML = `<div class="done glass"><div class="em">${X.pct >= 80 ? "🏆" : X.pct >= 60 ? "🎉" : X.pct >= 44 ? "👍" : "💪"}</div><h2>${esc(X.timeUp ? ex("timeUp") : ex("res"))}</h2><div class="score-big">${X.pct}%</div>
+      <p style="margin:0">${esc(ex("of"))}: ${X.o} / ${X.n}</p><p style="margin:6px 0 0">${esc(ex("used"))}: ${Math.floor(X.used / 60)}:${String(X.used % 60).padStart(2, "0")}</p>
+      ${R.off && R.part === "oL" ? `<p style="margin:8px 0 0"><a href="${this.SCR}" target="_blank" rel="noopener">${esc(ex("offScr"))}</a></p>` : ""}<p style="margin:8px 0 0;font-size:13px;opacity:.85">${per.map(p => `${p[2]}: ${p[0]}/${p[1]}`).join(" · ")}</p>
+      <div class="col"><button class="btn" id="exAg" type="button">${esc(ex("again"))}</button>${this.seq && this.seq.i + 1 < this.seq.list.length ? `<button class="btn" id="exNx" type="button">${esc(ex("nextP"))}</button>` : ""}<button class="btn ghost" id="exBk" type="button">${esc(ex("back"))}</button></div></div>
+      <div class="row" style="margin:12px 0">${chipsHtml("exf", [["w", ex("onlyWrong")], ["a", ex("all")]], X.onlyWrong ? "w" : "a")}</div>
+      ${list.map(({ q, i }) => { const a = R.ans[i], okk = a === q.ans; return `<div class="ex-q glass"><div class="ex-qh"><span class="ex-no ${okk ? "ok" : "no"}">${q.lab || i + 1}</span></div>${R.off ? "" : `<div class="ex-stem ${q.mi === 3 ? "s" : ""}">${q.stem}</div>`}
+        ${q.tr ? `<div class="info" style="white-space:pre-line">${esc(ex("tr"))}: ${esc(q.tr)}</div>` : ""}<div class="ex-rv"><div class="${okk ? "g" : "b"}">${esc(ex("yours"))}: <b class="jp">${a < 0 ? esc(ex("none")) : q.gr ? rb(q.opts[a]) : esc(q.opts[a])}</b></div>${okk ? "" : `<div class="g">${esc(ex("right"))}: <b class="jp">${q.gr ? rb(q.opts[q.ans]) : esc(q.opts[q.ans])}</b></div>`}${q.w && !okk ? `<div class="info">${esc(q.w.w)} = ${esc(q.w.r)} — ${esc(tr(q.w))}</div>` : ""}</div></div>`; }).join("")}`;
+    bindChips(this.root, "exf", v => { X.onlyWrong = v === "w"; this.viewRes(); });
+    const nx = $("#exNx", this.root); if (nx) nx.onclick = () => { this.seq.i++; this.start(this.seq.m, this.seq.list[this.seq.i]); };
+    $("#exAg", this.root).onclick = () => { this.seq = null; this.start(R.m, R.part); };
+    $("#exBk", this.root).onclick = () => { this.seq = null; this.res = null; this.viewHome(); window.scrollTo({ top: 0 }); };
+  }
+};
+
+/* =====================================================================
    APP SHELL
    ===================================================================== */
-const PAGES = { kana: Kana, kotoba: Kotoba, kanji: Kanji };
+const PAGES = { kana: Kana, kotoba: Kotoba, kanji: Kanji, exam: Exam };
 const inited = {};
 let curPage = "kana";
 
@@ -2961,6 +3500,7 @@ function boot() {
   $("#langSel").value = lang;
   staticTexts(); dailyVisit(); renderProfile(); applyTheme(th, false);
   $("#lbBtn").onclick = () => Board.open();
+  $("#examBtn").onclick = () => showPage("exam");
   $("#mistBtn").onclick = () => Mist.open(); Mist.badge();
   $("#goalBar").onclick = () => Act.stats(); Act.bar();
   $("#guideBtn").onclick = () => Guide.open();
