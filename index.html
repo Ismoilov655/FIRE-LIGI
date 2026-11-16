@@ -514,8 +514,8 @@ transition:transform .12s,border-color .2s,box-shadow .2s,background .2s;}
 .mist-row .mx:hover{color:var(--accent);}
 @media (max-width:420px){
   header.top{position:relative;}
-  header.top .brand{padding-right:148px;}
-  #langSel{position:absolute;top:0;right:0;height:38px;}
+  header.top .brand{padding-right:132px;}
+  #langSel{position:absolute;top:0;right:46px;height:38px;width:78px;padding-left:8px;padding-right:4px;font-size:14px;}
   .tools{gap:6px;}
   .tools .chip-btn{padding:0 10px;}
   .tools .seal-btn{padding-right:10px;gap:8px;}
@@ -681,7 +681,8 @@ body.inexam .pet,body.inexam .guide-fab{display:none !important;}.ex-bar span{wh
 
 .exam-fab{width:40px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--glass);color:var(--accent);font-family:var(--font-jp);font-size:20px;font-weight:700;cursor:pointer;order:5;}
 .exam-fab:active{transform:scale(.94);}
-@media(max-width:420px){.exam-fab{position:absolute;top:0;right:120px;z-index:2;}}
+@media(max-width:420px){.exam-fab{position:absolute;top:0;right:0;z-index:2;}}
+body.onexam .pet{display:none;}
 
 .ex-pl{margin:4px 0 8px;}.ex-opts.c3{grid-template-columns:1fr 1fr 1fr;}.ex-opts.c3 .opt.jp{padding:12px 4px;font-size:15px;}.ex-opts.c3 .opt.jp .n{display:none;}
 
@@ -3938,7 +3939,7 @@ function boot() {
   $(".brand b").onclick = () => Home.open();
   Pet.init();
   // the "?" button hides only while a quiz is actually on screen (it used to stay hidden after leaving a quiz)
-  const syncFab = () => document.body.classList.toggle("inquiz", !!document.querySelector("main > section:not([hidden]) .qtop"));
+  const syncFab = () => { document.body.classList.toggle("inquiz", !!document.querySelector("main > section:not([hidden]) .qtop")); document.body.classList.toggle("onexam", !$("#pg-exam").hidden); };
   new MutationObserver(syncFab).observe($("main"), { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
   syncFab();
   if (S.profile && !S.tour) { S.tour = 1; save(); }
