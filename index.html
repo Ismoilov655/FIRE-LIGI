@@ -3405,7 +3405,7 @@ const EX_C4 = sp(`
 りょうりは じょうずですか。|いいえ、あまり じょうずじゃありません|はい、おいしかったです|いいえ、いきません`);
 
 /* Video listening mocks: [mondai, no, startSec, endSec, correct(1-based, 0 = key not given yet), options] */
-const EX_VID = {"3":{"id":"TaXw3mCphMo","q":[[1,1,102,161,2,4],[1,2,161,232,1,4],[1,3,232,293,3,4],[1,4,293,354,2,4],[1,5,354,435,3,4],[1,6,435,502,4,4],[1,7,502,572,1,4],[2,1,664,739,1,4],[2,2,739,793,4,4],[2,3,793,855,3,4],[2,4,855,920,4,4],[2,5,920,991,2,4],[2,6,991,1055,3,4],[3,1,1124,1160,1,3],[3,2,1160,1189,1,3],[3,3,1189,1224,2,3],[3,4,1224,1259,3,3],[3,5,1259,1298,1,3],[4,1,1354,1382,2,3],[4,2,1382,1412,3,3],[4,3,1412,1439,3,3],[4,4,1439,1467,2,3],[4,5,1467,1495,1,3],[4,6,1495,1522,3,3]]}};
+const EX_VID = {"3":{"id":"TaXw3mCphMo","q":[[1,1,102,161,2,4],[1,2,161,232,1,4],[1,3,232,293,2,4],[1,4,293,354,2,4],[1,5,354,435,3,4],[1,6,435,502,3,4],[1,7,502,572,4,4],[2,1,664,739,1,4],[2,2,739,793,4,4],[2,3,793,855,4,4],[2,4,855,920,3,4],[2,5,920,991,2,4],[2,6,991,1055,4,4],[3,1,1124,1160,1,3],[3,2,1160,1189,1,3],[3,3,1189,1224,2,3],[3,4,1224,1259,3,3],[3,5,1259,1298,1,3],[4,1,1354,1382,2,3],[4,2,1382,1412,3,3],[4,3,1412,1439,3,3],[4,4,1439,1467,2,3],[4,5,1467,1495,1,3],[4,6,1495,1522,3,3]]},"4":{"id":"pjHy2h8oKf8","q":[[1,1,69,116,2,4],[1,2,116,173,2,4],[1,3,173,228,3,4],[1,4,228,284,3,4],[1,5,284,347,4,4],[1,6,347,412,2,4],[1,7,412,498,3,4],[2,1,535,592,2,4],[2,2,592,654,4,4],[2,3,654,716,4,4],[2,4,716,778,3,4],[2,5,778,856,1,4],[2,6,856,926,1,4],[3,1,963,996,1,3],[3,2,996,1030,2,3],[3,3,1030,1064,3,3],[3,4,1064,1102,3,3],[3,5,1102,1136,1,3],[4,1,1166,1197,2,3],[4,2,1197,1231,3,3],[4,3,1231,1257,1,3],[4,4,1257,1291,3,3],[4,5,1291,1322,2,3],[4,6,1322,1354,2,3]]},"5":{"id":"YZuyAiV5fj0","q":[[1,1,55,112,3,4],[1,2,112,177,4,4],[1,3,177,248,1,4],[1,4,248,320,3,4],[1,5,320,387,4,4],[2,1,415,478,3,4],[2,2,478,545,1,4],[2,3,545,603,4,4],[2,4,603,664,2,4],[2,5,664,734,1,4],[2,6,734,804,3,4],[3,1,832,868,2,3],[3,2,868,903,3,3],[3,3,903,940,2,3],[3,4,940,975,1,3],[3,5,975,1014,3,3],[4,1,1036,1065,3,3],[4,2,1065,1096,2,3],[4,3,1096,1126,2,3],[4,4,1126,1158,1,3],[4,5,1158,1189,3,3],[4,6,1189,1220,1,3],[4,7,1220,1251,3,3],[4,8,1251,1287,2,3]]}};
 
 /* =====================================================================
    IMTIHON: paper-style JLPT N5 mock. All questions on one page, fixed time,
@@ -3627,7 +3627,7 @@ const Exam = {
     }
     const V = this.vid = { m, D, ans: D.q.map(() => 0), cur: -1, tm: 0, pl: null, done: false };
     this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2><div class="ex-vid"><div id="ytp"></div><div class="ex-sh"></div><div class="ex-cvt"></div></div>
-      <div class="ex-vc"><button class="btn ghost" data-vc="-10" type="button" aria-label="-10s">⏪ 10</button><button class="btn ghost" data-vc="prev" type="button" aria-label="prev">⏮</button><button class="btn" data-vc="play" type="button" aria-label="play">⏯</button><button class="btn ghost" data-vc="next" type="button" aria-label="next">⏭</button><button class="btn ghost" data-vc="10" type="button" aria-label="+10s">10 ⏩</button></div>
+      <div class="ex-vc"><button class="btn ghost" data-vc="-5" type="button" aria-label="-5s">⏪ 5</button><button class="btn ghost" data-vc="prev" type="button" aria-label="prev">⏮</button><button class="btn" data-vc="play" type="button" aria-label="play">⏯</button><button class="btn ghost" data-vc="next" type="button" aria-label="next">⏭</button><button class="btn ghost" data-vc="5" type="button" aria-label="+5s">5 ⏩</button></div>
       <div class="ex-va" id="exVa"><div class="info" style="text-align:center">${esc(ru ? "Нажмите ▶ — варианты появятся во время вопроса" : "▶ ni bosing: savol vaqtida variantlar chiqadi")}</div></div>${link}</div>
       <div class="ex-two"><button class="btn ghost" id="exBk" type="button">${esc(ex("back"))}</button><button class="btn" id="exVf" type="button">${esc(ru ? "Завершить" : "Tugatish")}</button></div>`;
     const stop = () => { clearInterval(V.tm); V.tm = 0; try { V.pl && V.pl.destroy(); } catch (e) { } };
@@ -3637,7 +3637,7 @@ const Exam = {
       const pl = V.pl; if (!pl || !pl.getCurrentTime) return; const t = pl.getCurrentTime(), k = b.dataset.vc, Q = D.q;
       if (k === "play") { pl.getPlayerState() === 1 ? pl.pauseVideo() : pl.playVideo(); return; }
       let to = t;
-      if (k === "10") to = t + 10; else if (k === "-10") to = Math.max(0, t - 10);
+      if (k === "5") to = t + 5; else if (k === "-5") to = Math.max(0, t - 5);
       else if (k === "next") { const q = Q.find(x => x[2] > t + 0.5); to = q ? q[2] : t; }
       else { const i = Q.findIndex(x => t >= x[2] && t < x[3]); to = i >= 0 ? (t - Q[i][2] > 3 ? Q[i][2] : (Q[i - 1] ? Q[i - 1][2] : 0)) : ([...Q].reverse().find(x => x[2] < t - 0.5) || [0, 0, 0])[2]; }
       pl.seekTo(to, true);
