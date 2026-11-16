@@ -748,6 +748,8 @@ details.ex-rd>*:not(summary){margin-left:14px;margin-right:14px;}details.ex-rd>*
 
 .ex-vid{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;}.ex-vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 
+.ex-va{margin-top:12px;min-height:84px;}.ex-vq{text-align:center;margin-bottom:8px;font-size:15px;}.ex-vo{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:8px;}.ex-vo .btn{font-size:22px;padding:14px 0;}.ex-ok{color:#1a9b5a;font-weight:800;}.ex-no{color:#d33;font-weight:800;}
+
 </style>
 </head>
 <body>
@@ -3400,6 +3402,9 @@ const EX_C4 = sp(`
 トイレは どこですか。|あちらです|3じです|ひとりです
 りょうりは じょうずですか。|いいえ、あまり じょうずじゃありません|はい、おいしかったです|いいえ、いきません`);
 
+/* Video listening mocks: [mondai, no, startSec, endSec, correct(1-based, 0 = key not given yet), options] */
+const EX_VID = {"3":{"id":"TaXw3mCphMo","q":[[1,1,102,161,1,4],[1,2,161,232,0,4],[1,3,232,293,0,4],[1,4,293,354,0,4],[1,5,354,435,0,4],[1,6,435,502,0,4],[1,7,502,572,0,4],[2,1,664,739,0,4],[2,2,739,793,0,4],[2,3,793,855,0,4],[2,4,855,920,0,4],[2,5,920,991,0,4],[2,6,991,1055,0,4],[3,1,1124,1160,1,3],[3,2,1160,1189,1,3],[3,3,1189,1224,2,3],[3,4,1224,1259,3,3],[3,5,1259,1298,1,3],[4,1,1354,1382,2,3],[4,2,1382,1412,3,3],[4,3,1412,1467,3,3],[4,4,1467,1495,2,3],[4,5,1495,1522,1,3],[4,6,1522,1548,3,3]]}};
+
 /* =====================================================================
    IMTIHON: paper-style JLPT N5 mock. All questions on one page, fixed time,
    answer in any order, flag hard ones, submit at the end.
@@ -3612,12 +3617,46 @@ const Exam = {
   },
   VID: { 3: "TaXw3mCphMo", 4: "pjHy2h8oKf8", 5: "YZuyAiV5fj0" },
   viewVideo(m) {
-    const id = this.VID[m];
-    this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2>
-      <div class="ex-vid"><iframe src="https://www.youtube.com/embed/${id}?rel=0" title="聴解 ${m + 1}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-      <p class="info" style="margin:10px 0 0"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">${esc(lang === "ru" ? "Не открывается? Смотреть на YouTube" : "Ochilmasa: YouTube'da ko'rish")}</a></p></div>
-      <button class="btn block" id="exBk" type="button">${esc(ex("back"))}</button>`;
-    $("#exBk", this.root).onclick = () => { this.viewHome(); window.scrollTo({ top: 0 }); };
+    const id = this.VID[m], D = EX_VID[m], ru = lang === "ru";
+    const link = `<p class="info" style="margin:10px 0 0"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">${esc(ru ? "Не открывается? Смотреть на YouTube" : "Ochilmasa: YouTube'da ko'rish")}</a></p>`;
+    if (!D) {
+      this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2><div class="ex-vid"><iframe src="https://www.youtube.com/embed/${id}?rel=0" title="聴解 ${m + 1}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>${link}</div><button class="btn block" id="exBk" type="button">${esc(ex("back"))}</button>`;
+      $("#exBk", this.root).onclick = () => { this.viewHome(); window.scrollTo({ top: 0 }); }; window.scrollTo({ top: 0 }); return;
+    }
+    const V = this.vid = { m, D, ans: D.q.map(() => 0), cur: -1, tm: 0, pl: null, done: false };
+    this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2><div class="ex-vid"><div id="ytp"></div></div>
+      <div class="ex-va" id="exVa"><div class="info" style="text-align:center">${esc(ru ? "Нажмите ▶ — варианты появятся во время вопроса" : "▶ ni bosing: savol vaqtida variantlar chiqadi")}</div></div>${link}</div>
+      <div class="ex-two"><button class="btn ghost" id="exBk" type="button">${esc(ex("back"))}</button><button class="btn" id="exVf" type="button">${esc(ru ? "Завершить" : "Tugatish")}</button></div>`;
+    const stop = () => { clearInterval(V.tm); V.tm = 0; try { V.pl && V.pl.destroy(); } catch (e) { } };
+    $("#exBk", this.root).onclick = () => { stop(); this.vid = null; this.viewHome(); window.scrollTo({ top: 0 }); };
+    $("#exVf", this.root).onclick = () => { stop(); this.vidFinish(); };
+    const tick = () => {
+      let t = 0; try { t = V.pl.getCurrentTime(); } catch (e) { return; }
+      const i = D.q.findIndex(q => t >= q[2] && t < q[3]);
+      if (i !== V.cur) { V.cur = i; this.vidPanel(); }
+    };
+    const mk = () => { V.pl = new YT.Player("ytp", { videoId: id, playerVars: { rel: 0, playsinline: 1 }, events: { onReady: () => { V.tm = setInterval(tick, 250); }, onStateChange: e => { if (e.data === 0 && !V.done) { stop(); this.vidFinish(); } } } }); };
+    if (window.YT && YT.Player) mk(); else {
+      window.onYouTubeIframeAPIReady = mk;
+      if (!document.getElementById("ytapi")) { const sc = document.createElement("script"); sc.id = "ytapi"; sc.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(sc); }
+    }
+    window.scrollTo({ top: 0 });
+  },
+  vidPanel() {
+    const V = this.vid, box = $("#exVa"); if (!V || !box) return; const ru = lang === "ru";
+    if (V.cur < 0) { box.innerHTML = `<div class="info" style="text-align:center">🎧 ${esc(ru ? "Слушайте…" : "Tinglang…")}</div>`; return; }
+    const q = V.D.q[V.cur];
+    box.innerHTML = `<div class="ex-vq"><b>問題${q[0]} · ${q[1]}</b></div><div class="ex-vo">${[...Array(q[5]).keys()].map(j => `<button class="btn ${V.ans[V.cur] === j + 1 ? "" : "ghost"}" data-vo="${j + 1}" type="button">${j + 1}</button>`).join("")}</div>`;
+    $$("[data-vo]", box).forEach(b => b.onclick = () => { V.ans[V.cur] = +b.dataset.vo; $$("[data-vo]", box).forEach(x => x.classList.toggle("ghost", +x.dataset.vo !== V.ans[V.cur])); });
+  },
+  vidFinish() {
+    const V = this.vid; if (!V || V.done) return; V.done = true; const ru = lang === "ru";
+    const keyed = V.D.q.map((q, i) => ({ q, i })).filter(x => x.q[4]);
+    const o = keyed.filter(x => V.ans[x.i] === x.q[4]).length, n = keyed.length, pct = n ? Math.round(o / n * 100) : 0;
+    if (n) { this.hist().push({ m: V.m, p: "c", pct, o, n, d: new Date().toLocaleDateString("en-GB"), u: 0, sq: 0 }); while (S.exam.length > 70) S.exam.shift(); save(); if (pct >= 80) confetti(); }
+    const rows = V.D.q.map((q, i) => { const a = V.ans[i], k = q[4], cl = !k ? "" : a === k ? "g" : "b"; return `<div class="mist-row"><span class="mt"><b>問題${q[0]} · ${q[1]}</b><small>${esc(ru ? "Ваш ответ" : "Javobingiz")}: ${a || "—"}${k ? ` · ${esc(ru ? "верно" : "to'g'ri")}: ${k}` : ` · ${esc(ru ? "ключа нет" : "kalit yo'q")}`}</small></span><span class="${cl === "g" ? "ex-ok" : cl === "b" ? "ex-no" : ""}">${cl === "g" ? "✓" : cl === "b" ? "✗" : ""}</span></div>`; }).join("");
+    this.root.innerHTML = `<div class="panel glass" style="text-align:center"><h2 style="margin:0">🎧 ${esc(ex("mock"))} ${V.m + 1} · 聴解</h2><div class="score-big" style="font-size:44px;font-weight:800;margin:8px 0">${n ? pct + "%" : "—"}</div><p class="info" style="margin:0">${n ? `${o}/${n}` : ""}${n < V.D.q.length ? ` · ${esc(ru ? "вопросов без ключа" : "javob kaliti yo'q savollar")}: ${V.D.q.length - n}` : ""}</p></div><div class="panel glass">${rows}</div><button class="btn block" id="exBk" type="button">${esc(ex("back"))}</button>`;
+    $("#exBk", this.root).onclick = () => { this.vid = null; this.viewHome(); window.scrollTo({ top: 0 }); };
     window.scrollTo({ top: 0 });
   },
   viewHist(i) {
