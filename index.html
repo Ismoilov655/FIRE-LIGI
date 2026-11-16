@@ -750,6 +750,8 @@ details.ex-rd>*:not(summary){margin-left:14px;margin-right:14px;}details.ex-rd>*
 
 .ex-va{margin-top:12px;min-height:84px;}.ex-vq{text-align:center;margin-bottom:8px;font-size:15px;}.ex-vo{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:8px;}.ex-vo .btn{font-size:22px;padding:14px 0;}.ex-ok{color:#1a9b5a;font-weight:800;}.ex-no{color:#d33;font-weight:800;}
 
+.ex-sh{position:absolute;inset:0;z-index:2;}.ex-cvt{position:absolute;left:0;right:0;top:0;height:15%;background:#000;z-index:3;pointer-events:none;}.ex-vc{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px;}.ex-vc .btn{padding:10px 0;font-size:15px;}
+
 </style>
 </head>
 <body>
@@ -3624,18 +3626,28 @@ const Exam = {
       $("#exBk", this.root).onclick = () => { this.viewHome(); window.scrollTo({ top: 0 }); }; window.scrollTo({ top: 0 }); return;
     }
     const V = this.vid = { m, D, ans: D.q.map(() => 0), cur: -1, tm: 0, pl: null, done: false };
-    this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2><div class="ex-vid"><div id="ytp"></div></div>
+    this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2><div class="ex-vid"><div id="ytp"></div><div class="ex-sh"></div><div class="ex-cvt"></div></div>
+      <div class="ex-vc"><button class="btn ghost" data-vc="-10" type="button" aria-label="-10s">⏪ 10</button><button class="btn ghost" data-vc="prev" type="button" aria-label="prev">⏮</button><button class="btn" data-vc="play" type="button" aria-label="play">⏯</button><button class="btn ghost" data-vc="next" type="button" aria-label="next">⏭</button><button class="btn ghost" data-vc="10" type="button" aria-label="+10s">10 ⏩</button></div>
       <div class="ex-va" id="exVa"><div class="info" style="text-align:center">${esc(ru ? "Нажмите ▶ — варианты появятся во время вопроса" : "▶ ni bosing: savol vaqtida variantlar chiqadi")}</div></div>${link}</div>
       <div class="ex-two"><button class="btn ghost" id="exBk" type="button">${esc(ex("back"))}</button><button class="btn" id="exVf" type="button">${esc(ru ? "Завершить" : "Tugatish")}</button></div>`;
     const stop = () => { clearInterval(V.tm); V.tm = 0; try { V.pl && V.pl.destroy(); } catch (e) { } };
     $("#exBk", this.root).onclick = () => { stop(); this.vid = null; this.viewHome(); window.scrollTo({ top: 0 }); };
     $("#exVf", this.root).onclick = () => { stop(); this.vidFinish(); };
+    $$("[data-vc]", this.root).forEach(b => b.onclick = () => {
+      const pl = V.pl; if (!pl || !pl.getCurrentTime) return; const t = pl.getCurrentTime(), k = b.dataset.vc, Q = D.q;
+      if (k === "play") { pl.getPlayerState() === 1 ? pl.pauseVideo() : pl.playVideo(); return; }
+      let to = t;
+      if (k === "10") to = t + 10; else if (k === "-10") to = Math.max(0, t - 10);
+      else if (k === "next") { const q = Q.find(x => x[2] > t + 0.5); to = q ? q[2] : t; }
+      else { const i = Q.findIndex(x => t >= x[2] && t < x[3]); to = i >= 0 ? (t - Q[i][2] > 3 ? Q[i][2] : (Q[i - 1] ? Q[i - 1][2] : 0)) : ([...Q].reverse().find(x => x[2] < t - 0.5) || [0, 0, 0])[2]; }
+      pl.seekTo(to, true);
+    });
     const tick = () => {
       let t = 0; try { t = V.pl.getCurrentTime(); } catch (e) { return; }
       const i = D.q.findIndex(q => t >= q[2] && t < q[3]);
       if (i !== V.cur) { V.cur = i; this.vidPanel(); }
     };
-    const mk = () => { V.pl = new YT.Player("ytp", { videoId: id, playerVars: { rel: 0, playsinline: 1 }, events: { onReady: () => { V.tm = setInterval(tick, 250); }, onStateChange: e => { if (e.data === 0 && !V.done) { stop(); this.vidFinish(); } } } }); };
+    const mk = () => { V.pl = new YT.Player("ytp", { videoId: id, playerVars: { rel: 0, playsinline: 1, controls: 0, disablekb: 1, iv_load_policy: 3, modestbranding: 1, fs: 0 }, events: { onReady: () => { V.tm = setInterval(tick, 250); }, onStateChange: e => { if (e.data === 0 && !V.done) { stop(); this.vidFinish(); } } } }); };
     if (window.YT && YT.Player) mk(); else {
       window.onYouTubeIframeAPIReady = mk;
       if (!document.getElementById("ytapi")) { const sc = document.createElement("script"); sc.id = "ytapi"; sc.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(sc); }
