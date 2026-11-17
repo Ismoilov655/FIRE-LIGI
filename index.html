@@ -756,6 +756,10 @@ details.ex-rd>*:not(summary){margin-left:14px;margin-right:14px;}details.ex-rd>*
 @media(max-width:420px){.exam-fab{right:0;left:auto;margin:0;}#langSel{right:46px;left:auto;max-width:78px;box-sizing:border-box;}}
 .ex-cvt{display:none!important;}
 
+.cf-msg{font-size:17px;color:var(--ink)!important;margin:6px 0 18px!important;line-height:1.4;}.cf-row{display:flex;gap:10px;}.cf-row .btn{flex:1;}
+details.ex-hist .mist-row+.mist-row,.ex-hist>.mist-row{margin-top:10px;}
+.ex-hist .mist-row:first-of-type{margin-top:12px;}
+
 </style>
 </head>
 <body>
@@ -1057,6 +1061,13 @@ function openModal(html, o = {}) {
   const f = $("input,button.btn,button", v); if (f && o.focus !== false) setTimeout(() => f.focus(), 30);
   return v.firstElementChild;
 }
+/* site-styled replacement for window.confirm */
+function askConfirm(msg, onYes) {
+  const ru = typeof lang !== "undefined" && lang === "ru";
+  openModal(`<p class="cf-msg">${esc(msg)}</p><div class="cf-row"><button class="btn ghost" id="cfNo" type="button">${ru ? "Отмена" : "Bekor qilish"}</button><button class="btn" id="cfYes" type="button">${ru ? "Да" : "Ha"}</button></div>`);
+  $("#cfNo").onclick = () => closeModal();
+  $("#cfYes").onclick = () => { closeModal(); onYes(); };
+}
 function closeModal(silent) {
   if (!modalOpen) return;
   const m = modalOpen; modalOpen = null; m.v.remove();
@@ -1348,7 +1359,7 @@ class FlashView {
     }, { passive: true });
     $$("[data-a=shuf],[data-a=reset]", h).forEach(b => b.onclick = () => {
       if (b.dataset.a === "shuf") { this.shuf = !this.shuf; if (this.o.setShuf) this.o.setShuf(this.shuf); this.reload(); }
-      else if (confirm(t("confirmReset"))) { const d = this.o.deckObj(); this.o.cards().forEach(c => delete d[c.id]); save(); this.reload(); }
+      else askConfirm(t("confirmReset"), () => { const d = this.o.deckObj(); this.o.cards().forEach(c => delete d[c.id]); save(); this.reload(); });
     });
   }
   go(d) {
@@ -2425,7 +2436,7 @@ const Mist = {
       `</div><div class="col"><button class="btn" type="button" id="mGo">${esc(t("mistGo", L.length))}</button><button class="btn ghost" type="button" id="mClr">${esc(t("mistClear"))}</button></div>`;
     $$(".mx", body).forEach(b => b.onclick = () => { const w = L[+b.dataset.i]; this.remove(w.s, w.id); this.draw(); });
     $("#mGo", body).onclick = () => this.review(L);
-    $("#mClr", body).onclick = () => { if (confirm(t("mistConfirm"))) { S.mist = []; save(); this.badge(); this.draw(); } };
+    $("#mClr", body).onclick = () => askConfirm(t("mistConfirm"), () => { S.mist = []; save(); this.badge(); this.draw(); });
   },
   review(L) {
     const body = $("#mistBody"); body.innerHTML = `<div id="mqz"></div>`;
@@ -3718,8 +3729,8 @@ const Exam = {
       if (f < 0) f = R.flag.findIndex(x => x);
       if (f >= 0) $("#exq" + f).scrollIntoView({ behavior: "smooth", block: "center" });
     };
-    $("#exS", this.root).onclick = () => { const n = R.ans.filter(a => a < 0).length; if (!n || confirm(ex("confirm")(n))) this.finish(false); };
-    $("#exX", this.root).onclick = () => { if (confirm(ex("quitC"))) { Say.stop(); this.seq = null; this.run = null; this.res = null; clearInterval(this.tm); document.body.classList.remove("inexam"); this.viewHome(); window.scrollTo({ top: 0 }); } };
+    $("#exS", this.root).onclick = () => { const n = R.ans.filter(a => a < 0).length; if (!n) this.finish(false); else askConfirm(ex("confirm")(n), () => this.finish(false)); };
+    $("#exX", this.root).onclick = () => askConfirm(ex("quitC"), () => { Say.stop(); this.seq = null; this.run = null; this.res = null; clearInterval(this.tm); document.body.classList.remove("inexam"); this.viewHome(); window.scrollTo({ top: 0 }); });
   },
   upd() { const R = this.run, n = R.ans.filter(a => a < 0).length, e = $("#exC"); if (e) e.textContent = `✓ ${R.qs.length - n}/${R.qs.length}`; },
   finish(timeUp) {
