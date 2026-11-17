@@ -760,6 +760,9 @@ details.ex-rd>*:not(summary){margin-left:14px;margin-right:14px;}details.ex-rd>*
 details.ex-hist .mist-row+.mist-row,.ex-hist>.mist-row{margin-top:10px;}
 .ex-hist .mist-row:first-of-type{margin-top:12px;}
 
+.ex-vs{margin-left:10px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent);}.ex-vs.low{color:#ff5a6e;}
+.ex-vt{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:10px;}.ex-vt i{display:block;height:100%;width:100%;background:var(--accent);border-radius:99px;transition:width .25s linear;}
+
 </style>
 </head>
 <body>
@@ -3662,6 +3665,7 @@ const Exam = {
       let t = 0; try { t = V.pl.getCurrentTime(); } catch (e) { return; }
       const i = D.q.findIndex(q => t >= q[2] && t < q[3]);
       if (i !== V.cur) { V.cur = i; this.vidPanel(); }
+      if (i >= 0) { const q = D.q[i], left = Math.max(0, q[3] - t), sp = $("#exVs"), bar = $("#exVb"); if (sp) { sp.textContent = Math.ceil(left) + (lang === "ru" ? " с" : " s"); sp.classList.toggle("low", left <= 5); } if (bar) bar.style.width = Math.max(0, Math.min(100, left / (q[3] - q[2]) * 100)) + "%"; }
     };
     const mk = () => { V.pl = new YT.Player("ytp", { videoId: id, playerVars: { rel: 0, playsinline: 1, controls: 0, disablekb: 1, iv_load_policy: 3, modestbranding: 1, fs: 0 }, events: { onReady: () => { V.tm = setInterval(tick, 250); }, onStateChange: e => { if (e.data === 0 && !V.done) { stop(); this.vidFinish(); } } } }); };
     if (window.YT && YT.Player) mk(); else {
@@ -3674,7 +3678,7 @@ const Exam = {
     const V = this.vid, box = $("#exVa"); if (!V || !box) return; const ru = lang === "ru";
     if (V.cur < 0) { box.innerHTML = `<div class="info" style="text-align:center">🎧 ${esc(ru ? "Слушайте…" : "Tinglang…")}</div>`; return; }
     const q = V.D.q[V.cur];
-    box.innerHTML = `<div class="ex-vq"><b>問題${q[0]} · ${q[1]}</b></div><div class="ex-vo">${[...Array(q[5]).keys()].map(j => `<button class="btn ${V.ans[V.cur] === j + 1 ? "" : "ghost"}" data-vo="${j + 1}" type="button">${j + 1}</button>`).join("")}</div>`;
+    box.innerHTML = `<div class="ex-vq"><b>問題${q[0]} · ${q[1]}</b> <span class="ex-vs" id="exVs"></span></div><div class="ex-vt"><i id="exVb"></i></div><div class="ex-vo">${[...Array(q[5]).keys()].map(j => `<button class="btn ${V.ans[V.cur] === j + 1 ? "" : "ghost"}" data-vo="${j + 1}" type="button">${j + 1}</button>`).join("")}</div>`;
     $$("[data-vo]", box).forEach(b => b.onclick = () => { V.ans[V.cur] = +b.dataset.vo; $$("[data-vo]", box).forEach(x => x.classList.toggle("ghost", +x.dataset.vo !== V.ans[V.cur])); });
   },
   vidFinish() {
