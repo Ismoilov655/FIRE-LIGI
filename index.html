@@ -850,7 +850,7 @@ const I18N = {
     readLevel: "Qiyinlik darajasi", rl1: "1-daraja", rl2: "2-daraja", rl3: "3-daraja", rl4: "4-daraja", rl5: "5-daraja",
     rd1: "3–5 harfli oddiy so'zlar", rd2: "3–5 harf: tenten, maru, yoon, katakana", rd3: "5–7 harfli so'zlar", rd4: "8–10 harfli qisqa iboralar", rd5: "10–15 harfli gaplar",
     levelUpAsk: "Yaxshi o'qiyapsiz! Keyingi darajaga o'tamizmi?", levelUp: n => `${n}-darajaga o'tish`, levelUpDone: n => `${n}-daraja tanlandi`,
-    searchVocab: "So'z, kanji yoki shakl qidirish…", searchKanji: "So'z, kanji yoki shakl qidirish…",
+    searchVocab: "So'z yoki shakl qidirish…", searchKanji: "Kanji qidirish…",
     noResults: q => `«${q}» bo'yicha hech narsa topilmadi.`, foundN: n => `${n} ta natija`, showingN: n => `dastlabki ${n} tasi`,
     lesson: "Dars", allLessons: n => `Hammasi (${n} ta so'z)`, lessonOpt: (n, c) => `${n}-dars (${c} ta)`, lessonN: n => `${n}-dars`, lessonInfo: n => `Tanlangan so'zlar: ${n}`,
     kanaFirst: "Kana asosiy", kanjiFirstL: "Kanji asosiy",
@@ -898,7 +898,7 @@ const I18N = {
     readLevel: "Уровень сложности", rl1: "Уровень 1", rl2: "Уровень 2", rl3: "Уровень 3", rl4: "Уровень 4", rl5: "Уровень 5",
     rd1: "Простые слова из 3–5 знаков", rd2: "3–5 знаков: тэнтэн, мару, ёон, катакана", rd3: "Слова из 5–7 знаков", rd4: "Короткие фразы из 8–10 знаков", rd5: "Предложения из 10–15 знаков",
     levelUpAsk: "Вы хорошо читаете! Перейдём на следующий уровень?", levelUp: n => `Перейти на уровень ${n}`, levelUpDone: n => `Выбран уровень ${n}`,
-    searchVocab: "Поиск слов, кандзи, форм…", searchKanji: "Поиск слов, кандзи, форм…",
+    searchVocab: "Поиск слов или форм…", searchKanji: "Поиск кандзи…",
     noResults: q => `По запросу «${q}» ничего не найдено.`, foundN: n => `Найдено: ${n}`, showingN: n => `первые ${n}`,
     lesson: "Урок", allLessons: n => `Все (${n} слов)`, lessonOpt: (n, c) => `Урок ${n} (${c})`, lessonN: n => `Урок ${n}`, lessonInfo: n => `Выбрано слов: ${n}`,
     kanaFirst: "Сначала кана", kanjiFirstL: "Сначала кандзи",
@@ -1956,7 +1956,7 @@ const Kotoba = {
   search(q) {
     this.q = q; const res = $("#kRes", this.root), main = $("#kMain", this.root);
     if (!q) { res.hidden = true; main.hidden = false; return; }
-    main.hidden = true; res.hidden = false; uniSearch(res, q);
+    main.hidden = true; res.hidden = false; uniSearch(res, q, "w");
   },
   main() {
     const K = S.kotoba, root = $("#kMain", this.root);
@@ -2090,10 +2090,10 @@ function kanjiDetail(k) {
 }
 
 /* one search for words (with verb / adjective forms) and kanji; used by both the Kotoba and the Kanji pages */
-function uniSearch(res, q) {
+function uniSearch(res, q, mode) {
   const fq = fold(q), qC = collapseLong(fq), lim = 40;
-  const wh = VW.map(x => [x, vMatch(x, fq, qC)]).filter(a => a[1] > 0).sort((a, b) => b[1] - a[1]);
-  const kh = kanjiFlat.map(k => [k, kMatch(k, fq, qC)]).filter(a => a[1].score > 0).sort((a, b) => b[1].score - a[1].score || a[0].idx - b[0].idx);
+  const wh = mode === "k" ? [] : VW.map(x => [x, vMatch(x, fq, qC)]).filter(a => a[1] > 0).sort((a, b) => b[1] - a[1]);
+  const kh = mode === "w" ? [] : kanjiFlat.map(k => [k, kMatch(k, fq, qC)]).filter(a => a[1].score > 0).sort((a, b) => b[1].score - a[1].score || a[0].idx - b[0].idx);
   if (!wh.length && !kh.length) { res.innerHTML = `<div class="empty-msg">${esc(t("noResults", q))}</div>`; return; }
   const head = (ic, n, k) => `<div class="res-head">${ic} ${esc(t("foundN", n))}${n > k ? " · " + esc(t("showingN", k)) : ""}</div>`;
   const fl = lang === "ru" ? "ru" : "uz";
@@ -2123,7 +2123,7 @@ const Kanji = {
   search(q) {
     this.q = q; const res = $("#jRes", this.root), main = $("#jMain", this.root);
     if (!q) { res.hidden = true; main.hidden = false; return; }
-    main.hidden = true; res.hidden = false; uniSearch(res, q);
+    main.hidden = true; res.hidden = false; uniSearch(res, q, "k");
   },
   main() {
     const K = S.kanji, root = $("#jMain", this.root), a = KLV[K.level], n = a.length, L = this.list();
