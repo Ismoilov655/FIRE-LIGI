@@ -3644,7 +3644,7 @@ const Exam = {
       this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2><div class="ex-vid"><iframe src="https://www.youtube.com/embed/${id}?rel=0" title="聴解 ${m + 1}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>${link}</div><button class="btn block" id="exBk" type="button">${esc(ex("back"))}</button>`;
       $("#exBk", this.root).onclick = () => { this.viewHome(); window.scrollTo({ top: 0 }); }; window.scrollTo({ top: 0 }); return;
     }
-    const V = this.vid = { m, D, ans: D.q.map(() => 0), cur: -1, tm: 0, pl: null, done: false };
+    const V = this.vid = { m, D, ans: D.q.map(() => 0), cur: -1, tm: 0, pl: null, done: false, maxT: 0 };
     this.root.innerHTML = `<div class="panel glass"><h2 style="margin:0 0 10px">🎧 ${esc(ex("mock"))} ${m + 1} · 聴解</h2><div class="ex-vid"><div id="ytp"></div><div class="ex-sh"></div><div class="ex-cvt"></div></div>
       <div class="ex-vc"><button class="btn ghost" data-vc="-5" type="button" aria-label="-5s">⏪ 5</button><button class="btn ghost" data-vc="prev" type="button" aria-label="prev">⏮</button><button class="btn" data-vc="play" type="button" aria-label="play">⏯</button><button class="btn ghost" data-vc="next" type="button" aria-label="next">⏭</button><button class="btn ghost" data-vc="5" type="button" aria-label="+5s">5 ⏩</button></div>
       <div class="ex-va" id="exVa"><div class="info" style="text-align:center">${esc(ru ? "Нажмите ▶ — варианты появятся во время вопроса" : "▶ ni bosing: savol vaqtida variantlar chiqadi")}</div></div>${link}</div>
@@ -3663,7 +3663,8 @@ const Exam = {
     });
     const tick = () => {
       let t = 0; try { t = V.pl.getCurrentTime(); } catch (e) { return; }
-      const i = D.q.findIndex(q => t >= q[2] && t < q[3]);
+      const i = D.q.findIndex(q => t >= q[2] && t < q[3] && V.maxT < q[3]);
+      V.maxT = Math.max(V.maxT, t);
       if (i !== V.cur) { V.cur = i; this.vidPanel(); }
       if (i >= 0) { const q = D.q[i], left = Math.max(0, q[3] - t), sp = $("#exVs"), bar = $("#exVb"); if (sp) { sp.textContent = Math.ceil(left) + (lang === "ru" ? " с" : " s"); sp.classList.toggle("low", left <= 5); } if (bar) bar.style.width = Math.max(0, Math.min(100, left / (q[3] - q[2]) * 100)) + "%"; }
     };
