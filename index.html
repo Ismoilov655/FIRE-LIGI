@@ -1350,7 +1350,7 @@ class FlashView {
   constructor(host, o) { this.host = host; this.o = o; this.shuf = !!(o.shuf && o.shuf()); this.reload(); }
   reload() {
     let l = this.o.cards(); if (this.shuf) l = shuffleGroups(l);
-    this.list = l; this.pos = 0; this.flipped = false; this.busy = false; this.render();
+    this.list = l; this.q = {}; this.pos = 0; this.flipped = false; this.busy = false; this.render();
   }
   mark(c) {
     const d = SRS.deck(this.o.deck);
@@ -1366,6 +1366,7 @@ class FlashView {
     this.shownAt = Date.now(); this.backSeen = this.flipped;
     const seen = cs.filter(c => SRS.learned(o.deck, c.id)).length, pct = ((this.pos + 1) / total * 100).toFixed(1);
     const c = this.list[this.pos], say = o.say ? o.say(c) : "";
+    this.q = this.q || {}; if (!this.q[c.id] && !SRS.deck(o.deck)[c.id]) this.q[c.id] = "fresh";
     this.host.innerHTML = `<div class="stats"><div class="stat glass"><b>${this.pos + 1} / ${total}</b><span>${esc(t("cardPos"))}</span></div><div class="stat glass"><b>${seen}/${cs.length}</b><span>${esc(t("seen"))}</span></div></div><div class="bar"><i style="width:${pct}%"></i></div>
       <div class="cardarea">${(o.deck === "kotoba" || o.deck === "kanji") ? `<button class="star-b${Star.has(o.deck, c.id) ? " on" : ""}" data-star type="button" aria-label="star">${Star.has(o.deck, c.id) ? "★" : "☆"}</button>` : ""}<div class="flashcard ${this.flipped ? "flipped" : ""}" id="fc" tabindex="0" role="button" aria-label="${esc(t("tapOpen"))}">
         <div class="face front">${spk(say)}${o.front(c)}</div>
@@ -1384,11 +1385,15 @@ class FlashView {
     const dis = this.flipped ? "" : "disabled";
     row.innerHTML = `<button class="btn ghost no" data-k="no" type="button" ${dis}>✗ ${esc(t("knowNo"))}</button><button class="btn yes" data-k="yes" type="button" ${dis}>✓ ${esc(t("knowYes"))}</button>`;
     $("[data-k=no]", row).onclick = () => this.dontKnow();
-    $("[data-k=yes]", row).onclick = () => this.go(1);
+    $("[data-k=yes]", row).onclick = () => this.knowYes();
   }
-  dontKnow() {                                  // the card comes back 4-5 cards later
-    const c = this.list[this.pos], at = Math.min(this.list.length, this.pos + 1 + 4 + (Math.random() < .5 ? 0 : 1));
-    this.list.splice(at, 0, c);
+  back(k) { const c = this.list[this.pos], at = Math.min(this.list.length, this.pos + 1 + k); this.list.splice(at, 0, c); }
+  dontKnow() {                                  // comes back after 3 cards, then must be confirmed
+    this.q = this.q || {}; this.q[this.list[this.pos].id] = "again"; this.back(3); this.go(1);
+  }
+  knowYes() {                                   // new or just-missed card: one more check after 5 cards
+    this.q = this.q || {}; const id = this.list[this.pos].id, st = this.q[id];
+    if (st === "fresh" || st === "again") { this.q[id] = "confirm"; this.back(5); } else delete this.q[id];
     this.go(1);
   }
   updBatch() {
@@ -2669,7 +2674,7 @@ const GUIDE = [
   { m: "gram", uz: ["Grammatika", "N5 va N4 grammatika qoidalari: ma'nosi, tuzilishi, misollar (o'qilishi va tarjimasi bilan) va test. Qoidani o'rgangach «O'rgandim» deb belgilang."], ru: ["Грамматика", "Правила грамматики N5 и N4: значение, строение, примеры (с чтением и переводом) и тест. Выучив правило, отметьте «Выучил»."] },
   { m: "exam", uz: ["Imtihon (JLPT mock)", "Tepadagi 試 tugmasi. Haqiqiy imtihondagidek: vaqt, savollar bir sahifada, bo'limlar ketma-ket (Mojigoi, Grammatika va o'qish, Tinglash). Natija oxirida chiqadi. Tinglashda ovoz telefoningizdan chiqadi."], ru: ["Экзамен (пробный JLPT)", "Кнопка 試 вверху. Как на настоящем экзамене: время, все вопросы на одной странице, разделы подряд (лексика, грамматика и чтение, аудирование). Результат — в конце. В аудировании звук воспроизводит ваш телефон."] },
   { m: "card", tour: 1, uz: ["Kartalar", "Kartani bosing — orqa tomoni ochiladi. Shundan keyin Bildim yoki Bilmadim tugmasi bosiladi. Orqaga qaytish uchun kartani o'ngga suring (kompyuterda ← tugmasi)."], ru: ["Карточки", "Нажмите на карточку — откроется обратная сторона. После этого нажмите «Знаю» или «Не знаю». Чтобы вернуться назад, смахните карточку вправо (на компьютере — клавиша ←)."] },
-  { m: "know", tour: 1, uz: ["Bildim / Bilmadim", "Bu tugmalar karta aylantirilgandan keyin yonadi. Bilmadim desangiz, karta 4–5 kartadan keyin yana chiqadi, Bildim desangiz qaytmaydi."], ru: ["Знаю / Не знаю", "Эти кнопки включаются после переворота карточки. Если «Не знаю» — карточка вернётся через 4–5 карточек, если «Знаю» — не вернётся."] },
+  { m: "know", tour: 1, uz: ["Bildim / Bilmadim", "Bu tugmalar karta aylantirilgandan keyin yonadi. Bilmadim desangiz, karta 3 ta kartadan keyin qaytadi. Yangi yoki hozir bilmagan karta Bildim bo'lsa, tekshirish uchun 5 ta kartadan keyin yana bir marta chiqadi, keyin tugaydi."], ru: ["Знаю / Не знаю", "Эти кнопки включаются после переворота карточки. Если «Не знаю» — карточка вернётся через 3 карточки. Новая или только что забытая карточка после «Знаю» покажется ещё раз через 5 карточек для проверки, потом исчезнет."] },
   { m: "batch", tour: 1, uz: ["Ko'rganlarimdan test", "Kartalarni ko'rib chiqqach 📝 Test tugmasini bosing: savollar faqat o'tgan kartalaringizdan. Xato ko'p bo'lsa, xatolarni qayta ko'rib, hammasini yana tekshirasiz. Test o'zi boshlanishini xohlasangiz, Avto-testni yoqing (pastda)."], ru: ["Тест по просмотренному", "Просмотрев карточки, нажмите 📝 Тест: вопросы только по пройденным карточкам. Если ошибок много — повторяете ошибки и проверяете всё заново. Чтобы тест начинался сам, включите Авто-тест (ниже)."] },
   { m: "test", uz: ["Testlar va ball", "To'g'ri javob +1 yoki +2 ball, xato −1 (ball 0 dan pasaymaydi). Test bo'limida savollar sonini o'zingiz yozib tanlaysiz. Kanjida O'qilishi, Ma'nosi yoki Aralash savollar bor."], ru: ["Тесты и очки", "Верный ответ +1 или +2, ошибка −1 (ниже 0 не опускается). В разделе «Тест» число вопросов можно ввести самому. В кандзи есть вопросы на чтение, значение или вперемешку."] },
   { m: "auto", uz: ["Avto-testni yoqish va o'chirish", "Boshida u o'chiq. Yoqish uchun profil tugmasini bosing, \"Avto-test\" qatorida 10, 20, 30 yoki o'zingiz yozgan sonni tanlang: shuncha karta o'tgach test o'zi boshlanadi. \"O'chiq\" ni tanlasangiz, test faqat ostidagi 📝 Test tugmasi bilan boshlanadi."], ru: ["Включение и выключение авто-теста", "Сначала он выключен. Чтобы включить, нажмите на профиль и в строке «Авто-тест» выберите 10, 20, 30 или своё число: после стольких карточек тест начнётся сам. Если выбрать «Выкл.», тест запускается только кнопкой 📝 Тест под карточкой."] },
